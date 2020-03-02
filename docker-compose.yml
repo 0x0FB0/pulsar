@@ -1,0 +1,52 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    build: ./db_storage
+    env_file:
+      - db.env
+    expose:
+      - '3306'
+    command: --default-authentication-plugin=mysql_native_password
+    # database persistence between container reboots
+    # volumes:
+    #   - ./db_storage/data:/var/lib/mysql
+    #   - ./db_storage/logs:/var/log/mysql
+    restart: always
+  sandbox:
+    container_name: sandbox
+    build: ./sandbox_storage
+    stdin_open: true
+    restart: always
+  queue:
+    container_name: queue
+    build: ./queue_storage
+    env_file:
+      - queue.env
+    entrypoint: ['bash', '/certs/entrypoint.sh']
+    expose:
+      - 5671
+      - 5672
+    volumes:
+      - ./queue_storage:/certs
+    restart: always
+  web:
+    container_name: web
+    build: .
+    env_file:
+      - web.env
+      - queue.env
+      - db.env
+    entrypoint: ['bash', './entrypoint.sh']
+    # stdin_open: true
+    # tty: true
+    ports:
+      - '8443:8443'
+    depends_on:
+      - db
+      - queue
+    volumes:
+      - ./queue_storage/client_cert:/etc/ssl/celery_client
+      # usefull for deveopment and hot patching
+      # - ./portal:/portal
+    restart: always

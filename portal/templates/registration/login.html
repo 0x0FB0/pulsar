@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="container">
+        <div class="row justify-content-center align-items-center" style="height:100vh">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" action="{% url 'login' %}" autocomplete="off">
+                          {% csrf_token %}
+                            <img id="logo" src="/static/img/pulsar.svg" class="mx-auto img-fluid d-block"
+                                width="400px">
+                            <p class="px-2">Login</p>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <button type="submit" value="login" id="sendlogin" class="btn btn-dark">Login</button>
+                            <a class="btn btn-secondary float-right mx-1" href="#">
+                                    <!--href="{% url 'social:begin' 'github' %}">-->
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a class="btn btn-secondary float-right mx-1" href="#">
+                                    <!--href="{% url 'social:begin' 'google-oauth2' %}">-->
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a class="btn btn-secondary float-right mx-1" href="#">
+                                    <!--href="{% url 'social:begin' 'linkedin-oauth2' %}">-->
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <input type="hidden" name="next" value="{{next}}" />
+                        </form>
+                        {% if form.errors %}
+                          <p class="text-danger">Your username and password didn't match. Please try again.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

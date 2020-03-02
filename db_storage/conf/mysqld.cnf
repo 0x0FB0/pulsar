@@ -1,0 +1,10 @@
+[mysqld]
+pid-file	            = /var/run/mysqld/mysqld.pid
+socket		            = /var/run/mysqld/mysqld.sock
+datadir		            = /var/lib/mysql
+secure-file-priv        = NULL
+log_error               = /var/log/mysql/error.log
+general_log_file        = /var/log/mysql/mysql.log
+general_log             = 1
+
+!includedir /etc/mysql/conf.d/

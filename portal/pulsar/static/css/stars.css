@@ -1,0 +1,92 @@
+
+.star {
+  fill: white;
+  animation: pulse var(--star-animation-duration, 1000ms) infinite backwards,
+    glowing var(--star-animation-glow-duration, 1000ms) infinite alternate backwards;
+  animation-delay: var(--star-animation-delay, 0);
+}
+
+.star-parallax {
+  transform: translate(0, calc(-1px * var(--translateScrollY) * var(--parallax-intensity, 200) * 1/var(--parallax-depth, 1) ));
+transition: transform .1s;
+will-change: transition;
+}
+
+.shooting-star {
+  fill: white;
+  transform-origin: 125px 0;
+  animation: 5s orbitAnimation infinite linear, 5s shootStarGlow infinite;
+}
+
+#svgCanvas {
+  height: 200vh;
+}
+
+
+body {
+  margin: 0;
+  background-color: var(--bback) !important;
+}
+
+#btnDebug {
+  position: fixed;
+  z-index:1;
+  top: 10px;
+  left: 10px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale3d(1, 1, 0.5);
+  }
+
+  30% {
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
+
+  70% {
+    transform: scale3d(0.7, 0.7, 0.7);
+  }
+
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes glowing {
+  0% {
+    opacity: var(--star-brightness, 0.2);
+  }
+
+  100% {
+    opacity: calc(var(--star-brightness, 0.2) * 0.5);
+  }
+}
+
+@keyframes orbitAnimation {
+  0% {
+    transform: translate(-125px, 0) rotate3d(0, 0, 1, 360deg);
+  }
+  100% {
+    transform: translate(-125px, 0) rotate3d(0, 0, 1, 270deg);
+  }
+}
+
+
+@keyframes shootStarGlow {
+  0% {
+    opacity: 0
+  }
+
+  50%, 50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+#svgCanvas {
+position: absolute;
+}
