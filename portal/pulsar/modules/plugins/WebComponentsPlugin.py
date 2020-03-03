@@ -19,7 +19,7 @@ def getCPEs(dom, port, ssl, unique_id):
         prefix = 'http://'
     cmd = f'whatweb --url-prefix {prefix} -a 3 {dom}:{port} --log-json={out_file}'
     # BROKEN WHATWEB?
-    while result == None or result == '':
+    while result in (None, ''):
         sandbox.exec_sandboxed(cmd)
         result = sandbox.retrieve_sandboxed(out_file)
     cpes = list()
