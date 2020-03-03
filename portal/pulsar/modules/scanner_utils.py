@@ -834,7 +834,7 @@ class ServiceScannerPlugin():
     details = ''
     cvss = ''
     services = {}
-    policy = {},
+    policy = {}
     vulnerabilities = []
     scanned = list()
     domains = list()
