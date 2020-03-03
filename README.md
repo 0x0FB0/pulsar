@@ -60,6 +60,8 @@ This software was created with availability and openness in mind, so it is 100% 
 
 > If you would like to use External APIs see [USAGE.md](/USAGE.md#external-apis-integration)
 
+> In order to use email notifications, edit `EMAIL_BACKEND SETTINGS` in `portal/portal/settings.py` before the installation
+
 ### Windows
 
 #### Prerequisites
