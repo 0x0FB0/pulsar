@@ -256,8 +256,8 @@ def run_scan(self, r_task, qid):
                             c.save()
                         except Exception as e:
                             logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
-                            raise e
                             progress += 1
+                            raise e
 
 
     self.update_state(state='PROGRESS',
