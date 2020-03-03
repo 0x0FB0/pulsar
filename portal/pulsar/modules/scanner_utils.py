@@ -645,7 +645,7 @@ class BaseDiscoveryPlugin():
         if scan and scan.policy:
             self.policy = scan.policy
         asset = AssetInstance.objects.get(id=asset_id)
-        self.asset_name = re.sub('[^A-Za-z0-9 \.]+', '', asset.name)
+        self.asset_name = re.sub(r'[^A-Za-z0-9 \.]+', '', asset.name)
         self.asset_dom = asset.domain
         nets = [ip['cidr'] for ip in IPv4AddrInstance.objects.filter(asset=self.asset_id,
                                                                           desc__icontains=asset.name).values('cidr')]
