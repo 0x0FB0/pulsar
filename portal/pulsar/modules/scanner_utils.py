@@ -427,7 +427,7 @@ def getIPData(ip):
             if 'irr_records' in jdata['data']:
                 for record in jdata['data']['irr_records']:
                     for k in record:
-                        if k['key'] is 'origin':
+                        if k['key'] == 'origin':
                             ip_data['asn'] = int(k['value'])
                         elif k['key'] == 'descr':
                             ip_data['desc'] = k['value']
