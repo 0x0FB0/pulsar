@@ -7,7 +7,7 @@
 ## What is it?
 
 **Pulsar** is an automated network footprint scanner for Red Teams, Pentesters and Bounty Hunters.
-Its focus is on discovery of organization public facing assets with minimal knowledge about its infrastructure. Along with network data visualization, it attempts to give a basic vulnerability score to find infrastructure weak points and their relation to other resources. It can be also used as a custom vulnerability scanner for wide and uncharted scopes.
+Its focused on discovery of organization public facing assets with minimal knowledge about its infrastructure. Along with network data visualization, it attempts to give a basic vulnerability score to find infrastructure weak points and their relation to other resources. It can be also used as a custom vulnerability scanner for wide and uncharted scopes.
 This software was created with availability and openness in mind, so it is 100% free, and does not require any API keys to use its features.
 
 > This is a beta release, be prepared to notice bugs or even crashes. Help me out and submitt an [issue](../../issues/new).
