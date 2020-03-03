@@ -406,7 +406,7 @@ def getCountryData(ip):
                         country = answer['rirs'][0]['country']
                     else:
                         raise ValueError
-        if country == None:
+        if country is None:
             found = 'NA'
         else:
             found = country_codes[country]
@@ -427,7 +427,7 @@ def getIPData(ip):
             if 'irr_records' in jdata['data']:
                 for record in jdata['data']['irr_records']:
                     for k in record:
-                        if k['key'] == 'origin':
+                        if k['key'] is 'origin':
                             ip_data['asn'] = int(k['value'])
                         elif k['key'] == 'descr':
                             ip_data['desc'] = k['value']
@@ -468,7 +468,7 @@ def aBulkRecordLookup(list_input):
                 name = jdata['name']
                 data = jdata['data']
                 if 'answers' in data:
-                    if data['answers'] != None:
+                    if data['answers'] is not None:
                         for ans in data['answers']:
                             if 'answer' in ans:
                                 if ans['type'] == 'A':
