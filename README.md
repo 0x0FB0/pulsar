@@ -80,7 +80,7 @@ This software was created with availability and openness in mind, so it is 100% 
 1. Clone or download latest pulsar repository
 
 ```
-git clone https://github.com/pulsar/
+git clone https://github.com/FooBallZ/pulsar
 ```
 
 3. Run powershell installer
@@ -112,7 +112,7 @@ sudo apt install git
 1. Clone or download latest pulsar repository
 
 ```
-git clone https://github.com/pulsar/
+git clone https://github.com/FooBallZ/pulsar
 ```
 
 3. Run bash installer
