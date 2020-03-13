@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 function Gen-SSHKey
 {
         echo "Generating sandbox RSA ssh keys."
@@ -23,8 +23,7 @@ function Check-DockerCompose
 
 function Gen-Password
 {
-    charset='\-+_.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
-    </dev/urandom tr -dc "$charset" | head -c 18
+    openssl rand -hex 12
 }
 
 function Gen-Credentials
