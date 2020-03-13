@@ -23,7 +23,7 @@ function Check-DockerCompose
 
 function Gen-Password
 {
-    charset='$%+.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
+    charset='\-+_.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
     </dev/urandom tr -dc "$charset" | head -c 18
 }
 
