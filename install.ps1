@@ -25,8 +25,8 @@ Catch {
 Function Gen-Password
 {
     $private:ofs=""
-    $Characters = '$%+.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
-    return [String]$Characters[(1..18 | ForEach-Object { Get-Random -Maximum 67 })]
+    $Characters = '\-+_.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
+    return [String]$Characters[(1..18 | ForEach-Object { Get-Random -Maximum 68 })]
 }
 
 Function Gen-Credentials
