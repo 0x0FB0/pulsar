@@ -554,7 +554,7 @@ class Domain(LRCUDViewSet):
                                              status='SCANNED')\
                 .order_by('-scanned_date')\
                 .first()
-            if (si):
+            if si:
                 try:
                     id = si.last_task.id
                     lasttasks.append(id)
@@ -693,4 +693,3 @@ class Scan(LRUDViewSet):
         )
         serializer = ScanTaskSerializer(task, many=False, context={'request': request})
         return RestResponse(serializer.data)
-
