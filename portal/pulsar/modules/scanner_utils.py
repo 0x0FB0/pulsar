@@ -30,8 +30,10 @@ scan_settings = {
     'nmap_udp_flags': '-Pn -n -T4 -sU -vv',
 }
 
+
 class CVE(CVEEntry):
     pass
+
 
 class NullConfig(Config):
     def load_base_conf_files(self):
@@ -132,6 +134,7 @@ class Sandbox():
         self.exec(f'rm -f {delfile}')
         return True
 
+
 def updateCPE(port, fqdn, task_id, cpe):
     doms = DomainInstance.objects.filter(fqdn=fqdn, last_task=task_id)
     ips = IPv4AddrInstance.objects.filter(domain__in=doms, last_task=task_id)
@@ -148,6 +151,7 @@ def updateCPE(port, fqdn, task_id, cpe):
             cpe=cpe
         )
 
+
 def downloadHelper(download_path, url):
     logger.info("NVD DOWNLOAD: %s" % url)
     durl = url
@@ -156,6 +160,7 @@ def downloadHelper(download_path, url):
         urllib.request.urlretrieve(durl, dpath)
     except (urllib.error.URLError, OSError):
         pass
+
 
 def updateNVDFeed():
     if not os.path.exists('/portal/nvd/feeds/mutex'):
@@ -411,6 +416,7 @@ def getCountryData(ip):
     except (ValueError, KeyError, ConnectionError):
         return 'NA'
 
+
 def getIPData(ip):
     try:
         ip_data = {'ip': ip,
@@ -448,6 +454,7 @@ def getIPData(ip):
     except (ValueError, ConnectionError):
         return [ip_data, ]
 
+
 def aBulkRecordLookup(list_input):
     sandbox = Sandbox()
     logger.info("BULK DNS LOOKUP: %s" % repr(list_input))
@@ -482,12 +489,14 @@ def aBulkRecordLookup(list_input):
             pass
     return doms
 
+
 def unique_list(process_list):
     uniq_list = []
     for a in process_list:
         if a not in uniq_list:
             uniq_list.append(a)
     return uniq_list
+
 
 def checkForNewDomains(task_id):
     task = ScanTask.objects.get(id=task_id)
@@ -507,6 +516,7 @@ def checkForNewDomains(task_id):
         return new_doms_list
     else:
         return []
+
 
 def checkForNewVuln(task_id):
     task = ScanTask.objects.get(id=task_id)
@@ -747,6 +757,7 @@ class ServiceDiscoveryPlugin():
                                 asset=asset,
                             )
 
+
 class BaseScannerPlugin():
     name = 'basic scanner'
     short = ''
@@ -871,6 +882,7 @@ class ServiceScannerPlugin():
                                 asset=asset, last_task=dom.last_task, info=vuln['info'], details=vuln['details'],
                                 cvss=vuln['cvss'], reference=vuln['reference'])
             vuln.save()
+
 
 class HandMadeScannerPlugin(ServiceScannerPlugin):
     script = ''

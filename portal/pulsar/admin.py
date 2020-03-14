@@ -32,10 +32,12 @@ class GroupAdminForm(forms.ModelForm):
         self.save_m2m()
         return instance
 
+
 @admin.register(CollaborationGroup)
 class GroupAdmin(admin.ModelAdmin):
     form = GroupAdminForm
     filter_horizontal = ['permissions']
+
 
 @admin.register(PortalUser)
 class PortalUserAdmin(admin.ModelAdmin):
@@ -44,31 +46,37 @@ class PortalUserAdmin(admin.ModelAdmin):
                     'is_superuser', 'last_login', 'last_name', 'modified_date', 'username')
     list_filter = ('id', 'username', 'email')
 
+
 @admin.register(AssetInstance)
 class AssetInstanceAdmin(admin.ModelAdmin):
     list_display = ('name', 'domain', 'created_date', 'id', 'owner', 'result', 'modified_date')
     filter_horizontal = ('collaborations',)
     list_filter = ('name', 'created_date', 'domain', 'owner')
 
+
 @admin.register(ScanInstance)
 class ScanInstanceAdmin(admin.ModelAdmin):
     list_display = ('id', 'asset', 'created_date')
     list_filter = ('id', 'created_date')
+
 
 @admin.register(ScanTask)
 class ScanTaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'asset', 'state', 'result', 'queue_id')
     list_filter = ('id', 'asset', 'state', 'result', 'queue_id')
 
+
 @admin.register(DomainInstance)
 class DomainInstanceAdmin(admin.ModelAdmin):
     list_display = ('fqdn', 'confidence', 'plugin', 'found_date', 'asset')
     list_filter = ('fqdn', 'confidence', 'plugin', 'found_date', 'asset')
 
+
 @admin.register(VulnInstance)
 class VulnInstanceAdmin(admin.ModelAdmin):
     list_display = ('plugin', 'id', 'score', 'confidence', 'description', 'domain')
     list_filter = ('plugin', 'id', 'score', 'confidence', 'description', 'domain')
+
 
 @admin.register(HandMadePlugin)
 class HandMadePluginAdmin(admin.ModelAdmin):

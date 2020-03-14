@@ -8,6 +8,7 @@ from ..scanner_utils import ServiceScannerPlugin, NVDSearchForCPE, updateCPE, Sa
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def getCPEs(dom, port, ssl, unique_id):
     result = ''
     logger.info("WHATWEB START")
@@ -42,6 +43,7 @@ def getCPEs(dom, port, ssl, unique_id):
     except (json.JSONDecodeError, OSError) as e:
         logger.info("WHATWEB PARSE ERROR: %s" % e)
         return cpes
+
 
 class WebComponentsPlugin(ServiceScannerPlugin):
     custom_scanner = True

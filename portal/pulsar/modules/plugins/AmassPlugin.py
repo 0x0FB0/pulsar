@@ -12,12 +12,14 @@ from ..scanner_utils import BaseDiscoveryPlugin, scan_settings, Sandbox
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def isWildcardDom(dom):
     try:
         socket.gethostbyname('thisshould-never-3xist10767.'+dom)
         return True
     except socket.gaierror:
         return False
+
 
 def aMassSubFind(s_input, unique_id, active, history):
     doms = []
@@ -78,6 +80,7 @@ def aMassSubFind(s_input, unique_id, active, history):
         sandbox.remove_sandboxed(uploaded_known)
         sandbox.remove_sandboxed(outfile)
     return doms
+
 
 class AmassPlugin(BaseDiscoveryPlugin):
     custom_discovery = True

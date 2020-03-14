@@ -22,6 +22,7 @@ from django.utils import timezone
 
 logger = get_task_logger(__name__)
 
+
 class IndexView(LoginRequiredMixin, generic.TemplateView):
     """Generic view for Vue.js template."""
     template_name = 'pulsar_templates/index.html'
@@ -30,9 +31,11 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
     def get_queryset(self):
         return
 
+
 class PageNotFoundView(generic.TemplateView):
     """Generic view for 404 template."""
     template_name = 'pulsar_templates/404.html'
+
 
 class BaseViewSet(viewsets.GenericViewSet):
     """Generic view set with strong user and group access filtering."""
@@ -73,12 +76,14 @@ class BaseViewSet(viewsets.GenericViewSet):
         else:
             return self.serializer_class.Meta.model.objects.all()
 
+
 class LRUDViewSet(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,
                     BaseViewSet):
     """List, Retrieve, Update, Destroy views."""
+
 
 class LRCUDViewSet(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
@@ -87,11 +92,13 @@ class LRCUDViewSet(mixins.ListModelMixin,
                     BaseViewSet):
     """List, Create, Destroy views."""
 
+
 class LRUViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  mixins.UpdateModelMixin,
                  BaseViewSet):
     """List, Retrieve, Update views."""
+
 
 class LRDViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
@@ -99,9 +106,11 @@ class LRDViewSet(mixins.ListModelMixin,
                  BaseViewSet):
     """List, Retrieve, Destroy views."""
 
+
 class RViewSet(mixins.ListModelMixin,
                  BaseViewSet):
     """List view."""
+
 
 def get_markdown(asset):
     """Markdown report generation helper method."""
@@ -171,6 +180,7 @@ def get_markdown(asset):
     else:
         return False
 
+
 def get_pdf(md):
     """PDF generation helper method."""
     fname = str(uuid.uuid4())
@@ -211,6 +221,7 @@ class Statistics(viewsets.GenericViewSet):
                              "Vulnerabilities": vulns.count()
                              })
 
+
 class User(viewsets.GenericViewSet):
     """
     Generic pulsar portal user view.
@@ -228,6 +239,7 @@ class User(viewsets.GenericViewSet):
         user = PortalUser.objects.get(id=request.user.id)
         serializer = PortalUserSerializer(user, many=False, context={'request': request})
         return RestResponse(serializer.data)
+
 
 class Asset(mixins.CreateModelMixin,
             LRUDViewSet):
@@ -398,6 +410,7 @@ class Asset(mixins.CreateModelMixin,
         total_score = calc_asset_by_task(str(scan.last_task.id))
         return RestResponse({"success": True, "asset_score": total_score})
 
+
 class Task(LRDViewSet):
     """
     Scan task instance base view.
@@ -559,6 +572,7 @@ class Domain(LRCUDViewSet):
         serializer = DomainInstanceSerializer(domains, many=True, context={'request': request})
         return RestResponse(serializer.data)
 
+
 class IPv4Addr(LRUViewSet):
     """
     IPv4 address instance base view.
@@ -572,6 +586,7 @@ class IPv4Addr(LRUViewSet):
     queryset = IPv4AddrInstance.objects.all()
     serializer_class = IPv4AddressSerializer
 
+
 class Vulnerability(LRUViewSet):
     """
     Vulnerability instance base view.
@@ -584,6 +599,7 @@ class Vulnerability(LRUViewSet):
     ordering_fields = ['score', 'confidence', 'found_date']
     queryset = VulnInstance.objects.all()
     serializer_class = VulnInstanceSerializer
+
 
 class Scan(LRUDViewSet):
     """

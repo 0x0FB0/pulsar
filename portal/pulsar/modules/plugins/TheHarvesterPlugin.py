@@ -10,6 +10,7 @@ from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list,
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def parseHosts(data, query):
     data.replace('<em>', '').replace('<b>', '').replace('</b>', '').replace('</em>', '')\
             .replace('%2f', '').replace('%3a', '').replace('<strong>', '').replace('</strong>', '')\
@@ -22,6 +23,7 @@ def parseHosts(data, query):
     hosts.extend(find_hosts.findall(data))
     return unique_list(hosts)
 
+
 def getDNSDumpster(query):
     url = 'https://dnsdumpster.com/'
     filter_req = "| grep Set-Cookie | tr \" ;\" \"\n\" | grep csrf | tr \"=\" \" \" | awk '{print $2}'"
@@ -31,6 +33,7 @@ def getDNSDumpster(query):
         'Cookie': f'csfrtoken={csrftoken}', 'csrfmiddlewaretoken': csrftoken, 'targetip': query}
     result = sandbox.post_sandboxed(url, json.dumps(data), wget_args=f'--referrer-url={url}')
     return result
+
 
 def getVirustotal(query):
     url = f'https://www.virustotal.com/ui/domains/{query}/subdomains?relationships=resolutions&cursor=STMwCi4%3D&limit=40'
@@ -44,6 +47,7 @@ def getVirustotal(query):
                     doms.append(key['id'])
     return doms
 
+
 def getThreatcrowd(query):
     url = f'https://www.threatcrowd.org/searchApi/v2/domain/report/?domain={query}'
     result = sandbox.get_sandboxed(url)
@@ -54,6 +58,7 @@ def getThreatcrowd(query):
             doms.append(dom)
     return doms
 
+
 def getYahoo(query):
     total = ''
     for i in range(0, 120, 10):
@@ -61,6 +66,7 @@ def getYahoo(query):
         result = sandbox.get_sandboxed(url)
         total += result
     return total
+
 
 def theHarvesterSubFind(s_input):
     unresolved = []
@@ -82,6 +88,7 @@ def theHarvesterSubFind(s_input):
     resolved = aBulkRecordLookup(unique_list(cleared))
 
     return unique_list(resolved)
+
 
 class TheHarvesterPlugin(BaseDiscoveryPlugin):
     custom_discovery = True

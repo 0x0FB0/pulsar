@@ -19,6 +19,7 @@ from .modules import scanner_utils
 
 logger = get_task_logger(__name__)
 
+
 def sendNotification(email, asset, dom_ids, cve_ids):
     """Send email notification about new scan results."""
     sender = settings.EMAIL_HOST_USER
@@ -67,6 +68,7 @@ def sendNotification(email, asset, dom_ids, cve_ids):
     send_mail(subject, plain, sender,
               [email, ], html_message=body, fail_silently=False)
 
+
 @app.task
 def fetchNVD(arg):
     """Celery task wrapper for updateNVDFeed method."""
@@ -80,6 +82,7 @@ except OSError:
     pass
 
 fetchNVD.apply_async(args=[str(datetime.datetime.utcnow())])
+
 
 def search_in_file(work):
     """Search for CPE string occurence in NVD data feed."""
@@ -125,6 +128,7 @@ def setup_periodic_tasks(sender, **kwargs):
             task='pulsar.tasks.fetchNVD',
             args=json.dumps([str(datetime.datetime.utcnow()), ]),
         )
+
 
 @app.task(bind=True)
 def run_scan(self, r_task, qid):
@@ -289,6 +293,7 @@ def run_scan(self, r_task, qid):
 
     raise Ignore()
 
+
 @app.task(bind=True)
 def scan_wrapper(self, asset_id, user_id):
     """Small wrapper for celery periodic scan tasks."""
@@ -305,6 +310,7 @@ def scan_wrapper(self, asset_id, user_id):
         (str_task_id, str_queue_id),
         task_id=str_queue_id
     )
+
 
 def dispatch_scan(asset_id, user_id, policy):
     """Main method for periodic scan task dispatching."""

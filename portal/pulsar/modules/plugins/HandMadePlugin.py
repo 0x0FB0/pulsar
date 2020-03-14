@@ -7,6 +7,7 @@ from ..scanner_utils import HandMadeScannerPlugin, Sandbox
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 class HandMadePlugin(HandMadeScannerPlugin):
     plugin = 'Hand Made Plugin'
     short = 'Hand Made'

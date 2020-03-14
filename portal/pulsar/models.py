@@ -15,6 +15,7 @@ class CollaborationGroup(Group):
     Collaboration group wrapper (django.Group).
     """
 
+
 class PortalUser(AbstractUser):
     """
     User wrapper model extended with API token.
@@ -59,6 +60,7 @@ class PortalUser(AbstractUser):
             if created:
                 Token.objects.create(user=instance)
 
+
 class AssetInstance(models.Model):
     """
     Base model for storage of asset details.
@@ -83,6 +85,7 @@ class AssetInstance(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (str(self.name), str(self.domain))
+
 
 class ScanTask(models.Model):
     """
@@ -184,6 +187,7 @@ class IPv4AddrInstance(models.Model):
     def __str__(self):
         return str(self.ip)
 
+
 class ServiceInstance(models.Model):
     """
     Base model for storage of network service details.
@@ -203,12 +207,14 @@ class ServiceInstance(models.Model):
     def __str__(self):
         return self.proto + ':' + str(self.port)
 
+
 class CVEEntry(models.Model):
     """
     Small wrapper for CVE database storage needed in scanner_utils.
     """
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     data = models.TextField(blank=True)
+
 
 class HandMadePlugin(models.Model):
     """
@@ -224,6 +230,7 @@ class HandMadePlugin(models.Model):
     info = models.BooleanField(default=False)
     score = models.FloatField(default=5.1)
     confidence = models.FloatField(default=0.9)
+
 
 class VulnInstance(models.Model):
     """
@@ -269,6 +276,7 @@ class VulnInstance(models.Model):
 
         return hashlib.sha256(checksum.encode('utf-8'))
 
+
 class ScanPolicy(models.Model):
     """
     Base model for scan policy.
@@ -298,6 +306,7 @@ class ScanPolicy(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (self.name, self.id)
+
 
 class ScanInstance(models.Model):
     """

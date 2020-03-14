@@ -10,6 +10,7 @@ from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list,
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def ripe_resolve_ip(match_annd_ip):
     found = []
     match = match_annd_ip[0]
@@ -50,6 +51,7 @@ def revDNSFind(asset_name, asset_dom, nets, inscope):
     resolved = aBulkRecordLookup(unique_list(clean))
 
     return unique_list(resolved)
+
 
 class ReverseDNSPlugin(BaseDiscoveryPlugin):
     custom_discovery = True

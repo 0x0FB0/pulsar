@@ -7,6 +7,7 @@ from ..scanner_utils import BaseScannerPlugin, Sandbox
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def certCheck(dom, port):
     info_cmd = f'echo | openssl s_client -servername {dom} -connect {dom}:{port}' \
       ' 2>/dev/null | openssl x509 -noout -issuer -subject -dates -fingerprint'
@@ -21,6 +22,7 @@ def certCheck(dom, port):
         return result, check_out.strip('ERROR: ')
     else:
         return '', ''
+
 
 class TLSCertVerifyPlugin(BaseScannerPlugin):
     custom_scanner = True

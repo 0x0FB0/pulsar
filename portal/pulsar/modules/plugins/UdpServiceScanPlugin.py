@@ -8,6 +8,7 @@ from ..scanner_utils import ServiceDiscoveryPlugin, unique_list, Sandbox, scan_s
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def getServices(nmap_record):
     svcs = dict()
     ports = list()
@@ -42,6 +43,7 @@ def getServices(nmap_record):
                 }
             ]
     return svcs
+
 
 def udpScan(ip_list, unique_id, policy):
     discovered = list()
