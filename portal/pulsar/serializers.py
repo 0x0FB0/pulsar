@@ -175,7 +175,6 @@ class DomainDetailSerializer(serializers.ModelSerializer):
         except KeyError as e:
             raise serializers.ValidationError("An error occured during domain resolution: %s" % e)
 
-
     def get_vulns(self, obj):
         """Retrieve vulnerabilities associated with domain object."""
         dom = DomainInstance.objects.get(pk=obj.id)

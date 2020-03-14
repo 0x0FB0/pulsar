@@ -65,7 +65,6 @@ class Sandbox():
             time.sleep(13)
         c.close()
 
-
     def exec(self, cmd):
         c = self.connect()
         logger.info('EXECUTING: %s' % repr(cmd))
@@ -798,7 +797,6 @@ class BaseScannerPlugin():
     def run(self):
         pass
 
-
     def save(self):
         if self.found:
             dom = DomainInstance.objects.get(id=uuid.UUID(self.dom_id))
@@ -861,7 +859,6 @@ class ServiceScannerPlugin():
 
     def run(self):
         pass
-
 
     def save(self):
         logger.info("SAVING WEB: %s" % self.vulnerabilities)

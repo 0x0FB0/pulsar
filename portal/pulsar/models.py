@@ -46,7 +46,6 @@ class PortalUser(AbstractUser):
         Token.objects.get(user=self).delete()
         Token.objects.create(user=self)
 
-
     @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def create_auth_token(sender, instance=None, created=False, **kwargs):
         """
@@ -141,7 +140,6 @@ class ScanTask(models.Model):
         return str(self.id)
 
 
-
 class DomainInstance(models.Model):
     """
     Base model for storage of domain details.
@@ -163,7 +161,6 @@ class DomainInstance(models.Model):
 
     def __str__(self):
         return self.fqdn
-
 
 
 class IPv4AddrInstance(models.Model):

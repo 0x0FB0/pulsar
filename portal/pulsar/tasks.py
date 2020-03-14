@@ -258,7 +258,6 @@ def run_scan(self, r_task, qid):
                             progress += 1
                             pass
 
-
     self.update_state(state='PROGRESS',
                       meta={'current': 'Calculations',
                             'percent': int((float(progress) / counter) * 100)})
@@ -271,7 +270,6 @@ def run_scan(self, r_task, qid):
                       meta={'current': 'Notifications',
                             'percent': int((float(progress) / counter) * 100)})
     progress += 1
-
 
     # Check for result changes
     new_domains = scanner_utils.checkForNewDomains(task.id)

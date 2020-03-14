@@ -338,7 +338,6 @@ class Asset(mixins.CreateModelMixin,
         else:
             return RestResponse(status=status.HTTP_204_NO_CONTENT)
 
-
     @action(methods=['get'], detail=True, url_name='create_scan')
     def create_scan(self, request, pk=None):
         """
