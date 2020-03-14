@@ -1,5 +1,5 @@
 # Pulsar [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Pulsar%20project%20at%20github!&url=https://fooballz.github.io/pulsar)
-![0.9.8 Beta](https://img.shields.io/badge/pulsar-v0.9.8b-YELLOW) ![Django](https://img.shields.io/badge/django-3.0.3-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
+![0.9.8 Beta](https://img.shields.io/badge/version-v0.9.8b-YELLOW) ![Django](https://img.shields.io/badge/django-3.0.3-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
 
 
 ![Pulsar](/images/pulsar-banner.PNG)
@@ -89,6 +89,8 @@ git clone https://github.com/FooBallZ/pulsar
 PS> .\install.ps1
 ```
 4. Proceed with installer instructions
+> :warning: Make sure you store generated password before further installation steps. Administrator password can be changed in Django admin console at `/admin/`.
+
 5. Login to pulsar console at `https://localhost:8443/` with generated default credentials
 
 ### Linux
@@ -121,21 +123,19 @@ git clone https://github.com/FooBallZ/pulsar
 # ./install.sh
 ```
 4. Proceed with installer instructions
+> :warning: Make sure you store generated password before further installation steps. Administrator password can be changed in Django admin console at `/admin/`.
+
 5. Login to pulsar console at `https://localhost:8443/` with generated default credentials
 
 
-## Architecture
-Pulsar is a PaaS based on docker-compose file with pre-installed requirements.
-Provided architecture can be easliy scaled, converted and deployed to multiple common cloud environments.
-Web application server is based on services such as Nginx, Gunicorn and Django Rest Framework.
-
-
-### Docker container structure
-![Docker chart](/images/diagram.jpg)
-
-> *For more information see* `docker-compose.yml`
-
 ## Contribution
+
+Have an idea, or a tool you would like to integrate? Feel free to issue a pull request.
+
+Current issues and features can be found at [projects](https://github.com/FooBallZ/pulsar/projects) section.
+Feel free to pick something.
+
+Currently most help is needed with Vue.js frontend and Docker optimization.
 
 ### In case of issues
 - Feel free to issue a bug report.
@@ -169,6 +169,17 @@ Self describing API is available at `/pulsar/api/v1/` endpoint.
 
 Currently the only available documentation is available at `/admin/doc/` endpoint.
 > *Full development documentation will be available in future release.*
+
+## Architecture
+Pulsar is a PaaS based on docker-compose file with pre-installed requirements.
+Provided architecture can be easliy scaled, converted and deployed to multiple common cloud environments.
+Web application server is based on services such as Nginx, Gunicorn and Django Rest Framework.
+
+
+### Docker container structure
+![Docker chart](/images/diagram.jpg)
+
+> *For more information see* `docker-compose.yml`
 
 ## Legal
 > :warning: Althrough Pulsar is focusing on basic service fingerprinting, port scanning and banner grabbing might be illegal in some countries. Please make sure you are authorized to perform network scans on targeted resource before using this tool.
