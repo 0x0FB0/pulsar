@@ -56,7 +56,7 @@ def udpScan(ip_list, unique_id, policy):
     port_out = sandbox.exec_sandboxed(cmd1)
     ports = list()
     for line in port_out.split("\n"):
-          ports.append(line.split('/')[0])
+        ports.append(line.split('/')[0])
     cmd2 = f'nmap -iL {ip_file} --host-timeout {scan_settings["nmap_host_timeout"]}  -oX {out_file} ' + \
            f'-Pn -n -p {",".join(unique_list(ports))} -vv -sU -sV --open '
     debug = sandbox.exec_sandboxed(cmd2)
