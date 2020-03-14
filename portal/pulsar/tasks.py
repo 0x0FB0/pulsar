@@ -77,7 +77,7 @@ def fetchNVD(arg):
 
 
 try:
-    os.remove('/portal/nvd/feeds/mutex') # only one update at time
+    os.remove('/portal/nvd/feeds/mutex')  # only one update at time
 except OSError:
     pass
 
@@ -134,7 +134,7 @@ def setup_periodic_tasks(sender, **kwargs):
 def run_scan(self, r_task, qid):
     """Main scanner celery task method."""
 
-    while os.path.exists('/portal/nvd/feeds/mutex'): # Wait for NVD feed download
+    while os.path.exists('/portal/nvd/feeds/mutex'):  # Wait for NVD feed download
         time.sleep(1)
 
     # Retrieve current scan task

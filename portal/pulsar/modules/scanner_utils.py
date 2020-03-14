@@ -21,8 +21,8 @@ from ..tasks import search_in_file
 logger = get_task_logger(__name__)
 
 scan_settings = {
-    'heavy_processes': ['amass', 'zdns'], # consider Nmap
-    'cmd_timeout': '2h', # linux timeout syntax i.e. 10s 10m 10h 10d
+    'heavy_processes': ['amass', 'zdns'],  # consider Nmap
+    'cmd_timeout': '2h',  # linux timeout syntax i.e. 10s 10m 10h 10d
     'nmap_host_timeout': '10m',
     'amass_timeout': '20',
     'amass_flags': '-ipv4 -noalts ',
