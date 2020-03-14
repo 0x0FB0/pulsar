@@ -31,8 +31,8 @@ def getCPEs(dom, port, ssl, unique_id):
             for record in data:
                 if 'plugins' in record:
                     cpes.extend(
-                        [re.sub(r'[^A-Za-z0-9:\-_]+', '', cpe).replace('-', ':').lower() + \
-                         ':' + '.'.join(record['plugins'][cpe]['version'][0].split('-')[0].split('.')[:3]) \
+                        [re.sub(r'[^A-Za-z0-9:\-_]+', '', cpe).replace('-', ':').lower() +
+                         ':' + '.'.join(record['plugins'][cpe]['version'][0].split('-')[0].split('.')[:3])
                          for cpe in record['plugins'].keys()
                             if 'version' in record['plugins'][cpe] and re.match(r'(\d+|\.+)',
                                 record['plugins'][cpe]['version'][0])]

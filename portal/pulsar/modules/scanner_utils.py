@@ -79,7 +79,7 @@ class Sandbox():
                     heavy = True
             b64cmd = base64.b64encode(cmd.encode('utf-8'))
             logger.info('EXEC')
-            result = c.run(f'echo {b64cmd.decode("utf-8")}| base64 -d | '\
+            result = c.run(f'echo {b64cmd.decode("utf-8")}| base64 -d | '
                     f' timeout {scan_settings["cmd_timeout"]} bash ', pty=True)
             if heavy:
                 logger.info('SANDBOX FREE NOW')
