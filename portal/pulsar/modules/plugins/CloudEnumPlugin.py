@@ -20,7 +20,7 @@ class CloudEnumPlugin(BaseScannerPlugin):
 
     def run(self):
         logger.info('SEARCHING CLOUD RESOURCES FOR: %s' % self.fqdn)
-        s_mutations = list()
+        s_mutations = []
         cached = False
         patterns = ['OPEN S3 BUCKET', 'OPEN AZURE CONTAINER', 'OPEN GOOGLE BUCKET']
         asset_name = self.asset_name.split(' ')[0].lower()

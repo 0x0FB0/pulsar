@@ -278,7 +278,7 @@ def updateNVDFeed():
                     "zip": "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-recent.json.zip"
                 }
             }
-        downloaded = list()
+        downloaded = []
         try:
             for feed in feeds.keys():
                 meta_file = feeds[feed]['meta'].split('/')[-1]
@@ -335,7 +335,7 @@ def NVDSearchForCPE(cpe):
     cache = '/portal/nvd/cache/'
     start = time.time()
     search_pool = pool.Pool(2)
-    cve_list = list()
+    cve_list = []
     clean = cpe.replace('cpe:', '').replace('/', '') + ':'
     if len(clean.split(':')) > 2 and re.match(r'.*:([\d+\.+]+)', clean):
         print("got correct cpe with version: %s" % clean)
@@ -361,7 +361,7 @@ def NVDSearchForCPE(cpe):
                 logger.info('NOT FOUND IN CACHE, SEARCHING..')
                 fdir = '/portal/nvd/feeds/'
                 dfeeds = [f for f in os.listdir(fdir) if '.json' in f]
-                cve_list = list()
+                cve_list = []
                 worker_data = []
                 logger.info('SEARCHING %s...' % clean)
                 for feed in dfeeds:
@@ -525,7 +525,7 @@ def checkForNewVuln(task_id):
         .count()
     if prev_tasks > 0:
         asset = task.asset
-        prev_hashes = list()
+        prev_hashes = []
         prev_vulns = VulnInstance.objects.filter(asset=asset, false_positive=False, info=False)\
             .exclude(last_task=task)
         logger.info('PREV ITEMS: %s' % prev_vulns)
@@ -630,9 +630,9 @@ class BaseDiscoveryPlugin():
     short = ''
     ptype = ''
     confidence = 0.9
-    discovered = list()
-    history = list()
-    nets = list()
+    discovered = []
+    history = []
+    nets = []
     ip = ''
     asset_name = ''
     asset_dom = ''
@@ -642,7 +642,7 @@ class BaseDiscoveryPlugin():
     task_id = ''
 
     def create(self, asset_id, task_id):
-        self.discovered = list()
+        self.discovered = []
         self.asset_id = asset_id
         self.task_id = task_id
         self.history = [d['fqdn'] for d in DomainInstance.objects.filter(asset=self.asset_id).values('fqdn')]
@@ -708,7 +708,7 @@ class ServiceDiscoveryPlugin():
     name = 'basic discovery'
     short = ''
     ptype = ''
-    history = list()
+    history = []
     domain_list = []
     ip_list = []
     services = {}
@@ -779,8 +779,8 @@ class BaseScannerPlugin():
     policy = {}
     asset_name = ''
     asset_dom = ''
-    scanned = list()
-    domains = list()
+    scanned = []
+    domains = []
     dom_id = ''
     task_id = ''
     ip_id = ''
@@ -843,8 +843,8 @@ class ServiceScannerPlugin():
     services = {}
     policy = {}
     vulnerabilities = []
-    scanned = list()
-    domains = list()
+    scanned = []
+    domains = []
     dom_id = ''
     task_id = ''
     ip_id = ''
@@ -852,7 +852,7 @@ class ServiceScannerPlugin():
 
     def create(self, dom_id, ip_id, asset_id, task_id):
         from ..serializers import ServiceSerializer
-        self.vulnerabilities = list()
+        self.vulnerabilities = []
         self.dom_id = dom_id
         self.ip_id = ip_id
         self.asset_id = asset_id
@@ -889,7 +889,7 @@ class HandMadeScannerPlugin(ServiceScannerPlugin):
 
     def create(self, dom_id, ip_id, asset_id, task_id, plugin_id):
         from ..serializers import ServiceSerializer
-        self.vulnerabilities = list()
+        self.vulnerabilities = []
         self.dom_id = dom_id
         self.ip_id = ip_id
         self.asset_id = asset_id
