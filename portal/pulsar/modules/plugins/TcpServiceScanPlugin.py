@@ -88,4 +88,4 @@ class TcpServiceScanPlugin(ServiceDiscoveryPlugin):
                 self.services.update(services)
             except KeyError:
                 pass
-        #self.services
+        # self.services
