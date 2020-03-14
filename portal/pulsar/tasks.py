@@ -234,7 +234,6 @@ def run_scan(self, r_task, qid):
                         except Exception as e:
                             logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                             progress += 1
-                            pass
     if policy.handmade:
         # Start custom class plugins
         for p in HandMadePlugin.objects.all():
@@ -260,7 +259,6 @@ def run_scan(self, r_task, qid):
                         except Exception as e:
                             logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                             progress += 1
-                            pass
 
     self.update_state(state='PROGRESS',
                       meta={'current': 'Calculations',
