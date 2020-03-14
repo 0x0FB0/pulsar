@@ -70,7 +70,7 @@ def tcpScan(ip_list, unique_id, policy):
             for host in all_data['nmaprun']['host']:
                 discovered.append(host)
         elif isinstance(all_data['nmaprun']['host'], dict):
-                discovered.append(all_data['nmaprun']['host'])
+            discovered.append(all_data['nmaprun']['host'])
     return discovered
 
 

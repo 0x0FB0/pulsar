@@ -21,10 +21,10 @@ def ripe_resolve_ip(match_annd_ip):
         jresponse = json.loads(result)
         if 'reverse_nodes' in jresponse['data']:
             for key in jresponse['data']['reverse_nodes'].keys():
-                    for dom in jresponse['data']['reverse_nodes'][key]:
-                        logger.info("REVERSE DNS LOOKUP RESULT: %s (searching for %s)" % (dom, match))
-                        if match in dom:
-                            found.append(dom)
+                for dom in jresponse['data']['reverse_nodes'][key]:
+                    logger.info("REVERSE DNS LOOKUP RESULT: %s (searching for %s)" % (dom, match))
+                    if match in dom:
+                        found.append(dom)
             return found
         else:
             return []

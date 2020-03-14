@@ -67,9 +67,9 @@ class BaseViewSet(viewsets.GenericViewSet):
             else:
                 return self.serializer_class.Meta.model.objects.filter(owner=self.request.user)
         elif self.model_field_exists(proto_model, 'domain'):
-                return self.serializer_class.Meta.model.objects.filter(domain__in=doms)
+            return self.serializer_class.Meta.model.objects.filter(domain__in=doms)
         elif self.model_field_exists(proto_model, 'ip'):
-                return self.serializer_class.Meta.model.objects.filter(ip__in=ips)
+            return self.serializer_class.Meta.model.objects.filter(ip__in=ips)
         else:
             return self.serializer_class.Meta.model.objects.all()
 
