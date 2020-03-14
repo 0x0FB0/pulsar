@@ -23,7 +23,7 @@ def getCPEs(dom, port, ssl, unique_id):
     while result in (None, ''):
         sandbox.exec_sandboxed(cmd)
         result = sandbox.retrieve_sandboxed(out_file)
-    cpes = list()
+    cpes = []
     try:
         contents = result.replace('\n', '')
         sandbox.remove_sandboxed(out_file)

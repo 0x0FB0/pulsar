@@ -10,8 +10,8 @@ sandbox = Sandbox()
 
 
 def getServices(nmap_record):
-    svcs = dict()
-    ports = list()
+    svcs = {}
+    ports = []
     addr = nmap_record['address']['@addr']
     if isinstance(nmap_record['ports']['port'], list):
         for port in nmap_record['ports']['port']:
@@ -46,7 +46,7 @@ def getServices(nmap_record):
 
 
 def udpScan(ip_list, unique_id, policy):
-    discovered = list()
+    discovered = []
     ip_file = f'/opt/scan_data/nmap-{unique_id}-udp-ips.list'
     out_file = f'/opt/scan_data/nmap-{unique_id}-udp-out.xml'
 
@@ -56,7 +56,7 @@ def udpScan(ip_list, unique_id, policy):
           f'{scan_settings["nmap_udp_flags"]} --top-ports {policy.top_ports} --open -iL {ip_file} | grep "udp open"'
 
     port_out = sandbox.exec_sandboxed(cmd1)
-    ports = list()
+    ports = []
     for line in port_out.split("\n"):
         ports.append(line.split('/')[0])
     cmd2 = f'nmap -iL {ip_file} --host-timeout {scan_settings["nmap_host_timeout"]}  -oX {out_file} ' + \

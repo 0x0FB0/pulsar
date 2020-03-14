@@ -50,8 +50,8 @@ def aMassSubFind(s_input, unique_id, active, history):
             counter += 1
             time.sleep(1)
             if counter == 360:
-                return list()
-    data_list = list()
+                return []
+    data_list = []
     try:
         for line in results.split("\n"):
             try:
@@ -61,7 +61,7 @@ def aMassSubFind(s_input, unique_id, active, history):
                 logger.info("AMASS PARSE ERROR: %s\n%s" % (repr(e), line))
     except AttributeError as e:
         logger.info("AMASS PARSE ERROR: %s" % repr(e))
-    alldoms_list = list()
+    alldoms_list = []
     for data in data_list:
         alldoms_list.append(data['name'])
     logger.info("FRESH DOMAINS: %s" % repr(alldoms_list))

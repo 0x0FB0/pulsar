@@ -10,8 +10,8 @@ sandbox = Sandbox()
 
 
 def getServices(nmap_record):
-    svcs = dict()
-    ports = list()
+    svcs = {}
+    ports = []
     addr = nmap_record['address']['@addr']
     if isinstance(nmap_record['ports']['port'], list):
         for port in nmap_record['ports']['port']:
@@ -46,7 +46,7 @@ def getServices(nmap_record):
 
 
 def tcpScan(ip_list, unique_id, policy):
-    discovered = list()
+    discovered = []
     ip_file = f'/opt/scan_data/nmap-{unique_id}-tcp-ips.list'
     out_file = f'/opt/scan_data/nmap-{unique_id}-tcp-out.xml'
 

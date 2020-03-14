@@ -26,7 +26,7 @@ def sendNotification(email, asset, dom_ids, cve_ids):
     cves = [v['name'] for v in VulnInstance.objects.filter(id__in=cve_ids).values('name')]
     doms = [d['fqdn'] for d in DomainInstance.objects.filter(id__in=dom_ids).values('fqdn')]
 
-    changes = list()
+    changes = []
     if len(doms) == 1:
         changes.append("domain")
     elif len(doms) > 1:
@@ -88,7 +88,7 @@ def search_in_file(work):
     """Search for CPE string occurence in NVD data feed."""
     fname = work[0]
     cpe = work[1]
-    cve_list = list()
+    cve_list = []
     with open(fname, 'r') as f:
         feed_data = json.loads(f.read())
     for cve in feed_data['CVE_Items']:
@@ -166,7 +166,7 @@ def run_scan(self, r_task, qid):
                            VulnInstance.objects.filter(last_task=last_task, false_positive=True)]
 
     # Prepare plugin counter for progress measure
-    runned = list()
+    runned = []
     progress = 1
     plugins = plgs.__all__
     counter = 3
