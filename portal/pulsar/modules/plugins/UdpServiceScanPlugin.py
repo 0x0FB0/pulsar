@@ -66,7 +66,6 @@ def udpScan(ip_list, unique_id, policy):
     except Exception as e:
         logger.info("Nmap XML parse error.")
         all_data = {"nmaprun":""}
-        pass
 
     sandbox.remove_sandboxed(out_file)
     sandbox.remove_sandboxed(ip_file)

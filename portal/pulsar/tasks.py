@@ -200,7 +200,6 @@ def run_scan(self, r_task, qid):
             except Exception as e:
                 logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                 progress += 1
-                pass
             if not policy.recursive:
                 break
 

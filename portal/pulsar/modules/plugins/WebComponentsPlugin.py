@@ -71,7 +71,6 @@ class WebComponentsPlugin(ServiceScannerPlugin):
                             vports[str(svc['port'])] = cpes
             except KeyError as e:
                 logger.info("CPE ERROR: %s" % e)
-                pass
         for port in vports.keys():
             for cpe in vports[port]:
                 updateCPE(str(svc['port']), self.fqdn, self.task_id, cpe)
@@ -126,6 +125,3 @@ class WebComponentsPlugin(ServiceScannerPlugin):
                             })
                     except KeyError as e:
                         logger.info("GOT ERROR!: %s in %s" % (e, repr(cve)))
-                        pass
-
-

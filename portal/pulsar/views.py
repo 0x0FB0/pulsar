@@ -79,7 +79,6 @@ class LRUDViewSet(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     BaseViewSet):
     """List, Retrieve, Update, Destroy views."""
-    pass
 
 class LRCUDViewSet(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
@@ -87,26 +86,22 @@ class LRCUDViewSet(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     BaseViewSet):
     """List, Create, Destroy views."""
-    pass
 
 class LRUViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  mixins.UpdateModelMixin,
                  BaseViewSet):
     """List, Retrieve, Update views."""
-    pass
 
 class LRDViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  mixins.DestroyModelMixin,
                  BaseViewSet):
     """List, Retrieve, Destroy views."""
-    pass
 
 class RViewSet(mixins.ListModelMixin,
                  BaseViewSet):
     """List view."""
-    pass
 
 def get_markdown(asset):
     """Markdown report generation helper method."""

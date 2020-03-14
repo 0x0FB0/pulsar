@@ -31,7 +31,6 @@ class ServiceVulnScanPlugin(ServiceScannerPlugin):
                             vports[str(svc['port'])] = cpes
             except KeyError as e:
                 logger.info("CPE ERROR: %s" % e)
-                pass
         logger.info("GOT CPES: %s" % repr(vports))
         for port in vports.keys():
             for cpe in vports[port]:
@@ -87,6 +86,3 @@ class ServiceVulnScanPlugin(ServiceScannerPlugin):
                             })
                     except KeyError as e:
                         logger.info("GOT ERROR: %s" % e)
-                        pass
-
-

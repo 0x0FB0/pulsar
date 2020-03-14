@@ -57,10 +57,8 @@ def aMassSubFind(s_input, unique_id, active, history):
                 data_list.append(data)
             except ValueError as e:
                 logger.info("AMASS PARSE ERROR: %s\n%s" % (repr(e), line))
-                pass
     except AttributeError as e:
         logger.info("AMASS PARSE ERROR: %s" % repr(e))
-        pass
     alldoms_list = list()
     for data in data_list:
         alldoms_list.append(data['name'])

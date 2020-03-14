@@ -373,7 +373,6 @@ def NVDSearchForCPE(cpe):
                 return cve_list
         except (OSError, json.JSONDecodeError) as e:
             logger.info("CVE PARSE ERROR: %s, cves: %s" % (e, cve_list))
-            pass
     return []
 
 
@@ -387,7 +386,6 @@ def getCountryData(ip):
             except Exception as e:
                 logger.info("CONNECTION ERROR: %s" % repr(e))
                 time.sleep(2)
-                pass
         jdata = json.loads(data.content)
         answer = jdata['data']
         logger.info('GETTING COUNTRY DATA: %s ' % repr(answer))

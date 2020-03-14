@@ -14,7 +14,6 @@ class CollaborationGroup(Group):
     """
     Collaboration group wrapper (django.Group).
     """
-    pass
 
 class PortalUser(AbstractUser):
     """
