@@ -136,7 +136,7 @@ def run_scan(self, r_task, qid):
     # Retrieve current scan task
     logger.info("STARTING SCAN TASK ID: %s QUEUE: %s" % (r_task, qid))
     task = ScanTask.objects.get(id=uuid.UUID(r_task))
-    task.state = 'STARTED';
+    task.state = 'STARTED'
     task.exec_date = timezone.now()
     task.save()
 
