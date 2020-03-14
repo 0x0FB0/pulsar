@@ -53,7 +53,7 @@ class BaseViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         """Filter object ownership by ownership and collaboration groups."""
         user = self.request.user
-        assets = AssetInstance.objects.filter(Q(owner=user)|Q(collaborations__in=user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=user) | Q(collaborations__in=user.groups.all()))
         doms = DomainInstance.objects.filter(asset__in=assets)
         ips = IPv4AddrInstance.objects.filter(domain__in=doms)
         proto_model = self.serializer_class.Meta.model
@@ -304,7 +304,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Retrieve asset instance and all related database objects details.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         serializer = AssetDetailSerializer(asset, many=True, context={'request': request})
         return RestResponse(serializer.data)
 
@@ -345,7 +345,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Create scan for corresponding asset.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         new_task = ScanTask.objects.create(asset=asset)
         last_scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
@@ -367,7 +367,7 @@ class Asset(mixins.CreateModelMixin,
         """
         self.filter_backends = []
         self.serializer_class = ScanTaskSerializer
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         tasks = ScanTask.objects.filter(asset=str(asset.id))
         serializer = ScanTaskSerializer(tasks, many=True, context={'request': request})
@@ -379,7 +379,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Remove related periodic tasks.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         pt = PeriodicTask.objects.filter(name__contains='ps-'+str(asset.id))
         pt.update(enabled=False)
@@ -392,7 +392,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Recalculate score for asset and all related objects.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         print("[i] calc: FOR %s" % asset.name)
         scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
@@ -457,7 +457,7 @@ class Task(LRDViewSet):
         get:
         Launch scan task.
         """
-        assets = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         task = ScanTask.objects.filter(asset__in=assets).get(id=pk)
         AssetInstance.objects.filter(id=task.asset.id).update(current_score=-1.0)
         scan = ScanInstance.objects.get(last_task=task)
@@ -478,7 +478,7 @@ class Task(LRDViewSet):
         get:
         List scan tasks in progress.
         """
-        assets = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         tasks = ScanTask.objects.filter(asset__in=assets, state='STARTED')
         serializer = ScanTaskSerializer(tasks, many=True, context={'request': request})
         return RestResponse(serializer.data)
