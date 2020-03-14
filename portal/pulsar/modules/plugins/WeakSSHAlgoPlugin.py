@@ -7,6 +7,7 @@ from ..scanner_utils import BaseScannerPlugin, Sandbox
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 class WeakSSHAlgoPlugin(BaseScannerPlugin):
     custom_scanner = True
     plugin = 'Weak SSH Algorithms Plugin'

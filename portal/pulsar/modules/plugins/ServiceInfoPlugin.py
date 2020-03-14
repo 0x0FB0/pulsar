@@ -4,6 +4,7 @@ from ..scanner_utils import BaseScannerPlugin, unique_list
 
 logger = get_task_logger(__name__)
 
+
 class ServiceInfoPlugin(BaseScannerPlugin):
     custom_scanner = True
     plugin = 'Service Discovery Plugin'
@@ -32,4 +33,3 @@ class ServiceInfoPlugin(BaseScannerPlugin):
                     details += '\n'.join(unique_list(cpes))
             self.description = f'Discovered {str(len(unique_list(ports)))} unique services.'
             self.details = details
-

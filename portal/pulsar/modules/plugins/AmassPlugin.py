@@ -12,12 +12,14 @@ from ..scanner_utils import BaseDiscoveryPlugin, scan_settings, Sandbox
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def isWildcardDom(dom):
     try:
         socket.gethostbyname('thisshould-never-3xist10767.'+dom)
         return True
     except socket.gaierror:
         return False
+
 
 def aMassSubFind(s_input, unique_id, active, history):
     doms = []
@@ -57,10 +59,8 @@ def aMassSubFind(s_input, unique_id, active, history):
                 data_list.append(data)
             except ValueError as e:
                 logger.info("AMASS PARSE ERROR: %s\n%s" % (repr(e), line))
-                pass
     except AttributeError as e:
         logger.info("AMASS PARSE ERROR: %s" % repr(e))
-        pass
     alldoms_list = list()
     for data in data_list:
         alldoms_list.append(data['name'])
@@ -81,12 +81,14 @@ def aMassSubFind(s_input, unique_id, active, history):
         sandbox.remove_sandboxed(outfile)
     return doms
 
+
 class AmassPlugin(BaseDiscoveryPlugin):
     custom_discovery = True
     name = 'OWASP Amass Subdomain Discovery'
     short = 'Amass Discovery'
     reference = 'https://github.com/OWASP/Amass/'
     confidence = 1.0
+
     def run(self):
         logger.info("GOT POLICY: %s" % repr(self.policy))
         doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active, self.history)

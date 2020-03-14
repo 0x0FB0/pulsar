@@ -64,6 +64,7 @@ class ConfidenceField(serializers.FloatField):
         except ValueError:
             raise serializers.ValidationError("Value of incorrect type (float expected).")
 
+
 class PortalUserSerializer(serializers.ModelSerializer):
     """Representation of pulsar application user."""
     id = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -99,6 +100,7 @@ class ScanTaskSerializer(serializers.ModelSerializer):
         """Get current asynchronous task status and progress."""
         return obj.get_queue_progress()
 
+
 class ServiceSerializer(serializers.ModelSerializer):
     """Representation of network service entry."""
 
@@ -129,6 +131,7 @@ class AssetPerUserSerializer(serializers.HyperlinkedRelatedField):
     def get_queryset(self):
         user = PortalUser.objects.get(id=self.context['request'].user.id)
         return AssetInstance.objects.filter(Q(owner=user) | Q(collaborations__in=user.groups.all()))
+
 
 class DomainDetailSerializer(serializers.ModelSerializer):
     """Representation of domain entry, detailed view."""
@@ -175,7 +178,6 @@ class DomainDetailSerializer(serializers.ModelSerializer):
         except KeyError as e:
             raise serializers.ValidationError("An error occured during domain resolution: %s" % e)
 
-
     def get_vulns(self, obj):
         """Retrieve vulnerabilities associated with domain object."""
         dom = DomainInstance.objects.get(pk=obj.id)
@@ -202,6 +204,7 @@ class DomainInstanceSerializer(DomainDetailSerializer):
         fields = ['id', 'fqdn', 'ips', 'plugin', 'country',
                   'false_positive', 'reference', 'total_score',
                   'confidence', 'found_date', 'last_task', 'asset']
+
 
 class IPv4AddressSerializer(serializers.ModelSerializer):
     """Representation of IPv4 entry."""

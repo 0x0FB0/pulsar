@@ -22,6 +22,7 @@ from django.utils import timezone
 
 logger = get_task_logger(__name__)
 
+
 class IndexView(LoginRequiredMixin, generic.TemplateView):
     """Generic view for Vue.js template."""
     template_name = 'pulsar_templates/index.html'
@@ -30,9 +31,11 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
     def get_queryset(self):
         return
 
+
 class PageNotFoundView(generic.TemplateView):
     """Generic view for 404 template."""
     template_name = 'pulsar_templates/404.html'
+
 
 class BaseViewSet(viewsets.GenericViewSet):
     """Generic view set with strong user and group access filtering."""
@@ -53,7 +56,7 @@ class BaseViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         """Filter object ownership by ownership and collaboration groups."""
         user = self.request.user
-        assets = AssetInstance.objects.filter(Q(owner=user)|Q(collaborations__in=user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=user) | Q(collaborations__in=user.groups.all()))
         doms = DomainInstance.objects.filter(asset__in=assets)
         ips = IPv4AddrInstance.objects.filter(domain__in=doms)
         proto_model = self.serializer_class.Meta.model
@@ -63,15 +66,16 @@ class BaseViewSet(viewsets.GenericViewSet):
         elif self.model_field_exists(proto_model, 'owner'):
             if self.model_field_exists(proto_model, 'collaborations'):
                 return self.serializer_class.Meta.model.objects.filter(Q(owner=user)
-                                                                       |Q(collaborations__in=user.groups.all()))
+                                                                       |Q(collaborations__in = user.groups.all()))
             else:
                 return self.serializer_class.Meta.model.objects.filter(owner=self.request.user)
         elif self.model_field_exists(proto_model, 'domain'):
-                return self.serializer_class.Meta.model.objects.filter(domain__in=doms)
+            return self.serializer_class.Meta.model.objects.filter(domain__in=doms)
         elif self.model_field_exists(proto_model, 'ip'):
-                return self.serializer_class.Meta.model.objects.filter(ip__in=ips)
+            return self.serializer_class.Meta.model.objects.filter(ip__in=ips)
         else:
             return self.serializer_class.Meta.model.objects.all()
+
 
 class LRUDViewSet(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
@@ -79,7 +83,7 @@ class LRUDViewSet(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     BaseViewSet):
     """List, Retrieve, Update, Destroy views."""
-    pass
+
 
 class LRCUDViewSet(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
@@ -87,26 +91,26 @@ class LRCUDViewSet(mixins.ListModelMixin,
                     mixins.DestroyModelMixin,
                     BaseViewSet):
     """List, Create, Destroy views."""
-    pass
+
 
 class LRUViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  mixins.UpdateModelMixin,
                  BaseViewSet):
     """List, Retrieve, Update views."""
-    pass
+
 
 class LRDViewSet(mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  mixins.DestroyModelMixin,
                  BaseViewSet):
     """List, Retrieve, Destroy views."""
-    pass
+
 
 class RViewSet(mixins.ListModelMixin,
                  BaseViewSet):
     """List view."""
-    pass
+
 
 def get_markdown(asset):
     """Markdown report generation helper method."""
@@ -176,6 +180,7 @@ def get_markdown(asset):
     else:
         return False
 
+
 def get_pdf(md):
     """PDF generation helper method."""
     fname = str(uuid.uuid4())
@@ -216,6 +221,7 @@ class Statistics(viewsets.GenericViewSet):
                              "Vulnerabilities": vulns.count()
                              })
 
+
 class User(viewsets.GenericViewSet):
     """
     Generic pulsar portal user view.
@@ -225,6 +231,7 @@ class User(viewsets.GenericViewSet):
     """
     queryset = PortalUser.objects.all()
     serializer_class = PortalUserSerializer
+
     def list(self, request, *args, **kwargs):
         """
         get:
@@ -233,6 +240,7 @@ class User(viewsets.GenericViewSet):
         user = PortalUser.objects.get(id=request.user.id)
         serializer = PortalUserSerializer(user, many=False, context={'request': request})
         return RestResponse(serializer.data)
+
 
 class Asset(mixins.CreateModelMixin,
             LRUDViewSet):
@@ -309,7 +317,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Retrieve asset instance and all related database objects details.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         serializer = AssetDetailSerializer(asset, many=True, context={'request': request})
         return RestResponse(serializer.data)
 
@@ -343,14 +351,13 @@ class Asset(mixins.CreateModelMixin,
         else:
             return RestResponse(status=status.HTTP_204_NO_CONTENT)
 
-
     @action(methods=['get'], detail=True, url_name='create_scan')
     def create_scan(self, request, pk=None):
         """
         get:
         Create scan for corresponding asset.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         new_task = ScanTask.objects.create(asset=asset)
         last_scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
@@ -372,7 +379,7 @@ class Asset(mixins.CreateModelMixin,
         """
         self.filter_backends = []
         self.serializer_class = ScanTaskSerializer
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         tasks = ScanTask.objects.filter(asset=str(asset.id))
         serializer = ScanTaskSerializer(tasks, many=True, context={'request': request})
@@ -384,7 +391,7 @@ class Asset(mixins.CreateModelMixin,
         get:
         Remove related periodic tasks.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         pt = PeriodicTask.objects.filter(name__contains='ps-'+str(asset.id))
         pt.update(enabled=False)
@@ -397,12 +404,13 @@ class Asset(mixins.CreateModelMixin,
         get:
         Recalculate score for asset and all related objects.
         """
-        asset = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))\
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
         print("[i] calc: FOR %s" % asset.name)
         scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
         total_score = calc_asset_by_task(str(scan.last_task.id))
         return RestResponse({"success": True, "asset_score": total_score})
+
 
 class Task(LRDViewSet):
     """
@@ -462,11 +470,11 @@ class Task(LRDViewSet):
         get:
         Launch scan task.
         """
-        assets = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         task = ScanTask.objects.filter(asset__in=assets).get(id=pk)
         AssetInstance.objects.filter(id=task.asset.id).update(current_score=-1.0)
         scan = ScanInstance.objects.get(last_task=task)
-        task.exec_date=timezone.now()
+        task.exec_date = timezone.now()
         task.save()
         str_task_id = str(task.id)
         str_queue_id = str(task.queue_id)
@@ -483,7 +491,7 @@ class Task(LRDViewSet):
         get:
         List scan tasks in progress.
         """
-        assets = AssetInstance.objects.filter(Q(owner=request.user)|Q(collaborations__in=request.user.groups.all()))
+        assets = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))
         tasks = ScanTask.objects.filter(asset__in=assets, state='STARTED')
         serializer = ScanTaskSerializer(tasks, many=True, context={'request': request})
         return RestResponse(serializer.data)
@@ -549,12 +557,12 @@ class Domain(LRCUDViewSet):
         """
         lasttasks = []
         for asset in AssetInstance.objects.filter(Q(owner=request.user)
-                                                  |Q(collaborations__in=request.user.groups.all())):
+                                                  |Q(collaborations__in = request.user.groups.all())):
             si = ScanInstance.objects.filter(asset=asset,
                                              status='SCANNED')\
                 .order_by('-scanned_date')\
                 .first()
-            if (si):
+            if si:
                 try:
                     id = si.last_task.id
                     lasttasks.append(id)
@@ -564,6 +572,7 @@ class Domain(LRCUDViewSet):
 
         serializer = DomainInstanceSerializer(domains, many=True, context={'request': request})
         return RestResponse(serializer.data)
+
 
 class IPv4Addr(LRUViewSet):
     """
@@ -578,6 +587,7 @@ class IPv4Addr(LRUViewSet):
     queryset = IPv4AddrInstance.objects.all()
     serializer_class = IPv4AddressSerializer
 
+
 class Vulnerability(LRUViewSet):
     """
     Vulnerability instance base view.
@@ -590,6 +600,7 @@ class Vulnerability(LRUViewSet):
     ordering_fields = ['score', 'confidence', 'found_date']
     queryset = VulnInstance.objects.all()
     serializer_class = VulnInstanceSerializer
+
 
 class Scan(LRUDViewSet):
     """
@@ -693,4 +704,3 @@ class Scan(LRUDViewSet):
         )
         serializer = ScanTaskSerializer(task, many=False, context={'request': request})
         return RestResponse(serializer.data)
-

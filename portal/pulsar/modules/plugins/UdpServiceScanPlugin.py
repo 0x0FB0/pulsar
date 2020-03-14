@@ -8,6 +8,7 @@ from ..scanner_utils import ServiceDiscoveryPlugin, unique_list, Sandbox, scan_s
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def getServices(nmap_record):
     svcs = dict()
     ports = list()
@@ -43,6 +44,7 @@ def getServices(nmap_record):
             ]
     return svcs
 
+
 def udpScan(ip_list, unique_id, policy):
     discovered = list()
     ip_file = f'/opt/scan_data/nmap-{unique_id}-udp-ips.list'
@@ -56,7 +58,7 @@ def udpScan(ip_list, unique_id, policy):
     port_out = sandbox.exec_sandboxed(cmd1)
     ports = list()
     for line in port_out.split("\n"):
-          ports.append(line.split('/')[0])
+        ports.append(line.split('/')[0])
     cmd2 = f'nmap -iL {ip_file} --host-timeout {scan_settings["nmap_host_timeout"]}  -oX {out_file} ' + \
            f'-Pn -n -p {",".join(unique_list(ports))} -vv -sU -sV --open '
     debug = sandbox.exec_sandboxed(cmd2)
@@ -65,8 +67,7 @@ def udpScan(ip_list, unique_id, policy):
         all_data = xmltodict.parse(result)
     except Exception as e:
         logger.info("Nmap XML parse error.")
-        all_data = {"nmaprun":""}
-        pass
+        all_data = {"nmaprun": ""}
 
     sandbox.remove_sandboxed(out_file)
     sandbox.remove_sandboxed(ip_file)

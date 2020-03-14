@@ -177,7 +177,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-#EMAIL_BACKEND SETTINGS
+# EMAIL_BACKEND SETTINGS
 EMAIL_HOST_USER = 'open.pulsar@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.acme.inc'

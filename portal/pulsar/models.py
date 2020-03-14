@@ -14,7 +14,7 @@ class CollaborationGroup(Group):
     """
     Collaboration group wrapper (django.Group).
     """
-    pass
+
 
 class PortalUser(AbstractUser):
     """
@@ -30,7 +30,7 @@ class PortalUser(AbstractUser):
         :return:
         """
         return list(PortalUser.objects.filter(id=self.id).values(
-            'id','first_name','last_name', 'email', 'date_joined', 'last_login'))[0].items()
+            'id', 'first_name', 'last_name', 'email', 'date_joined', 'last_login'))[0].items()
 
     def get_token(self):
         """
@@ -47,7 +47,6 @@ class PortalUser(AbstractUser):
         Token.objects.get(user=self).delete()
         Token.objects.create(user=self)
 
-
     @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def create_auth_token(sender, instance=None, created=False, **kwargs):
         """
@@ -60,6 +59,7 @@ class PortalUser(AbstractUser):
         if Token.objects.filter(user=instance).count() == 0:
             if created:
                 Token.objects.create(user=instance)
+
 
 class AssetInstance(models.Model):
     """
@@ -86,6 +86,7 @@ class AssetInstance(models.Model):
     def __str__(self):
         return "%s (%s)" % (str(self.name), str(self.domain))
 
+
 class ScanTask(models.Model):
     """
     Base model for storage of celery scan task details and status.
@@ -105,18 +106,21 @@ class ScanTask(models.Model):
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('queue_id', flat=True)[0]
+
     def get_state(self):
         """
         Retrieve celery queue state.
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('state', flat=True)[0]
+
     def get_result(self):
         """
         Retrieve celery queue result.
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('result', flat=True)[0]
+
     def get_queue_state(self):
         """
         Retrieve async celery queue state.
@@ -127,6 +131,7 @@ class ScanTask(models.Model):
             return result.state
         else:
             return None
+
     def get_queue_progress(self):
         """
         Retrieve async celery queue result.
@@ -140,7 +145,6 @@ class ScanTask(models.Model):
 
     def __str__(self):
         return str(self.id)
-
 
 
 class DomainInstance(models.Model):
@@ -166,7 +170,6 @@ class DomainInstance(models.Model):
         return self.fqdn
 
 
-
 class IPv4AddrInstance(models.Model):
     """
     Base model for storage of network address details.
@@ -188,6 +191,7 @@ class IPv4AddrInstance(models.Model):
     def __str__(self):
         return str(self.ip)
 
+
 class ServiceInstance(models.Model):
     """
     Base model for storage of network service details.
@@ -204,8 +208,10 @@ class ServiceInstance(models.Model):
                                   null=True, blank=True)
     asset = models.ForeignKey(AssetInstance, related_name='svcs', on_delete=models.SET_NULL,
                               null=True, blank=True)
+
     def __str__(self):
         return self.proto + ':' + str(self.port)
+
 
 class CVEEntry(models.Model):
     """
@@ -213,6 +219,7 @@ class CVEEntry(models.Model):
     """
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     data = models.TextField(blank=True)
+
 
 class HandMadePlugin(models.Model):
     """
@@ -228,6 +235,7 @@ class HandMadePlugin(models.Model):
     info = models.BooleanField(default=False)
     score = models.FloatField(default=5.1)
     confidence = models.FloatField(default=0.9)
+
 
 class VulnInstance(models.Model):
     """
@@ -261,7 +269,8 @@ class VulnInstance(models.Model):
 
     def __sha__(self):
         """
-        Calculate vulnerability hash fingerprint derived from name, plugin, fqdn and asset id.
+        Calculate vulnerability hash fingerprint
+        derived from name, plugin, fqdn and asset id.
         :return:
         """
         checksum = ''
@@ -271,6 +280,7 @@ class VulnInstance(models.Model):
         checksum += str(self.asset.id)
 
         return hashlib.sha256(checksum.encode('utf-8'))
+
 
 class ScanPolicy(models.Model):
     """
@@ -302,6 +312,7 @@ class ScanPolicy(models.Model):
     def __str__(self):
         return "%s (%s)" % (self.name, self.id)
 
+
 class ScanInstance(models.Model):
     """
     Base model for storage of scan details.
@@ -325,6 +336,7 @@ class ScanInstance(models.Model):
                                 null=True, blank=True)
     last_task = models.ForeignKey(ScanTask, related_name='details', on_delete=models.SET_NULL,
                                   null=True, blank=True)
+
     def get_meta(self):
         """
         Retrieve a list of model fields.

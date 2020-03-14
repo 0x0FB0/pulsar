@@ -21,8 +21,8 @@ from ..tasks import search_in_file
 logger = get_task_logger(__name__)
 
 scan_settings = {
-    'heavy_processes': ['amass', 'zdns'], # consider Nmap
-    'cmd_timeout': '2h', # linux timeout syntax i.e. 10s 10m 10h 10d
+    'heavy_processes': ['amass', 'zdns'],  # consider Nmap
+    'cmd_timeout': '2h',  # linux timeout syntax i.e. 10s 10m 10h 10d
     'nmap_host_timeout': '10m',
     'amass_timeout': '20',
     'amass_flags': '-ipv4 -noalts ',
@@ -30,8 +30,10 @@ scan_settings = {
     'nmap_udp_flags': '-Pn -n -T4 -sU -vv',
 }
 
+
 class CVE(CVEEntry):
     pass
+
 
 class NullConfig(Config):
     def load_base_conf_files(self):
@@ -40,7 +42,7 @@ class NullConfig(Config):
 
 class Sandbox():
 
-    def connect(self, host='sandbox', user='root', connect_kwargs={'key_filename':'/etc/ssh/sandbox_key'}):
+    def connect(self, host='sandbox', user='root', connect_kwargs={'key_filename': '/etc/ssh/sandbox_key'}):
         conf = NullConfig()
         conn = Connection(host=host, user=user, connect_kwargs=connect_kwargs, config=conf)
         return conn
@@ -65,7 +67,6 @@ class Sandbox():
             time.sleep(13)
         c.close()
 
-
     def exec(self, cmd):
         c = self.connect()
         logger.info('EXECUTING: %s' % repr(cmd))
@@ -79,7 +80,7 @@ class Sandbox():
                     heavy = True
             b64cmd = base64.b64encode(cmd.encode('utf-8'))
             logger.info('EXEC')
-            result = c.run( f'echo {b64cmd.decode("utf-8")}| base64 -d | '\
+            result = c.run(f'echo {b64cmd.decode("utf-8")}| base64 -d | '
                     f' timeout {scan_settings["cmd_timeout"]} bash ', pty=True)
             if heavy:
                 logger.info('SANDBOX FREE NOW')
@@ -133,6 +134,7 @@ class Sandbox():
         self.exec(f'rm -f {delfile}')
         return True
 
+
 def updateCPE(port, fqdn, task_id, cpe):
     doms = DomainInstance.objects.filter(fqdn=fqdn, last_task=task_id)
     ips = IPv4AddrInstance.objects.filter(domain__in=doms, last_task=task_id)
@@ -149,6 +151,7 @@ def updateCPE(port, fqdn, task_id, cpe):
             cpe=cpe
         )
 
+
 def downloadHelper(download_path, url):
     logger.info("NVD DOWNLOAD: %s" % url)
     durl = url
@@ -157,6 +160,7 @@ def downloadHelper(download_path, url):
         urllib.request.urlretrieve(durl, dpath)
     except (urllib.error.URLError, OSError):
         pass
+
 
 def updateNVDFeed():
     if not os.path.exists('/portal/nvd/feeds/mutex'):
@@ -284,7 +288,7 @@ def updateNVDFeed():
                             lhash = lf.read().replace('\r', '').split('\n')[4].split(':')[1]
                         rf = requests.get(feeds[feed]['meta'])
                         try:
-                            rhash = rf.text.replace('\r','').split('\n')[4].split(':')[1]
+                            rhash = rf.text.replace('\r', '').split('\n')[4].split(':')[1]
                             if lhash != rhash:
                                 downloadHelper(dpath, feeds[feed]['meta'])
                                 downloadHelper(dpath, feeds[feed]['zip'])
@@ -332,7 +336,7 @@ def NVDSearchForCPE(cpe):
     start = time.time()
     search_pool = pool.Pool(2)
     cve_list = list()
-    clean = cpe.replace('cpe:','').replace('/','') + ':'
+    clean = cpe.replace('cpe:', '').replace('/', '') + ':'
     if len(clean.split(':')) > 2 and re.match(r'.*:([\d+\.+]+)', clean):
         print("got correct cpe with version: %s" % clean)
         try:
@@ -373,7 +377,6 @@ def NVDSearchForCPE(cpe):
                 return cve_list
         except (OSError, json.JSONDecodeError) as e:
             logger.info("CVE PARSE ERROR: %s, cves: %s" % (e, cve_list))
-            pass
     return []
 
 
@@ -387,10 +390,9 @@ def getCountryData(ip):
             except Exception as e:
                 logger.info("CONNECTION ERROR: %s" % repr(e))
                 time.sleep(2)
-                pass
         jdata = json.loads(data.content)
         answer = jdata['data']
-        logger.info('GETTING COUNTRY DATA: %s ' % repr(answer) )
+        logger.info('GETTING COUNTRY DATA: %s ' % repr(answer))
         if 'located_resources' in answer:
             if len(answer['located_resources']) > 0:
                 logger.info('COUNTRY RETURN: %s' % answer['located_resources'][0]['location'])
@@ -413,6 +415,7 @@ def getCountryData(ip):
         return found
     except (ValueError, KeyError, ConnectionError):
         return 'NA'
+
 
 def getIPData(ip):
     try:
@@ -451,6 +454,7 @@ def getIPData(ip):
     except (ValueError, ConnectionError):
         return [ip_data, ]
 
+
 def aBulkRecordLookup(list_input):
     sandbox = Sandbox()
     logger.info("BULK DNS LOOKUP: %s" % repr(list_input))
@@ -479,11 +483,12 @@ def aBulkRecordLookup(list_input):
                                         ip = getIPData(ans['answer'])
                                         memory[ans['answer']] = ip
                                         logger.info(f'GOT NEW IP DATA: {ip}')
-                                    doms.append({'fqdn':name, 'ip': ip})
+                                    doms.append({'fqdn': name, 'ip': ip})
                 logger.info("GOT DOMAINS: %s" % repr(doms))
         except json.JSONDecodeError:
             pass
     return doms
+
 
 def unique_list(process_list):
     uniq_list = []
@@ -491,6 +496,7 @@ def unique_list(process_list):
         if a not in uniq_list:
             uniq_list.append(a)
     return uniq_list
+
 
 def checkForNewDomains(task_id):
     task = ScanTask.objects.get(id=task_id)
@@ -510,6 +516,7 @@ def checkForNewDomains(task_id):
         return new_doms_list
     else:
         return []
+
 
 def checkForNewVuln(task_id):
     task = ScanTask.objects.get(id=task_id)
@@ -750,6 +757,7 @@ class ServiceDiscoveryPlugin():
                                 asset=asset,
                             )
 
+
 class BaseScannerPlugin():
     name = 'basic scanner'
     short = ''
@@ -799,7 +807,6 @@ class BaseScannerPlugin():
 
     def run(self):
         pass
-
 
     def save(self):
         if self.found:
@@ -864,7 +871,6 @@ class ServiceScannerPlugin():
     def run(self):
         pass
 
-
     def save(self):
         logger.info("SAVING WEB: %s" % self.vulnerabilities)
         for vuln in self.vulnerabilities:
@@ -877,8 +883,10 @@ class ServiceScannerPlugin():
                                 cvss=vuln['cvss'], reference=vuln['reference'])
             vuln.save()
 
+
 class HandMadeScannerPlugin(ServiceScannerPlugin):
     script = ''
+
     def create(self, dom_id, ip_id, asset_id, task_id, plugin_id):
         from ..serializers import ServiceSerializer
         self.vulnerabilities = list()
@@ -919,8 +927,3 @@ class HandMadeScannerPlugin(ServiceScannerPlugin):
                             asset=asset, last_task=dom.last_task, info=self.info, details=self.details,
                             cvss=self.cvss, reference=self.reference)
         vuln.save()
-
-
-
-
-
