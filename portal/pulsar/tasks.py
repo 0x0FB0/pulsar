@@ -296,7 +296,6 @@ def run_scan(self, r_task, qid):
 def scan_wrapper(self, asset_id, user_id):
     """Small wrapper for celery periodic scan tasks."""
     asset = AssetInstance.objects.get(id=asset_id)
-    user = PortalUser.objects.get(id=user_id)
     new_task = ScanTask.objects.create(asset=asset)
     policy = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first().policy
     policy.pk = None
