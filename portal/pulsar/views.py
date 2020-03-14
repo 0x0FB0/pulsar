@@ -286,7 +286,7 @@ class Asset(mixins.CreateModelMixin,
         serializer = AssetDetailSerializer(asset, many=False, context={'request': request})
         return RestResponse(serializer.data)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, _pk=None):
         """
         delete:
         Remove asset instance and all related database objects.
@@ -435,7 +435,7 @@ class Task(LRDViewSet):
     queryset = ScanTask.objects.all()
     serializer_class = ScanTaskSerializer
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, _pk=None):
         """
         delete:
         Remove scan task instance and all related database objects.
@@ -621,7 +621,7 @@ class Scan(LRUDViewSet):
     queryset = ScanInstance.objects.all().order_by('created_date')
     serializer_class = ScanInstanceSerializer
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, _pk=None):
         """
         delete:
         Remove scan instance and all related database objects.
