@@ -39,7 +39,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(PortalUser)
 class PortalUserAdmin(admin.ModelAdmin):
-    list_display = ( 'id', 'created_date', 'date_joined', 'email', 'first_name', 'is_active', 'is_staff',
+    list_display = ('id', 'created_date', 'date_joined', 'email', 'first_name', 'is_active', 'is_staff',
                     'is_superuser', 'last_login', 'last_name', 'modified_date', 'username')
     list_filter = ('id', 'username', 'email')
 

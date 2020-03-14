@@ -215,7 +215,7 @@ def run_scan(self, r_task, qid):
                               meta={'current': current,
                                     'percent': int((float(progress) / counter) * 100)})
             progress += 1
-            logger.info("SCANSTART: asset_id=%s" % ( task.asset.id))
+            logger.info("SCANSTART: asset_id=%s" % (task.asset.id))
             if p not in runned:
                 runned.append(p)
                 for dom in dom_list:
