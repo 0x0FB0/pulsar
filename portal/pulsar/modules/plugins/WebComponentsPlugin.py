@@ -64,7 +64,7 @@ class WebComponentsPlugin(ServiceScannerPlugin):
                     else:
                         cpes = getCPEs(self.fqdn, str(svc['port']), False, self.task_id)
                         logger.info("GOT CPES: %s" % repr(cpes))
-                    if type(cpes) == str:
+                    if type(cpes) is str:
                         cpes = [cpes]
                     if len(cpes) > 0:
                         if str(svc['port']) in vports:

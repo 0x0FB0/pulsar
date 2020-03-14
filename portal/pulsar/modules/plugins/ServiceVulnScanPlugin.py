@@ -20,7 +20,7 @@ class ServiceVulnScanPlugin(ServiceScannerPlugin):
                 svc_data = json.loads(svc['banner'])
                 if 'service' in svc_data and 'cpe' in svc_data['service']:
                     cpe = svc_data['service']['cpe']
-                    if type(cpe) == str:
+                    if type(cpe) is str:
                         cpes = [cpe]
                     else:
                         cpes = cpe
