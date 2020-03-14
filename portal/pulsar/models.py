@@ -257,7 +257,8 @@ class VulnInstance(models.Model):
 
     def __sha__(self):
         """
-        Calculate vulnerability hash fingerprint derived from name, plugin, fqdn and asset id.
+        Calculate vulnerability hash fingerprint
+        derived from name, plugin, fqdn and asset id.
         :return:
         """
         checksum = ''
