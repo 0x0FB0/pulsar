@@ -3,8 +3,6 @@ from django.contrib import admin
 import django.forms as forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from .models import *
-
 
 # Collaboration group custom form
 
