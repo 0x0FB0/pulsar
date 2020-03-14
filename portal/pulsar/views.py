@@ -63,7 +63,7 @@ class BaseViewSet(viewsets.GenericViewSet):
         elif self.model_field_exists(proto_model, 'owner'):
             if self.model_field_exists(proto_model, 'collaborations'):
                 return self.serializer_class.Meta.model.objects.filter(Q(owner=user)
-                                                                       |Q(collaborations__in=user.groups.all()))
+                                                                       |Q(collaborations__in = user.groups.all()))
             else:
                 return self.serializer_class.Meta.model.objects.filter(owner=self.request.user)
         elif self.model_field_exists(proto_model, 'domain'):
@@ -466,7 +466,7 @@ class Task(LRDViewSet):
         task = ScanTask.objects.filter(asset__in=assets).get(id=pk)
         AssetInstance.objects.filter(id=task.asset.id).update(current_score=-1.0)
         scan = ScanInstance.objects.get(last_task=task)
-        task.exec_date=timezone.now()
+        task.exec_date = timezone.now()
         task.save()
         str_task_id = str(task.id)
         str_queue_id = str(task.queue_id)
@@ -549,7 +549,7 @@ class Domain(LRCUDViewSet):
         """
         lasttasks = []
         for asset in AssetInstance.objects.filter(Q(owner=request.user)
-                                                  |Q(collaborations__in=request.user.groups.all())):
+                                                  |Q(collaborations__in = request.user.groups.all())):
             si = ScanInstance.objects.filter(asset=asset,
                                              status='SCANNED')\
                 .order_by('-scanned_date')\
