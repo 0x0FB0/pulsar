@@ -93,7 +93,7 @@ class TheHarvesterPlugin(BaseDiscoveryPlugin):
         history = self.history
         doms = theHarvesterSubFind(str(self.fqdn))
         if len(history) > 0:
-            new_doms = [ x for x in doms if x not in history ]
+            new_doms = [ x for x in doms if x not in history]
         else:
             new_doms = doms
         logger.info("FOUND DOMAINS: %s" % repr(new_doms))

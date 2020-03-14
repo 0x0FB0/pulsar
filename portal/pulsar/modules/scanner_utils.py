@@ -390,7 +390,7 @@ def getCountryData(ip):
                 pass
         jdata = json.loads(data.content)
         answer = jdata['data']
-        logger.info('GETTING COUNTRY DATA: %s ' % repr(answer) )
+        logger.info('GETTING COUNTRY DATA: %s ' % repr(answer))
         if 'located_resources' in answer:
             if len(answer['located_resources']) > 0:
                 logger.info('COUNTRY RETURN: %s' % answer['located_resources'][0]['location'])
@@ -919,8 +919,3 @@ class HandMadeScannerPlugin(ServiceScannerPlugin):
                             asset=asset, last_task=dom.last_task, info=self.info, details=self.details,
                             cvss=self.cvss, reference=self.reference)
         vuln.save()
-
-
-
-
-
