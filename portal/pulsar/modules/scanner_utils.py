@@ -886,6 +886,7 @@ class ServiceScannerPlugin():
 
 class HandMadeScannerPlugin(ServiceScannerPlugin):
     script = ''
+
     def create(self, dom_id, ip_id, asset_id, task_id, plugin_id):
         from ..serializers import ServiceSerializer
         self.vulnerabilities = list()

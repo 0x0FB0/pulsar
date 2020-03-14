@@ -95,6 +95,7 @@ class TheHarvesterPlugin(BaseDiscoveryPlugin):
     name = 'TheHarvester Subdomain Discovery'
     short = 'The Harvester'
     reference = 'https://github.com/laramies/theHarvester'
+
     def run(self):
         self.confidence = 1.0
         history = self.history

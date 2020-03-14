@@ -106,18 +106,21 @@ class ScanTask(models.Model):
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('queue_id', flat=True)[0]
+
     def get_state(self):
         """
         Retrieve celery queue state.
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('state', flat=True)[0]
+
     def get_result(self):
         """
         Retrieve celery queue result.
         :return:
         """
         return ScanTask.objects.filter(id=self.id).values_list('result', flat=True)[0]
+
     def get_queue_state(self):
         """
         Retrieve async celery queue state.
@@ -128,6 +131,7 @@ class ScanTask(models.Model):
             return result.state
         else:
             return None
+
     def get_queue_progress(self):
         """
         Retrieve async celery queue result.
@@ -204,6 +208,7 @@ class ServiceInstance(models.Model):
                                   null=True, blank=True)
     asset = models.ForeignKey(AssetInstance, related_name='svcs', on_delete=models.SET_NULL,
                               null=True, blank=True)
+
     def __str__(self):
         return self.proto + ':' + str(self.port)
 
@@ -331,6 +336,7 @@ class ScanInstance(models.Model):
                                 null=True, blank=True)
     last_task = models.ForeignKey(ScanTask, related_name='details', on_delete=models.SET_NULL,
                                   null=True, blank=True)
+
     def get_meta(self):
         """
         Retrieve a list of model fields.

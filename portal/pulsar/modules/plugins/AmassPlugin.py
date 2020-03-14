@@ -88,6 +88,7 @@ class AmassPlugin(BaseDiscoveryPlugin):
     short = 'Amass Discovery'
     reference = 'https://github.com/OWASP/Amass/'
     confidence = 1.0
+
     def run(self):
         logger.info("GOT POLICY: %s" % repr(self.policy))
         doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active, self.history)

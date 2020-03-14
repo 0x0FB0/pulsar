@@ -58,6 +58,7 @@ class ReverseDNSPlugin(BaseDiscoveryPlugin):
     recursive = True
     name = 'Reverse DNS Discovery'
     short = 'Reverse DNS'
+
     def run(self):
         self.confidence = 0.4
         history = self.history

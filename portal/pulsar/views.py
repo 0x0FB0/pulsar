@@ -231,6 +231,7 @@ class User(viewsets.GenericViewSet):
     """
     queryset = PortalUser.objects.all()
     serializer_class = PortalUserSerializer
+
     def list(self, request, *args, **kwargs):
         """
         get:
