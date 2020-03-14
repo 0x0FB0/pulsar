@@ -39,7 +39,8 @@ class GroupAdmin(admin.ModelAdmin):
 
 @admin.register(PortalUser)
 class PortalUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_date', 'date_joined', 'email', 'first_name', 'is_active', 'is_staff',
+    list_display = (
+    'id', 'created_date', 'date_joined', 'email', 'first_name', 'is_active', 'is_staff',
                     'is_superuser', 'last_login', 'last_name', 'modified_date', 'username')
     list_filter = ('id', 'username', 'email')
 
@@ -57,7 +58,7 @@ class ScanInstanceAdmin(admin.ModelAdmin):
 @admin.register(ScanTask)
 class ScanTaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'asset', 'state', 'result', 'queue_id')
-    list_filter = ('id','asset', 'state', 'result', 'queue_id')
+    list_filter = ('id', 'asset', 'state', 'result', 'queue_id')
 
 @admin.register(DomainInstance)
 class DomainInstanceAdmin(admin.ModelAdmin):

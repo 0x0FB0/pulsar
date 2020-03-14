@@ -65,7 +65,7 @@ def sendNotification(email, asset, dom_ids, cve_ids):
     plain = strip_tags(body)
 
     send_mail(subject, plain, sender,
-              [email,], html_message=body, fail_silently=False)
+              [email, ], html_message=body, fail_silently=False)
 
 @app.task
 def fetchNVD(arg):
@@ -123,7 +123,7 @@ def setup_periodic_tasks(sender, **kwargs):
             crontab=schedule,
             name='tasks.fetchNVD',
             task='pulsar.tasks.fetchNVD',
-            args=json.dumps([str(datetime.datetime.utcnow()),]),
+            args=json.dumps([str(datetime.datetime.utcnow()), ]),
         )
 
 @app.task(bind=True)

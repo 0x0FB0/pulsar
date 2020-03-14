@@ -22,7 +22,7 @@ class HandMadePlugin(HandMadeScannerPlugin):
                 pass
         port_string = ','.join(dom_svcs)
         script_file = '/opt/scan_data/' + self.task_id + '-' + self.hmp_id + '.sh'
-        sandbox.upload_sandboxed_content(script_file, self.script.replace('\r',''))
+        sandbox.upload_sandboxed_content(script_file, self.script.replace('\r', ''))
         cmd = f'chmod +x {script_file} && '
         cmd += f'echo -e "export DOM_SVCS={port_string}\\nexport DOM_FQDN={dom} " > ~/.bashrc && '
         cmd += f'{script_file} 2>&1'

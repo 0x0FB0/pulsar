@@ -40,7 +40,7 @@ class NullConfig(Config):
 
 class Sandbox():
 
-    def connect(self, host='sandbox', user='root', connect_kwargs={'key_filename':'/etc/ssh/sandbox_key'}):
+    def connect(self, host='sandbox', user='root', connect_kwargs={'key_filename': '/etc/ssh/sandbox_key'}):
         conf = NullConfig()
         conn = Connection(host=host, user=user, connect_kwargs=connect_kwargs, config=conf)
         return conn
@@ -284,7 +284,7 @@ def updateNVDFeed():
                             lhash = lf.read().replace('\r', '').split('\n')[4].split(':')[1]
                         rf = requests.get(feeds[feed]['meta'])
                         try:
-                            rhash = rf.text.replace('\r','').split('\n')[4].split(':')[1]
+                            rhash = rf.text.replace('\r', '').split('\n')[4].split(':')[1]
                             if lhash != rhash:
                                 downloadHelper(dpath, feeds[feed]['meta'])
                                 downloadHelper(dpath, feeds[feed]['zip'])
@@ -332,7 +332,7 @@ def NVDSearchForCPE(cpe):
     start = time.time()
     search_pool = pool.Pool(2)
     cve_list = list()
-    clean = cpe.replace('cpe:','').replace('/','') + ':'
+    clean = cpe.replace('cpe:', '').replace('/', '') + ':'
     if len(clean.split(':')) > 2 and re.match(r'.*:([\d+\.+]+)', clean):
         print("got correct cpe with version: %s" % clean)
         try:
@@ -477,7 +477,7 @@ def aBulkRecordLookup(list_input):
                                         ip = getIPData(ans['answer'])
                                         memory[ans['answer']] = ip
                                         logger.info(f'GOT NEW IP DATA: {ip}')
-                                    doms.append({'fqdn':name, 'ip': ip})
+                                    doms.append({'fqdn': name, 'ip': ip})
                 logger.info("GOT DOMAINS: %s" % repr(doms))
         except json.JSONDecodeError:
             pass

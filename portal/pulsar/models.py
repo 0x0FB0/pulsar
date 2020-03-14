@@ -29,7 +29,7 @@ class PortalUser(AbstractUser):
         :return:
         """
         return list(PortalUser.objects.filter(id=self.id).values(
-            'id','first_name','last_name', 'email', 'date_joined', 'last_login'))[0].items()
+            'id', 'first_name', 'last_name', 'email', 'date_joined', 'last_login'))[0].items()
 
     def get_token(self):
         """
