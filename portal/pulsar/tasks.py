@@ -73,6 +73,7 @@ def fetchNVD(arg):
     logger.info('FETCHING NVD FEEDS AT %s' % repr(arg))
     scanner_utils.updateNVDFeed()
 
+
 try:
     os.remove('/portal/nvd/feeds/mutex') # only one update at time
 except OSError:
