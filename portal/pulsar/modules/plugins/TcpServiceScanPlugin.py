@@ -59,7 +59,7 @@ def tcpScan(ip_list, unique_id, policy):
     result = sandbox.retrieve_sandboxed(out_file)
     try:
         all_data = xmltodict.parse(result)
-    except Exception as e:
+    except Exception:
         logger.info("NMAP PARSE ERROR")
         all_data = {"nmaprun": ""}
 

@@ -61,11 +61,10 @@ def udpScan(ip_list, unique_id, policy):
         ports.append(line.split('/')[0])
     cmd2 = f'nmap -iL {ip_file} --host-timeout {scan_settings["nmap_host_timeout"]}  -oX {out_file} ' + \
            f'-Pn -n -p {",".join(unique_list(ports))} -vv -sU -sV --open '
-    debug = sandbox.exec_sandboxed(cmd2)
     result = sandbox.retrieve_sandboxed(out_file)
     try:
         all_data = xmltodict.parse(result)
-    except Exception as e:
+    except Exception:
         logger.info("Nmap XML parse error.")
         all_data = {"nmaprun": ""}
 

@@ -19,7 +19,7 @@ class DomainField(serializers.CharField):
                 raise serializers.ValidationError("Invalid domain name.")
             if not ipaddress.IPv4Address(socket.gethostbyname(data)).is_global:
                 raise serializers.ValidationError("Invalid domain name.")
-        except Exception as e:
+        except Exception:
             raise serializers.ValidationError("Domain could not be resolved.")
         return data
 

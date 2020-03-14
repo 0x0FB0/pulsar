@@ -185,9 +185,6 @@ def get_pdf(md):
     """PDF generation helper method."""
     fname = str(uuid.uuid4())
     resultFile = open(fname, "w+b")
-    pisaStatus = pisa.CreatePDF(
-        markdown(md, extensions=['tables', 'fenced_code']),
-        dest=resultFile)
     resultFile.close()
     with open(fname, 'rb') as f:
         b64pdf = base64.b64encode(f.read())
@@ -457,7 +454,7 @@ class Task(LRDViewSet):
                         sandbox.connect()
                         sandbox.exec('rm /opt/scan_mutex')
                         break
-            except Exception as e:
+            except Exception:
                 pass
             self.perform_destroy(instance)
         except Http404:
@@ -640,7 +637,7 @@ class Scan(LRUDViewSet):
                         sandbox.connect()
                         sandbox.exec('rm /opt/scan_mutex')
                         break
-            except Exception as e:
+            except Exception:
                 pass
             ScanTask.objects.filter(id=instance.last_task.id).delete()
             ScanPolicy.objects.filter(id=instance.policy.id).delete()
