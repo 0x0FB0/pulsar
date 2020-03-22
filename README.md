@@ -75,6 +75,10 @@ This software was created with availability and openness in mind, so it is 100% 
 
 > *Prerequisites will be verified during installation process.*
 
+> :warning: For Windows 10 Home users: 
+Due to the fact that docker desktop cannot be installed on Windows 10 Home.
+Please install Hyper-V manually, instructions [here](https://gist.github.com/talon/4191def376c9fecae78815454bfe661c) 
+
 #### Installation
 
 1. Clone or download latest pulsar repository

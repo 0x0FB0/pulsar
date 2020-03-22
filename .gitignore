@@ -1,0 +1,14 @@
+# Default ignored files
+/workspace.xml
+*.idea
+/sandbox_storage/sandbox_key.pub
+/secrets_storage/sandbox_key*
+/queue_storage/client_cert/cacert.pem
+/queue_storage/client_cert/cert.pem
+/queue_storage/client_cert/key.pem
+/queue_storage/client_cert/key-store.p12
+/queue_storage/client_cert/req.pem
+/queue_storage/client_cert/trust-store.p12
+/db.env
+/queue.env
+/web.env

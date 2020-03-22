@@ -59,7 +59,7 @@ function Build-Containers {
     if [ "$Continue" == "y" ]
     then
         echo -e "\nDownloading images and dependencies."
-        echo "This will take while..."
+        echo "This will take a while..."
         docker-compose build >&2 2>/dev/null
         if [ $? -ne 0 ]
         then

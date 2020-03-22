@@ -55,9 +55,9 @@ Function Gen-Credentials
     $django_config = "DJANGO_ADMIN_USER="+$django_user+"`n"
     $django_config = $django_config+"DJANGO_ADMIN_PASS="+$django_pass
 
-    $mysql_config | Out-File db.env
-    $rabbit_config | Out-File queue.env
-    $django_config | Out-File web.env
+    $mysql_config | Out-File -encoding utf8 db.env
+    $rabbit_config | Out-File -encoding utf8 queue.env
+    $django_config | Out-File -encoding utf8 web.env
 
     Write-Host "Credentials written to web.env, db.env and queue.env files."
 
@@ -70,7 +70,7 @@ Function Build-Containers {
     {
         Try {
             Write-Host "Downloading images and dependencies."
-            Write-Host "This will take while..."
+            Write-Host "This will take a while..."
             docker-compose build | Out-Null
             Write-Host "Build finished!"
         }
