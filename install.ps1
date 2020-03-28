@@ -14,7 +14,7 @@ Catch {
 Function Check-DockerCompose
 {
 Try {
-    docker-compose | Out-Null
+    docker-compose -v | Out-Null
 }
 Catch {
     Write-Error "Could not execute docker-compose!`n`nAre you sure it is installed correctly?`n"

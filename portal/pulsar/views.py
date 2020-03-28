@@ -185,6 +185,9 @@ def get_pdf(md):
     """PDF generation helper method."""
     fname = str(uuid.uuid4())
     resultFile = open(fname, "w+b")
+    pisaStatus = pisa.CreatePDF(
+        markdown(md, extensions=['tables', 'fenced_code']),
+        dest=resultFile)
     resultFile.close()
     with open(fname, 'rb') as f:
         b64pdf = base64.b64encode(f.read())

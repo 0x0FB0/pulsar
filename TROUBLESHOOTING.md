@@ -20,6 +20,19 @@ Documentation can be found at `/admin/docs/`
 
 Documented REST API can be found at `/pulsar/api/v1/`
 
+## Known docker daemon issues
+
+> ERROR: Service 'sandbox' failed to build
+
+or
+
+> E: Release file for http://deb.debian.org/debian/dists/buster-updates/InRelease is not valid yet (invalid for another 3d 14h 29min 34s). Updates for this repository will not be applied.
+ 
+
+Issue arrises due to lack of proper time synchronization of docker daemon.
+
+Restart your docker engine to fix this issue.
+
 ## General performance and stability issues
 Please make sure your docker engine resources meet minimal requirements:
 - 8GB of memory

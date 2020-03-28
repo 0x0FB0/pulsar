@@ -27,7 +27,11 @@ ENV PATH="${PATH}:${GOPATH}bin"
 
 RUN git clone https://github.com/jtesta/ssh-audit
 
-RUN go get github.com/zmap/zdns/zdns
+# RUN go get github.com/zmap/zdns/zdns
+RUN git clone https://github.com/zmap/zdns
+RUN cd zdns/zdns && go build .
+
+WORKDIR /opt/
 ENV GO111MODULE=on
 RUN go get -v -u github.com/OWASP/Amass/v3/...
 
