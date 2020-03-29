@@ -8,9 +8,10 @@ from ..scanner_utils import ServiceDiscoveryPlugin, unique_list, Sandbox, scan_s
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def getServices(nmap_record):
-    svcs = dict()
-    ports = list()
+    svcs = {}
+    ports = []
     addr = nmap_record['address']['@addr']
     if isinstance(nmap_record['ports']['port'], list):
         for port in nmap_record['ports']['port']:
@@ -43,8 +44,9 @@ def getServices(nmap_record):
             ]
     return svcs
 
+
 def tcpScan(ip_list, unique_id, policy):
-    discovered = list()
+    discovered = []
     ip_file = f'/opt/scan_data/nmap-{unique_id}-tcp-ips.list'
     out_file = f'/opt/scan_data/nmap-{unique_id}-tcp-out.xml'
 
@@ -57,10 +59,9 @@ def tcpScan(ip_list, unique_id, policy):
     result = sandbox.retrieve_sandboxed(out_file)
     try:
         all_data = xmltodict.parse(result)
-    except Exception as e:
+    except Exception:
         logger.info("NMAP PARSE ERROR")
         all_data = {"nmaprun": ""}
-        pass
 
     sandbox.remove_sandboxed(out_file)
     sandbox.remove_sandboxed(ip_file)
@@ -70,7 +71,7 @@ def tcpScan(ip_list, unique_id, policy):
             for host in all_data['nmaprun']['host']:
                 discovered.append(host)
         elif isinstance(all_data['nmaprun']['host'], dict):
-                discovered.append(all_data['nmaprun']['host'])
+            discovered.append(all_data['nmaprun']['host'])
     return discovered
 
 
@@ -88,4 +89,4 @@ class TcpServiceScanPlugin(ServiceDiscoveryPlugin):
                 self.services.update(services)
             except KeyError:
                 pass
-        #self.services
+        # self.services

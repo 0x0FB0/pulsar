@@ -17,9 +17,9 @@ app.conf.update(
     allowed_serializers=['json'],
     event_serializer='auth',
     accept_content=['auth'],
-    broker_login_method = 'AMQPLAIN',
-    broker_url = f'amqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//',
-    broker_use_ssl = {
+    broker_login_method='AMQPLAIN',
+    broker_url=f'amqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//',
+    broker_use_ssl={
       'keyfile': '/etc/ssl/celery_client/key.pem',
       'certfile': '/etc/ssl/celery_client/cert.pem',
       'ca_certs': '/etc/ssl/celery_client/cacert.pem',

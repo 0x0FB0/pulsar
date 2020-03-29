@@ -48,5 +48,5 @@ services:
     volumes:
       - ./queue_storage/client_cert:/etc/ssl/celery_client
       # usefull for deveopment and hot patching
-      # - ./portal:/portal
+      #- ./portal:/portal
     restart: always

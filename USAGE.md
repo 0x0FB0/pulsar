@@ -58,7 +58,7 @@ Example plugin configuration:
 
 ## Collaboration groups
 
-A **Collaboration groups** section available in Django admin console allows for creation of collaboration goups enabling users to an access to asset object.
+A **Collaboration groups** section available in Django admin console allows for creation of collaboration groups enabling users to an access to asset object.
 
 In order to set up collaboration group, there are two steps needed:
 

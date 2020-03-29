@@ -10,6 +10,7 @@ from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list,
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
 
+
 def ripe_resolve_ip(match_annd_ip):
     found = []
     match = match_annd_ip[0]
@@ -21,10 +22,10 @@ def ripe_resolve_ip(match_annd_ip):
         jresponse = json.loads(result)
         if 'reverse_nodes' in jresponse['data']:
             for key in jresponse['data']['reverse_nodes'].keys():
-                    for dom in jresponse['data']['reverse_nodes'][key]:
-                        logger.info("REVERSE DNS LOOKUP RESULT: %s (searching for %s)" % (dom, match))
-                        if match in dom:
-                            found.append(dom)
+                for dom in jresponse['data']['reverse_nodes'][key]:
+                    logger.info("REVERSE DNS LOOKUP RESULT: %s (searching for %s)" % (dom, match))
+                    if match in dom:
+                        found.append(dom)
             return found
         else:
             return []
@@ -51,11 +52,13 @@ def revDNSFind(asset_name, asset_dom, nets, inscope):
 
     return unique_list(resolved)
 
+
 class ReverseDNSPlugin(BaseDiscoveryPlugin):
     custom_discovery = True
     recursive = True
     name = 'Reverse DNS Discovery'
     short = 'Reverse DNS'
+
     def run(self):
         self.confidence = 0.4
         history = self.history

@@ -19,13 +19,14 @@ from .modules import scanner_utils
 
 logger = get_task_logger(__name__)
 
+
 def sendNotification(email, asset, dom_ids, cve_ids):
     """Send email notification about new scan results."""
     sender = settings.EMAIL_HOST_USER
     cves = [v['name'] for v in VulnInstance.objects.filter(id__in=cve_ids).values('name')]
     doms = [d['fqdn'] for d in DomainInstance.objects.filter(id__in=dom_ids).values('fqdn')]
 
-    changes = list()
+    changes = []
     if len(doms) == 1:
         changes.append("domain")
     elif len(doms) > 1:
@@ -65,7 +66,8 @@ def sendNotification(email, asset, dom_ids, cve_ids):
     plain = strip_tags(body)
 
     send_mail(subject, plain, sender,
-              [email,], html_message=body, fail_silently=False)
+              [email, ], html_message=body, fail_silently=False)
+
 
 @app.task
 def fetchNVD(arg):
@@ -73,18 +75,20 @@ def fetchNVD(arg):
     logger.info('FETCHING NVD FEEDS AT %s' % repr(arg))
     scanner_utils.updateNVDFeed()
 
+
 try:
-    os.remove('/portal/nvd/feeds/mutex') # only one update at time
+    os.remove('/portal/nvd/feeds/mutex')  # only one update at time
 except OSError:
     pass
 
 fetchNVD.apply_async(args=[str(datetime.datetime.utcnow())])
 
+
 def search_in_file(work):
     """Search for CPE string occurence in NVD data feed."""
     fname = work[0]
     cpe = work[1]
-    cve_list = list()
+    cve_list = []
     with open(fname, 'r') as f:
         feed_data = json.loads(f.read())
     for cve in feed_data['CVE_Items']:
@@ -122,20 +126,21 @@ def setup_periodic_tasks(sender, **kwargs):
             crontab=schedule,
             name='tasks.fetchNVD',
             task='pulsar.tasks.fetchNVD',
-            args=json.dumps([str(datetime.datetime.utcnow()),]),
+            args=json.dumps([str(datetime.datetime.utcnow()), ]),
         )
+
 
 @app.task(bind=True)
 def run_scan(self, r_task, qid):
     """Main scanner celery task method."""
 
-    while os.path.exists('/portal/nvd/feeds/mutex'): # Wait for NVD feed download
+    while os.path.exists('/portal/nvd/feeds/mutex'):  # Wait for NVD feed download
         time.sleep(1)
 
     # Retrieve current scan task
     logger.info("STARTING SCAN TASK ID: %s QUEUE: %s" % (r_task, qid))
     task = ScanTask.objects.get(id=uuid.UUID(r_task))
-    task.state = 'STARTED';
+    task.state = 'STARTED'
     task.exec_date = timezone.now()
     task.save()
 
@@ -161,7 +166,7 @@ def run_scan(self, r_task, qid):
                            VulnInstance.objects.filter(last_task=last_task, false_positive=True)]
 
     # Prepare plugin counter for progress measure
-    runned = list()
+    runned = []
     progress = 1
     plugins = plgs.__all__
     counter = 3
@@ -199,7 +204,6 @@ def run_scan(self, r_task, qid):
             except Exception as e:
                 logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                 progress += 1
-                pass
             if not policy.recursive:
                 break
 
@@ -215,7 +219,7 @@ def run_scan(self, r_task, qid):
                               meta={'current': current,
                                     'percent': int((float(progress) / counter) * 100)})
             progress += 1
-            logger.info("SCANSTART: asset_id=%s" % ( task.asset.id))
+            logger.info("SCANSTART: asset_id=%s" % (task.asset.id))
             if p not in runned:
                 runned.append(p)
                 for dom in dom_list:
@@ -230,7 +234,6 @@ def run_scan(self, r_task, qid):
                         except Exception as e:
                             logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                             progress += 1
-                            pass
     if policy.handmade:
         # Start custom class plugins
         for p in HandMadePlugin.objects.all():
@@ -256,8 +259,6 @@ def run_scan(self, r_task, qid):
                         except Exception as e:
                             logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
                             progress += 1
-                            pass
-
 
     self.update_state(state='PROGRESS',
                       meta={'current': 'Calculations',
@@ -271,7 +272,6 @@ def run_scan(self, r_task, qid):
                       meta={'current': 'Notifications',
                             'percent': int((float(progress) / counter) * 100)})
     progress += 1
-
 
     # Check for result changes
     new_domains = scanner_utils.checkForNewDomains(task.id)
@@ -291,11 +291,11 @@ def run_scan(self, r_task, qid):
 
     raise Ignore()
 
+
 @app.task(bind=True)
 def scan_wrapper(self, asset_id, user_id):
     """Small wrapper for celery periodic scan tasks."""
     asset = AssetInstance.objects.get(id=asset_id)
-    user = PortalUser.objects.get(id=user_id)
     new_task = ScanTask.objects.create(asset=asset)
     policy = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first().policy
     policy.pk = None
@@ -307,6 +307,7 @@ def scan_wrapper(self, asset_id, user_id):
         (str_task_id, str_queue_id),
         task_id=str_queue_id
     )
+
 
 def dispatch_scan(asset_id, user_id, policy):
     """Main method for periodic scan task dispatching."""
