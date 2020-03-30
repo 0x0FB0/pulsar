@@ -77,6 +77,7 @@ def tcpScan(ip_list, unique_id, policy):
 
 class TcpServiceScanPlugin(ServiceDiscoveryPlugin):
     custom_discovery = True
+    active = True
     temp = {}
     name = 'TCP Service Discovery'
     short = 'Nmap TCP'

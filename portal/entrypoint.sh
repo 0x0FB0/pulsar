@@ -36,6 +36,11 @@ openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
     "/C=PL/ST=Masovian/L=Warsaw/O=PulsarApp/OU=Pulsar/CN=pulsar.local>"\
     -keyout /etc/ssl/pulsar.key -out /etc/ssl/pulsar.crt
 
+# Start sandbox ssh tunnel
+ssh -o StrictHostKeyChecking=no -f -N -D 127.0.0.1:8881 sandbox -i /etc/ssh/sandbox_key
+# Set sandbox proxy
+#export ALL_PROXY=socks5://localhost:8881/
+
 # Collect static files
 echo "Collect static files"
 python manage.py makemigrations

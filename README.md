@@ -1,5 +1,5 @@
 # Pulsar [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Pulsar%20project%20at%20github!&url=https://fooballz.github.io/pulsar)
-![0.9.8 Beta](https://img.shields.io/badge/version-v0.9.8b-YELLOW) ![Django](https://img.shields.io/badge/django-3.0.3-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
+![1.0.0](https://img.shields.io/badge/version-v0.9.8b-YELLOW) ![Django](https://img.shields.io/badge/django-3.0.3-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
 
 
 ![Pulsar](/images/pulsar-banner.PNG)
@@ -10,17 +10,16 @@
 Its focused on discovery of organization public facing assets with minimal knowledge about its infrastructure. Along with network data visualization, it attempts to give a basic vulnerability score to find infrastructure weak points and their relation to other resources. It can be also used as a custom vulnerability scanner for wide and uncharted scopes.
 This software was created with availability and openness in mind, so it is 100% free, and does not require any API keys to use its features.
 
-> This is a beta release, be prepared to notice bugs or even crashes. Help me out and submitt an [issue](../../issues/new).
 
 ## What it is not?
 - Vulnerability Management Platform
 - Full OSINT framework scanner
 - Speed oriented tool with immediate results
-- Stable enterprise product you can rely on (beta release)
 
 ## Key features
 
 - [x] Subdomains discovery
+- [x] TLD discovery
 - [x] Cloud resources discovery
 - [x] Basic vulnerability scanning
 - [x] Scan policies & optimization
@@ -36,6 +35,7 @@ This software was created with availability and openness in mind, so it is 100% 
 ## Integrated projects
 
 - [OWASP Amass](https://owasp.org/www-project-amass/)
+- [ZMap](https://zmap.io/)
 - [Nmap](https://nmap.org/)
 - [RIPEstat API](https://stat.ripe.net/docs/data_api)
 - [CloudEnum](https://github.com/initstring/cloud_enum)
@@ -58,7 +58,7 @@ This software was created with availability and openness in mind, so it is 100% 
 
 ## Installation instructions
 
-> If you would like to use External APIs see [USAGE.md](/USAGE.md#external-apis-integration)
+> If you would like to use External APIs see [USAGE.md](https://fooballz.github.io/pulsar/USAGE.html)
 
 > In order to use email notifications, edit `EMAIL_BACKEND SETTINGS` in `portal/portal/settings.py` before the installation
 
@@ -76,8 +76,8 @@ This software was created with availability and openness in mind, so it is 100% 
 > *Prerequisites will be verified during installation process.*
 
 > :warning: For Windows 10 Home users: 
-Due to the fact that docker desktop cannot be installed on Windows 10 Home.
-Please install Hyper-V manually, instructions [here](https://gist.github.com/talon/4191def376c9fecae78815454bfe661c) 
+Due to the fact that docker desktop cannot be installed on Windows 10 Home,
+please install Hyper-V manually, instructions can be found [here](https://gist.github.com/talon/4191def376c9fecae78815454bfe661c) 
 
 #### Installation
 
@@ -143,7 +143,7 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 
 ### In case of issues
 - Feel free to issue a bug report.
-- See troubleshooting section [here](/TROUBLESHOOTING.md).
+- See troubleshooting section [here](https://fooballz.github.io/pulsar/TROUBLESHOOTING.html).
 
 ### In case of ideas
 - Feel free to issue a change request.
@@ -163,7 +163,7 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 ## Documentation
 
 ### User guide
-Basic usage guide can be found [here](/USAGE.md).
+Basic usage guide can be found [here](https://fooballz.github.io/pulsar/USAGE.html).
 
 ### REST API
 

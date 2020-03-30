@@ -30,6 +30,7 @@ RUN git clone https://github.com/jtesta/ssh-audit
 # RUN go get github.com/zmap/zdns/zdns
 RUN git clone https://github.com/zmap/zdns
 RUN cd zdns/zdns && go build .
+RUN ln -s /opt/zdns/zdns/zdns /bin/zdns
 
 WORKDIR /opt/
 ENV GO111MODULE=on

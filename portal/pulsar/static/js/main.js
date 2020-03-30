@@ -31,6 +31,7 @@ const app = new Vue({
       is_scanned: false,
       net_map_loaded: false,
       net_map_force: null,
+      download_icon: true,
       net_svg_width: 900,
       net_svg_height: 400,
       scan_history: {'labels':[],
@@ -1431,6 +1432,8 @@ const app = new Vue({
 
           },
         exportAsset: function(id, type) {
+              app.download_icon = false;
+              console.log(app.download_icon);
               var asset = {};
               if (type === 'pdf') {
                 var pdf_data = '';
@@ -1441,7 +1444,8 @@ const app = new Vue({
                       axios.get('/pulsar/api/v1/assets/'+id+'/pdf?format=json')
                       .then(response => {
                             pdf_data = response.data.pdf;
-                            let pdfContent = "data:application/pdf;base64," + pdf_data;
+                            if (typeof pdf_data !== 'undefined') {
+                              let pdfContent = "data:application/pdf;base64," + pdf_data;
                               const data = encodeURI(pdfContent);
                               const link = document.createElement("a");
                               link.setAttribute("href", data);
@@ -1449,7 +1453,10 @@ const app = new Vue({
                               let assetDate = (new Date(asset.modified_date)).getTime().toString();
                               link.setAttribute("download", assetName+"_"+assetDate+".pdf");
                               link.click();
+                            }
                         });
+                  }).then(() => {
+                    this.download_icon = true;
                   });
               } else if (type === 'markdown') {
                 var md_data = '';
@@ -1460,7 +1467,8 @@ const app = new Vue({
                       axios.get('/pulsar/api/v1/assets/'+id+'/markdown?format=json')
                       .then(response => {
                             md_data = response.data.markdown;
-                            let mdContent = "data:application/octet-stream;charset=utf-16le;base64," + md_data;
+                            if (typeof md_data !== 'undefined') {
+                              let mdContent = "data:application/octet-stream;charset=utf-16le;base64," + md_data;
                               const data = encodeURI(mdContent);
                               const link = document.createElement("a");
                               link.setAttribute("href", data);
@@ -1468,7 +1476,33 @@ const app = new Vue({
                               let assetDate = (new Date(asset.modified_date)).getTime().toString();
                               link.setAttribute("download", assetName+"_"+assetDate+".md");
                               link.click();
+                            }
                         });
+                  }).then(() => {
+                    this.download_icon = true;
+                  });
+              } else if (type === 'csv') {
+                var md_data = '';
+                axios.get('/pulsar/api/v1/assets/'+id+'/?format=json')
+                  .then(response => {
+                        asset = response.data;
+                  }).then(() => {
+                      axios.get('/pulsar/api/v1/assets/'+id+'/csv?format=json')
+                      .then(response => {
+                            csv_data = response.data.csv;
+                            if (typeof csv_data !== 'undefined') {
+                              let csvContent = "data:application/octet-stream;charset=utf-16le;base64," + csv_data;
+                              const data = encodeURI(csvContent);
+                              const link = document.createElement("a");
+                              link.setAttribute("href", data);
+                              let assetName = asset.name.toLowerCase().replace(/[\W_]+/g,"_");
+                              let assetDate = (new Date(asset.modified_date)).getTime().toString();
+                              link.setAttribute("download", assetName+"_"+assetDate+".csv");
+                              link.click();
+                            }
+                        });
+                  }).then(() => {
+                    this.download_icon = true;
                   });
               } else {
                   axios.get('/pulsar/api/v1/assets/'+id+'/?format=json')
@@ -1484,7 +1518,9 @@ const app = new Vue({
 
                           link.setAttribute("download", assetName+"_"+assetDate+".json");
                           link.click();
-                    });
+                    }).then(() => {
+                    this.download_icon = true;
+                  });
               }
           },
         getCurrentDoms: function(){
@@ -1560,6 +1596,10 @@ const app = new Vue({
         },
         deleteSchedule: function(asset_id){
             axios.get('/pulsar/api/v1/assets/'+asset_id+'/delete_schedule/');
+        },
+        getDownlIcon: function() {
+            console.log(this.download_icon);
+            return this.download_icon;
         },
         getColor: function(score, tag){
             var color = d3.scale.linear()

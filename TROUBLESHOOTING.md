@@ -34,7 +34,7 @@ Issue arrises due to lack of proper time synchronization of docker daemon.
 Restart your docker engine to fix this issue.
 
 ## General performance and stability issues
-Please make sure your docker engine resources meet minimal requirements:
+Please make sure your docker engine resources meet minimal hardware requirements:
 - 8GB of memory
 - 4 CPU cores
 

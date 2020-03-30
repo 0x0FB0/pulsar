@@ -5,7 +5,7 @@ from billiard import pool
 from celery.utils.log import get_task_logger
 from netaddr import IPNetwork
 
-from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list, Sandbox
+from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list, Sandbox, proxies
 
 logger = get_task_logger(__name__)
 sandbox = Sandbox()
@@ -16,7 +16,7 @@ def ripe_resolve_ip(match_annd_ip):
     match = match_annd_ip[0]
     ip = match_annd_ip[1]
     url = f'https://stat.ripe.net/data/dns-chain/data.json?sourceapp=OpenOSINT&resource={ip}'
-    response = requests.get(url)
+    response = requests.get(url, proxies=proxies)
     result = response.text
     try:
         jresponse = json.loads(result)
@@ -60,9 +60,14 @@ class ReverseDNSPlugin(BaseDiscoveryPlugin):
     short = 'Reverse DNS'
 
     def run(self):
+        doms = []
         self.confidence = 0.4
         history = self.history
-        doms = revDNSFind(self.asset_name, self.asset_dom, self.nets, self.policy.inscope)
+        if self.policy.inscope:
+            doms = revDNSFind(self.asset_name, self.asset_dom, self.nets, self.policy.inscope)
+        else:
+            for tld in self.tlds:
+                doms.extend(revDNSFind(self.asset_name, tld, self.nets, self.policy.inscope))
         if len(history) > 0:
             new_doms = [x for x in doms if x not in history]
         else:

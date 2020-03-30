@@ -21,7 +21,7 @@ Policy settings include:
 - **Active Scan** - Defines if active scanner plugins should be enabled i.e. Nmap scan
 - **Ports** - Defines how many top network ports should be scanned (Nmap --top-ports argument)
 - **Recursive discovery** - Defines if recursive plugins should be enabled i.e. Reverse DNS
-- **In-Scope discovery** - Defines if scanner should stick to asset root domain scope
+- **In-Scope discovery** - Defines if scanner should stick to asset root domain scope (Disables TLD expansion)
 - **Repeat scan** - Defines if periodic scan tasks should be enabled
 - **Schedule** - Defines a period that scans will be launched
 - **Send notifications** - Defines if email notifications should be sent on new results (requires email configuration)
@@ -29,6 +29,7 @@ Policy settings include:
 ### Exporting an asset
 
 An **Export** button (3) allows for export of data in following formats:
+- **CSV** asset data dump
 - **JSON** asset data dump
 - **MARKDOWN** report
 - **PDF** report

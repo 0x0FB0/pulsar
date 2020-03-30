@@ -21,7 +21,7 @@ def isWildcardDom(dom):
         return False
 
 
-def aMassSubFind(s_input, unique_id, active, history):
+def aMassSubFind(s_input, unique_id, active, inscope, history, tlds):
     doms = []
     wildcard = isWildcardDom(s_input)
     uploaded_known = ''
@@ -36,6 +36,13 @@ def aMassSubFind(s_input, unique_id, active, history):
     if len(history) > 0:
         uploaded_known = sandbox.upload_sandboxed_content(known, '\n'.join(history))
         s_cmd += " -nf " + known
+    if not inscope:
+        additional_doms = ''
+        logger.info("GOT TLDs: %s" % ', '.join(tlds))
+        for tld in tlds:
+            if tld != s_input:
+                additional_doms += f' -d {tld} '
+        s_cmd += additional_doms
     logger.info("AMASS START")
     sandbox.exec_sandboxed(s_cmd)
     results = sandbox.retrieve_sandboxed(outfile)
@@ -91,7 +98,8 @@ class AmassPlugin(BaseDiscoveryPlugin):
 
     def run(self):
         logger.info("GOT POLICY: %s" % repr(self.policy))
-        doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active, self.history)
+        doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active,
+                            self.policy.inscope, self.history, self.tlds)
         logger.info("FOUND DOMAINS: %s" % repr(doms))
         if len(doms) > 0:
             self.discovered.extend(doms)

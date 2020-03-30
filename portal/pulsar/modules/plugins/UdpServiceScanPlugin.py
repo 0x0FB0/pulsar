@@ -82,6 +82,7 @@ def udpScan(ip_list, unique_id, policy):
 
 class UdpServiceScanPlugin(ServiceDiscoveryPlugin):
     custom_discovery = True
+    active = True
     temp = {}
     name = 'UDP Service Discovery'
     short = 'Nmap UDP'

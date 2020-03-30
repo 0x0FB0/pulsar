@@ -1,5 +1,6 @@
 __all__ = [
     # [ Domain discovery plugins ]
+    "TLDExpansionPlugin",
     "AmassPlugin",
     # "TheHarvesterPlugin",
     # [ Recursive discovery plugins ]

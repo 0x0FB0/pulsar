@@ -101,4 +101,6 @@ fabric==2.5.0
 xhtml2pdf==0.2.4
 markdown==3.2
 gunicorn==20.0.4
-#pandas==1.0.1
+favicon==0.7.0
+pebble==4.5.1
+pysocks==1.7.1

@@ -101,11 +101,12 @@
                        v-b-modal.scan-asset @mouseover="app.toBeScanned(entry.id, entry.name)" id="btn-info"
                       class="btn btn-warning btn-sm"><i class="fas fa-bolt mx-1"></i></b-button>
 
-                      <div class="btn-group">
+                      <div :key="app.download_icon" class="btn-group">
                       <b-button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-download"></i>
+                      <i :class="[app.download_icon ? 'fa-download' : 'fa-clock', 'fas']"></i>
                       </b-button>
                       <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'csv')">CSV</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'json')">JSON</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'markdown')">MARKDOWN</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'pdf')">PDF</a>

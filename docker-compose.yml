@@ -9,9 +9,9 @@ services:
       - '3306'
     command: --default-authentication-plugin=mysql_native_password
     # database persistence between container reboots
-    # volumes:
-    #   - ./db_storage/data:/var/lib/mysql
-    #   - ./db_storage/logs:/var/log/mysql
+    volumes:
+       - ./db_storage/data:/var/lib/mysql
+       - ./db_storage/logs:/var/log/mysql
     restart: always
   sandbox:
     container_name: sandbox
@@ -48,5 +48,5 @@ services:
     volumes:
       - ./queue_storage/client_cert:/etc/ssl/celery_client
       # usefull for deveopment and hot patching
-      #- ./portal:/portal
+      - ./portal:/portal
     restart: always

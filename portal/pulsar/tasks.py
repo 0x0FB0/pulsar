@@ -183,29 +183,35 @@ def run_scan(self, r_task, qid):
 
     logger.info("PLUGINS LIST: %s" % repr(plugins))
     logger.info("RECURSIVE?: %s" % repr(policy.recursive))
+    logger.info("INSCOPE?: %s" % repr(policy.inscope))
+    logger.info("ACTIVE?: %s" % repr(policy.active))
 
     # Start discovery class plugins
     for p in plugins:
         plugin = eval('plgs.'+p+'.'+p)
         if hasattr(plugin, 'custom_discovery') or hasattr(plugin, 'scanner') \
-                or (hasattr(plugin, 'recursive') and policy.recursive):
-            runned.append(p)
-            c = plugin()
-            current = c.short
-            self.update_state(state='PROGRESS',
-                              meta={'current': current,
-                                    'percent': int((float(progress) / counter) * 100)})
-            progress += 1
-            try:
-                c.create(str(task.asset.id), str(task.id))
-                logger.info("PLUGIN RUNNING! : %s (%s)" % (repr(p), repr(c)))
-                c.run()
-                c.save()
-            except Exception as e:
-                logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
+                or (hasattr(plugin, 'recursive') and policy.recursive) \
+                or (hasattr(plugin, 'expansion') and not policy.inscope):
+            if (hasattr(plugin, 'active') and not policy.active):
                 progress += 1
-            if not policy.recursive:
-                break
+            else:
+                runned.append(p)
+                c = plugin()
+                current = c.short
+                self.update_state(state='PROGRESS',
+                                  meta={'current': current,
+                                        'percent': int((float(progress) / counter) * 100)})
+                progress += 1
+                try:
+                    c.create(str(task.asset.id), str(task.id))
+                    logger.info("PLUGIN RUNNING! : %s (%s)" % (repr(p), repr(c)))
+                    c.run()
+                    c.save()
+                except Exception as e:
+                    logger.info("PLUGIN %s - FATAL ERROR: %s" % (repr(p), repr(e)))
+                    progress += 1
+                if not policy.recursive:
+                    break
 
     dom_list = DomainInstance.objects.filter(asset=task.asset.id, last_task=task, false_positive=False)
 

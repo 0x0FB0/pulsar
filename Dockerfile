@@ -39,18 +39,14 @@ RUN apt-get update && apt-get install -y libcurl4=7.64.0-4+deb10u1 libpython3.7-
  libnginx-mod-stream=1.14.2-2+deb10u1 libpython3.7=3.7.3-2+deb10u1 libpython3.7-dev=3.7.3-2+deb10u1 \
  libpython3-dev=3.7.3-1 libsasl2-modules=2.1.27+dfsg-1+deb10u1 libssl-dev=1.1.1d-0+deb10u2 libtasn1-doc=4.13-3 \
  libutempter0=1.1.6-3 manpages-dev=4.16-2 netcat=1.10-41.1 nginx-full=1.14.2-2+deb10u1 nginx=1.14.2-2+deb10u1 \
- publicsuffix=20190415.1030-1 python3.7-dev=3.7.3-2+deb10u1 python3-dev=3.7.3-1 screen=4.6.2-3
+ publicsuffix=20190415.1030-1 python3.7-dev=3.7.3-2+deb10u1 python3-dev=3.7.3-1 screen=4.6.2-3 \
+ openssh-client=1:7.9p1-10+deb10u2
 
 
 RUN adduser --system --no-create-home --disabled-login nginx
 RUN mkdir /etc/ssl/celery_client
 RUN mkdir /portal
 COPY portal /portal/
-RUN mkdir /portal/nvd
-RUN mkdir /portal/nvd/cache
-RUN mkdir /portal/nvd/download
-RUN mkdir /portal/nvd/feeds
-RUN mkdir /portal/logs/
 RUN touch /portal/logs/django.log
 RUN touch /portal/logs/celery.log
 WORKDIR /portal

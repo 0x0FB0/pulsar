@@ -41,9 +41,10 @@ class CloudEnumPlugin(BaseScannerPlugin):
                 s_mutations.append(word + '.' + asset_name)
                 s_mutations.append(word + '-' + asset_name)
                 s_mutations.append(word + '-' + asset_name)
-            s_cmd = f'/opt/cloud_enum-0.2/cloud_enum.py -m /dev/null -b /dev/null | tee {cache_file}'
+            s_cmd = f'/opt/cloud_enum-0.2/cloud_enum.py -m /dev/null -b /dev/null '
             for mut in unique_list(s_mutations):
-                s_cmd += f'-k {mut} '
+                s_cmd += f' -k {mut} '
+            s_cmd += f' | tee {cache_file} '
             result = sandbox.exec_sandboxed(s_cmd)
         for pattern in patterns:
             if pattern in result or cached:
