@@ -39,6 +39,8 @@ openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
     "/C=PL/ST=Masovian/L=Warsaw/O=PulsarApp/OU=Pulsar/CN=pulsar.local>"\
     -keyout /etc/ssl/pulsar.key -out /etc/ssl/pulsar.crt 2>&1 > /dev/null
 
+
+echo -e "\n[+] Setting up SSH tunnel...\n"
 # Start sandbox ssh tunnel
 ssh -o StrictHostKeyChecking=no -o LogLevel=quiet -f -N -D 127.0.0.1:8881 sandbox -i /etc/ssh/sandbox_key 2>/dev/null
 # Set sandbox proxy
@@ -48,12 +50,11 @@ ssh -o StrictHostKeyChecking=no -o LogLevel=quiet -f -N -D 127.0.0.1:8881 sandbo
 # Apply database migrations
 
 echo -e "\n[+] Applying database migrations...\n"
+python manage.py makemigrations
 python manage.py migrate
 
 
 # Collect static files
-
-python manage.py makemigrations
 
 # Add django admin user
 
