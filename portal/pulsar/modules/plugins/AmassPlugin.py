@@ -47,17 +47,6 @@ def aMassSubFind(s_input, unique_id, active, inscope, history, tlds):
     sandbox.exec_sandboxed(s_cmd)
     results = sandbox.retrieve_sandboxed(outfile)
     logger.info("AMASS END")
-    # make sure dns resolution cooldown
-    counter = 0
-    while True:
-        try:
-            socket.gethostbyname('www.google.com')
-            break
-        except socket.gaierror:
-            counter += 1
-            time.sleep(1)
-            if counter == 360:
-                return []
     data_list = []
     try:
         for line in results.split("\n"):

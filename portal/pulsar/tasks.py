@@ -321,7 +321,6 @@ def dispatch_scan(asset_id, user_id, policy):
     str_asset_id = str(asset.id)
     str_user_id = str(user_id)
     scheduled = PeriodicTask.objects.filter(name__contains='ps-'+str(asset.id))
-    print('Checking for schedule: repeat == %s scheduled == %s' % (str(policy.repeat), repr(scheduled)))
     if policy.repeat and not scheduled:
         # Period cron definitions
         if policy.repeat_freq == 'DAILY':

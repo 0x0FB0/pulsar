@@ -28,6 +28,7 @@ scan_settings = {
     'amass_flags': '-ipv4 -noalts ',
     'nmap_tcp_flags': '-Pn -n -T3 -sS -vv',
     'nmap_udp_flags': '-Pn -n -T3 -sU -vv',
+    'resolvers': '1.1.1.1:53,8.8.8.8:53,64.6.64.6:53,74.82.42.42:53,1.0.0.1:53,8.8.4.4:53,64.6.65.6:53'
 }
 
 proxies = {
@@ -73,6 +74,7 @@ class Sandbox():
 
     def exec(self, cmd):
         c = self.connect()
+        result = ''
         logger.info('EXECUTING: %s' % repr(cmd))
         try:
             heavy = False
@@ -138,6 +140,15 @@ class Sandbox():
         self.exec(f'rm -f {delfile}')
         return True
 
+    def check_dns(self):
+        while True:
+            result = self.exec_sandboxed(f'echo stat.ripe.net | zdns A | grep NOERROR ')
+            if 'NOERROR' in result:
+                break
+            else:
+                logger.info('Fatal error! DNS not operational')
+                time.sleep(2)
+
 
 def updateCPE(port, fqdn, task_id, cpe):
     doms = DomainInstance.objects.filter(fqdn=fqdn, last_task=task_id)
@@ -167,6 +178,8 @@ def downloadHelper(download_path, url):
 
 
 def updateNVDFeed():
+    s = Sandbox()
+    s.check_dns()
     if not os.path.exists('/portal/nvd/feeds/mutex'):
         dpath = '/portal/nvd/download/'
         fpath = '/portal/nvd/feeds/'
@@ -430,8 +443,16 @@ def getIPData(ip):
                    'cidr': 'NA',
                    'desc': 'NA',
                    }
-        data = requests.get(f"https://stat.ripe.net/data/whois/data.json?sourceapp=OpenOSINT&resource={ip}",
-                            proxies=proxies)
+
+        while True:
+            try:
+                data = requests.get(f"https://stat.ripe.net/data/whois/data.json?sourceapp=OpenOSINT&resource={ip}",
+                                    proxies=proxies)
+                break
+            except Exception as e:
+                logger.info("Error connecting to RIPE: %s" % repr(e))
+                pass
+
         jdata = json.loads(data.content)
         if 'data' in jdata:
             if 'irr_records' in jdata['data']:
@@ -462,14 +483,16 @@ def getIPData(ip):
         return [ip_data, ]
 
 
-def aBulkRecordLookup(list_input):
+def aBulkRecordLookup(list_input, prefix='none'):
     sandbox = Sandbox()
+    sandbox.check_dns()
     dom_list = '\\n'.join(list_input)
     doms = []
-    with open('/portal/pulsar/modules/root_servers.list') as f:
-        server_list = f.read().strip("\n")
-    s_cmd = f'echo -e "{dom_list}" | zdns A -iterative -retries 3 --name-servers {server_list}'
+    s_cmd = f'echo -e "{dom_list}" | zdns A -retries 3 --name-servers {scan_settings["resolvers"]} '
+    if prefix != 'none':
+        s_cmd += f'-prefix {prefix} '
     result = sandbox.exec_sandboxed(s_cmd)
+    sandbox.check_dns()
     memory = {}
     for res in result.split('\n'):
         try:
@@ -492,6 +515,7 @@ def aBulkRecordLookup(list_input):
                                     doms.append({'fqdn': name, 'ip': ip})
         except json.JSONDecodeError:
             pass
+    sandbox.check_dns()
     return doms
 
 

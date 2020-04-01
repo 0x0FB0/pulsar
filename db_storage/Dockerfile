@@ -1,4 +1,4 @@
-FROM mysql:8.0
+FROM mysql:8.0.18
 
 # Setup the custom configuration
 COPY conf/mysqld.cnf /etc/mysql/my.cnf

@@ -37,7 +37,7 @@ openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj \
     -keyout /etc/ssl/pulsar.key -out /etc/ssl/pulsar.crt
 
 # Start sandbox ssh tunnel
-ssh -o StrictHostKeyChecking=no -f -N -D 127.0.0.1:8881 sandbox -i /etc/ssh/sandbox_key
+ssh -o StrictHostKeyChecking=no -o LogLevel=quiet -f -N -D 127.0.0.1:8881 sandbox -i /etc/ssh/sandbox_key 2>/dev/null
 # Set sandbox proxy
 #export ALL_PROXY=socks5://localhost:8881/
 
@@ -78,4 +78,6 @@ service nginx start
 cd /portal/
 
 # Start application server
+echo -e "\n\033[32m[!] Starting pulsar on https://localhost:8443/\n"
+echo -e "    It can take a while to boot.\n\033[0m"
 /portal/conf/gunicorn.sh

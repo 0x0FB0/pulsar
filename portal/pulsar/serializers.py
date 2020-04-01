@@ -322,7 +322,5 @@ class ScanInstanceSerializer(serializers.ModelSerializer):
         policy_data = validated_data.pop('policy')
         policy_id = instance.policy.id
         ScanPolicy.objects.filter(id=policy_id).update(**policy_data)
-        policy = ScanPolicy.objects.get(id=policy_id)
-        print(repr(policy))
         instance = ScanInstance.objects.get(id=instance.id)
         return instance

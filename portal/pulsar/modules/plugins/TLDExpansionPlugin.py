@@ -1,18 +1,11 @@
-
-import json
 import requests
-import sys
-import socket
+import time
 import favicon
 import hashlib
-import ssl
 import re
 import urllib3
-from billiard import pool
 from celery.utils.log import get_task_logger
-from netaddr import IPNetwork
 from requests.exceptions import ConnectionError, HTTPError
-from pebble import ProcessPool as ThreadPool
 from ..scanner_utils import BaseDiscoveryPlugin, aBulkRecordLookup, unique_list, Sandbox, proxies
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -29,43 +22,39 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
     def setup(self, domain):
         try:
             try:
-                self.tld_list = open('/portal/pulsar/modules/tld.list', 'r').read().split('\n')
+                with open('/portal/pulsar/modules/tld.list', 'r') as tld_file:
+                    self.tld_list = tld_file.read().split('\n')
             except OSError as e:
                 logger.info('tld.list is missing!\n')
                 logger.info(repr(e))
                 raise
             self.domain = domain
-            try:
-                self.known_ip = socket.gethostbyname(domain)
-            except Exception:
+            count = 0
+            while True:
                 try:
-                    self.known_ip = socket.gethostbyname('www.'+domain)
+                    root_dom = aBulkRecordLookup([domain])
+                    logger.info('GOR ROOT TLD RESOLV: %s' % repr(root_dom) )
+                    self.known_ip = root_dom[0]['ip'][0]['ip']
+                    break
                 except Exception:
-                    raise
+                    time.sleep(1)
+                    count += 1
+                    if count >= 5:
+                        break
+                    pass
             self.known_domain = domain.split('.')[0]
             self.known_fav = self.check_favicon(domain)
-            self.known_certs.append(self.check_cert(domain))
+            logger.info('Gor ROOT TLD data: %s %s' % (self.known_domain, self.known_ip))
         except Exception as e:
             logger.info("Fatal error: " + repr(e))
             raise
-
-    def check_cert(self, dom):
-        for vhost in ['', 'www.']:
-            try:
-                openssl_cmd = f' ( openssl s_client -connect {vhost + dom}:443 < /dev/null 2>/dev/null \
-                 | openssl x509 -fingerprint -noout -in /dev/stdin )  2>&1 '
-                cert = sandbox.exec_sandboxed(openssl_cmd)
-                if cert is None or 'Fingerprint' not in cert:
-                    raise Exception
-                return cert
-            except Exception:
-                pass
 
     def check_favicon(self, dom):
         for proto in ['http', 'https']:
             try:
                 fav = favicon.get(proto + '://' + dom + '/', stream=True, verify=False, proxies=proxies)
                 r = requests.get(fav[0].url, verify=False, proxies=proxies)
+                logger.info('Searching favicon...')
                 return hashlib.sha1(r.text.encode('utf-8')).hexdigest()
             except (ConnectionError, IndexError, HTTPError):
                 pass
@@ -76,6 +65,7 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
                 try:
                     r = requests.get(proto + '://' + vhost + new_domain + '/', verify=False,
                                      allow_redirects=True, proxies=proxies)
+                    logger.info('Searching links...')
                     if re.search(r'http.:\/\/.*' + self.domain, r.text):
                         return True
                     else:
@@ -83,31 +73,25 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
                 except ConnectionError:
                     pass
 
-    def check_tld(self, new_domain):
+    def check_tld(self, new_domain, ip):
         try:
-            ip = socket.gethostbyname(str(new_domain))
+            logger.info('Checking IP: %s == %s' % (ip, self.known_ip))
             if str(ip) == str(self.known_ip):
-                try:
-                    self.known_certs.append(self.check_cert(new_domain))
-                except Exception as e:
-                    logger.info('failed: %s' % repr(e))
-                    pass
                 return 'ipv4'
-            elif str(self.check_cert(new_domain)) in self.known_certs:
-                try:
-                    self.known_certs.append(self.check_cert(new_domain))
-                except Exception as e:
-                    logger.info('failed: %s' % repr(e))
-                    pass
-                return 'certificate'
-            elif str(self.known_fav) == str(self.check_favicon(new_domain)):
-                return 'favicon'
-            elif self.check_links(new_domain):
-                return 'links'
             else:
-                return 'unknown'
-        except Exception as e:
-            pass
+                fav = str(self.check_favicon(new_domain))
+                links = self.check_links(new_domain)
+                logger.info('Checking FAV: %s == %s' % (str(self.known_fav), fav))
+                logger.info('Checking LINKS: %s ' % links)
+                if fav and fav == str(self.known_fav):
+                    return 'favicon'
+                elif links:
+                    return 'links'
+                else:
+                    return 'unknown'
+
+        except Exception:
+            return 'unknown'
 
     def find_tlds(self):
         identified = []
@@ -115,8 +99,9 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
         try:
             resolved = aBulkRecordLookup(unique_list(dom_list))
             for dom in unique_list(resolved):
-                result = self.check_tld(dom['fqdn'])
-                if result != 'unknown':
+                logger.info("Checking TLD: %s %s" % (dom['fqdn'], repr(dom['ip'])))
+                result = self.check_tld(dom['fqdn'], dom['ip'][0]['ip'])
+                if result and result != 'unknown':
                     identified.append(dom)
                     logger.info("Found new TLD by %s: %s" % (result, dom['fqdn']))
             return unique_list(identified)
@@ -129,5 +114,6 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
         self.setup(self.asset_dom)
         doms = self.find_tlds()
         if doms and len(doms) > 0:
-            self.tlds = [dom['fqdn'] for dom in doms]
+            self.tlds = unique_list([dom['fqdn'] for dom in doms])
+            logger.info('FOUND TLDs: %s' % self.tlds)
             self.discovered.extend(doms)

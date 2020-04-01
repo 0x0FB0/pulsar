@@ -14,6 +14,7 @@ RUN mkdir /opt/scan_config/
 COPY requirements.txt /opt/scan_config/requirements.txt
 COPY amass-config.ini /opt/scan_config/amass-config.ini
 COPY blacklist.txt /opt/scan_config/blacklist.txt
+COPY getcert.py /opt/scan_config/getcert.py
 
 RUN pip3 install -r /opt/scan_config/requirements.txt
 

@@ -204,7 +204,7 @@ def get_markdown(asset):
                 f'Vulnerable domains resolving to the same IPv4 address.\n'
                 f'| WEAK DOMAIN | AFFECTED |\n'
                 f'|--|--|\n' )
-            for link in weak_links.keys():
+            for link in weak_links:
                 markdown += f'| {link} | {", ".join(weak_links[link])} |\n'
         markdown += (
             f'## Discovered domains\n\n'
