@@ -52,8 +52,8 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
     def check_favicon(self, dom):
         for proto in ['http', 'https']:
             try:
-                fav = favicon.get(proto + '://' + dom + '/', stream=True, verify=False, proxies=proxies)
-                r = requests.get(fav[0].url, verify=False, proxies=proxies)
+                fav = favicon.get(proto + '://' + dom + '/', stream=True, verify=False, proxies=proxies, timeout=2)
+                r = requests.get(fav[0].url, verify=False, proxies=proxies, timeout=2)
                 logger.info('Searching favicon...')
                 return hashlib.sha1(r.text.encode('utf-8')).hexdigest()
             except (ConnectionError, IndexError, HTTPError):
@@ -64,7 +64,7 @@ class TLDExpansionPlugin(BaseDiscoveryPlugin):
             for proto in ['http', 'https']:
                 try:
                     r = requests.get(proto + '://' + vhost + new_domain + '/', verify=False,
-                                     allow_redirects=True, proxies=proxies)
+                                     allow_redirects=True, proxies=proxies, timeout=2)
                     logger.info('Searching links...')
                     if re.search(r'http.:\/\/.*' + self.domain, r.text):
                         return True
