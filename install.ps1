@@ -71,7 +71,7 @@ Function Build-Containers {
         Try {
             Write-Host "Downloading images and dependencies."
             Write-Host "This will take a while..."
-            docker-compose build | Out-Null
+            docker-compose build
             Write-Host "Build finished!"
         }
         Catch {

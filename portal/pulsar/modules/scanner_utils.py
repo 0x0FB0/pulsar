@@ -351,7 +351,6 @@ def NVDSearchForCPE(cpe):
     logger.info("RECEIVED CPE %s: %s" % (type(cpe), cpe))
     cache = '/portal/nvd/cache/'
     start = time.time()
-    search_pool = pool.Pool(2)
     cve_list = []
     clean = cpe.replace('cpe:', '').replace('/', '') + ':'
     if len(clean.split(':')) > 2 and re.match(r'.*:([\d+\.+]+)', clean):
@@ -383,8 +382,10 @@ def NVDSearchForCPE(cpe):
                 logger.info('SEARCHING %s...' % clean)
                 for feed in dfeeds:
                     worker_data.append((fdir + feed, clean))
+                search_pool = pool.Pool(2)
                 cves = search_pool.map(search_in_file, [work for work in worker_data])
                 search_pool.close()
+                search_pool.join()
                 cve_list.extend([item for sublist in cves for item in sublist])
                 logger.info('FOUND CVES: %s' % len(cve_list))
                 logger.info('SEARCH TOOK: %s' % (time.time() - start))
@@ -483,16 +484,18 @@ def getIPData(ip):
         return [ip_data, ]
 
 
-def aBulkRecordLookup(list_input, prefix='none'):
+def aBulkRecordLookup(list_input, prefix='none', health_check=True):
     sandbox = Sandbox()
-    sandbox.check_dns()
+    if health_check:
+        sandbox.check_dns()
     dom_list = '\\n'.join(list_input)
     doms = []
     s_cmd = f'echo -e "{dom_list}" | zdns A -retries 3 --name-servers {scan_settings["resolvers"]} '
     if prefix != 'none':
         s_cmd += f'-prefix {prefix} '
     result = sandbox.exec_sandboxed(s_cmd)
-    sandbox.check_dns()
+    if health_check:
+        sandbox.check_dns()
     memory = {}
     for res in result.split('\n'):
         try:
@@ -515,7 +518,6 @@ def aBulkRecordLookup(list_input, prefix='none'):
                                     doms.append({'fqdn': name, 'ip': ip})
         except json.JSONDecodeError:
             pass
-    sandbox.check_dns()
     return doms
 
 

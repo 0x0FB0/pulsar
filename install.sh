@@ -58,9 +58,9 @@ function Build-Containers {
     read -n 2 -p 'Do you want to build containers? (y/n) ' Continue
     if [ "$Continue" == "y" ]
     then
-        echo -e "\nDownloading images and dependencies."
-        echo "This will take a while..."
-        docker-compose build >&2 2>/dev/null
+        echo -e "\nDownloading images and dependencies.\n"
+        echo -e "This will take a while...\n"
+        docker-compose build # 2>&1 >/dev/null
         if [ $? -ne 0 ]
         then
             echo -e "\nFailed to build docker containers."

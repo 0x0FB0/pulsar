@@ -33,10 +33,22 @@ Issue arrises due to lack of proper time synchronization of docker daemon.
 
 Restart your docker engine to fix this issue.
 
-## General performance and stability issues
+## Performance and stability issues
+
 Please make sure your docker engine resources meet minimal hardware requirements:
 - 8GB of memory
 - 4 CPU cores
+
+Recommended requirements:
+- 16GB of memory
+- 4 CPU
+
+#### Experiencing unexpected crashes or scans issues during the scan?
+
+Scanning wide domain ranges requires large amounts of memory.
+
+- Try increasing Docker engine resources or running Pulsar on a more efficient system.
+- Try upgrading your Docker engine version.
 
 ## Scan issues
 

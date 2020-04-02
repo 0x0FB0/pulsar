@@ -59,7 +59,8 @@ def aMassSubFind(s_input, unique_id, active, inscope, history, tlds):
         logger.info("AMASS PARSE ERROR: %s" % repr(e))
     alldoms_list = []
     for data in data_list:
-        alldoms_list.append(data['name'])
+        if data['name'] not in tlds:
+            alldoms_list.append(data['name'])
     logger.info("FRESH DOMAINS: %s" % repr(alldoms_list))
     counter = collections.Counter([re.sub("\d+", "\\\\d+", x) for x in alldoms_list])
     repeats = [key for key in counter.keys() if counter[key] > 10]

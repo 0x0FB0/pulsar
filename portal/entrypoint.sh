@@ -3,6 +3,10 @@
 # Web entrypoint
 
 chmod 600 /etc/ssh/sandbox_key
+touch /portal/logs/django.log
+touch /portal/logs/celery.log
+chown nginx:nogroup /portal/logs/django.log
+chown nginx:nogroup /portal/logs/celery.log
 chown nginx:nogroup /etc/ssh/sandbox_key
 
 

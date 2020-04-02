@@ -47,8 +47,11 @@ def revDNSFind(asset_name, asset_dom, nets, inscope):
 
     resolv_pool = pool.Pool(2)
     unresolved = resolv_pool.map(ripe_resolve_ip, [work for work in work_data])
-    clean = [item for sublist in unresolved for item in sublist]
-    resolved = aBulkRecordLookup(unique_list(clean))
+    doms = [item for sublist in unresolved for item in sublist]
+    clean = [dom for dom in doms if dom != ""]
+    resolv_pool.close()
+    resolv_pool.join()
+    resolved = aBulkRecordLookup(unique_list(clean), health_check=False)
 
     return unique_list(resolved)
 
