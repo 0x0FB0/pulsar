@@ -25,9 +25,9 @@ scan_settings = {
     'cmd_timeout': '2h',  # linux timeout syntax i.e. 10s 10m 10h 10d
     'nmap_host_timeout': '10m',
     'amass_timeout': '20',
-    'amass_flags': '-ipv4 -noalts ',
-    'nmap_tcp_flags': '-Pn -n -T3 -sS -vv',
-    'nmap_udp_flags': '-Pn -n -T3 -sU -vv',
+    'amass_flags': '-noalts ',
+    'nmap_tcp_flags': '-Pn -n -sS -vv',
+    'nmap_udp_flags': '-Pn -n -sU -vv',
     'resolvers': '1.1.1.1:53,8.8.8.8:53,64.6.64.6:53,74.82.42.42:53,1.0.0.1:53,8.8.4.4:53,64.6.65.6:53'
 }
 

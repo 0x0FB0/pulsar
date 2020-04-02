@@ -30,7 +30,7 @@ def aMassSubFind(s_input, unique_id, active, inscope, history, tlds):
     s_cmd = "amass enum -config /opt/scan_config/amass-config.ini " \
             "-blf /opt/scan_config/blacklist.txt " \
             f"-d {s_input} -src -timeout {scan_settings['amass_timeout']} " \
-            f"{scan_settings['amass_flags']} -json " + outfile
+            f" -ipv4 {scan_settings['amass_flags']} -json " + outfile
     if active and not wildcard:
         s_cmd += " -active -brute "
     if len(history) > 0:

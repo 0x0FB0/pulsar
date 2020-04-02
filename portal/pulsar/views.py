@@ -133,8 +133,10 @@ def get_csv(asset):
         csv_line += clean_csv(dom.plugin) + ';'
         csv_line += clean_csv(str(dom.found_date)) + ';'
         csv += csv_line + '\n'
-    csv += '\nid;ip;country;cidr;asn;desc;score;domain\n'
+    csv += '\nid;ip;country;cidr;asn;desc;score;domain;svcs\n'
     for ip in ips:
+        svcs = ip.svcs.get_queryset().values('port', 'proto')
+        svc_list = ','.join([str(p['port']) + '/' + p['proto'].upper() for p in svcs])
         csv_line = ''
         csv_line += clean_csv(ip.id) + ';'
         csv_line += clean_csv(ip.ip) + ';'
@@ -144,6 +146,7 @@ def get_csv(asset):
         csv_line += clean_csv(ip.desc) + ';'
         csv_line += str(round(ip.score, 2)) + ';'
         csv_line += clean_csv(ip.domain.fqdn) + ';'
+        csv_line += clean_csv(svc_list) + ';'
         csv += csv_line + '\n'
     csv += '\nid;name;plugin;cvss;description;details;reference;info;score;confidence;found_date;ip;domain\n'
     for vuln in vulns:
