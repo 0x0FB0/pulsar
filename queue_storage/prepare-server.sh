@@ -24,6 +24,7 @@ cd /home/server
 # Generate a private RSA key.
 openssl genrsa -out key.pem 2048
 
+
 # Generate a certificate from our private key.
 openssl req -new -key key.pem -out req.pem -outform PEM -subj /CN=queue/O=server/ -nodes
 

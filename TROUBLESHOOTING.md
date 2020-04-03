@@ -20,6 +20,24 @@ Documentation can be found at `/admin/docs/`
 
 Documented REST API can be found at `/pulsar/api/v1/`
 
+## Build issues
+
+Make sure your git is configured fo **LF** (\n) line ending by default.
+If you are experiencing errors like:
+
+```
+/home/prepare-server.sh: line 2: $'\r': command not found
+: invalid optionrver.sh: line 3: set: -
+set: usage: set [-abefhkmnptuvxBCHP] [-o option-name] [--] [arg ...]
+/home/prepare-server.sh: line 4: $'\r': command not found
+/home/prepare-server.sh: line 8: cd: $'/home/testca\r': No such file or directory
+```
+try
+```
+git config core.autocrlf false
+```
+and try a fresh clone.
+
 ## Known docker daemon issues
 
 > ERROR: Service 'sandbox' failed to build
