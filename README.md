@@ -10,9 +10,18 @@
 Its focused on discovery of organization public facing assets with minimal knowledge about its infrastructure. Along with network data visualization, it attempts to give a basic vulnerability score to find infrastructure weak points and their relation to other resources. It can be also used as a custom vulnerability scanner for wide and uncharted scopes.
 This software was created with availability and openness in mind, so it is 100% free, and does not require any API keys to use its features.
 
+## v1 is here!
+
+Release includes major stability improvements and some new features.
+
+Many thanks to all contributions so far!
+
+New features:
+- TLD Expansion discovery
+- Improved reporting (including new CSV file format)
 
 ## What it is not?
-- Vulnerability Management Platform
+- Vulnerability Management Platformn
 - Full OSINT framework scanner
 - Speed oriented tool with immediate results
 
@@ -46,9 +55,9 @@ This software was created with availability and openness in mind, so it is 100% 
 
 ## Future ideas
 
-- [ ] Stability and speed improvements.
 - [ ] CLI client
 - [ ] More open source integrations.
+- [ ] Stability and speed improvements.
 - [ ] More detailed scan settings.
 - [ ] IPv4 subnet discovery.
 - [ ] Additional confidence tests.
@@ -60,7 +69,8 @@ This software was created with availability and openness in mind, so it is 100% 
 
 > If you would like to use External APIs see [USAGE.md](https://fooballz.github.io/pulsar/USAGE.html)
 
-> In order to use email notifications, edit `EMAIL_BACKEND SETTINGS` in `portal/portal/settings.py` before the installation
+> In order to use email notifications, edit `EMAIL_BACKEND SETTINGS` in `portal/portal/settings.py` **before the 
+>installation** or web container will need to be rebuild.
 
 ### Windows
 

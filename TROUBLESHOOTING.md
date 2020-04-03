@@ -34,7 +34,11 @@ set: usage: set [-abefhkmnptuvxBCHP] [-o option-name] [--] [arg ...]
 ```
 try
 ```
-git config core.autocrlf false
+git config --global core.autocrlf input
+```
+or
+```
+git config --global core.autocrlf false
 ```
 and try a fresh clone.
 
