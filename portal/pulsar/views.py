@@ -110,11 +110,73 @@ class LRDViewSet(mixins.ListModelMixin,
 class RViewSet(mixins.ListModelMixin,
                  BaseViewSet):
     """List view."""
+def clean_csv(field_value):
+    field_value = str(field_value).replace('\n', ' ').replace(';', ' ')
+    return field_value
 
+def get_csv(asset):
+    csv = ''
+    last_scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
+    doms = DomainInstance.objects.filter(last_task=last_scan.last_task, false_positive=False)
+    ips = IPv4AddrInstance.objects.filter(last_task=last_scan.last_task)
+    vulns = VulnInstance.objects.filter(last_task=last_scan.last_task, false_positive=False)
+    csv += '\nid;fqdn;country;total_score;confidence;ipv4;source;plugin;found_date\n'
+    for dom in doms:
+        csv_line = ''
+        csv_line += clean_csv(dom.id) + ';'
+        csv_line += clean_csv(dom.fqdn) + ';'
+        csv_line += clean_csv(dom.country) + ';'
+        csv_line += str(round(dom.total_score, 2)) + ';'
+        csv_line += str(round(dom.confidence, 2)) + ';'
+        csv_line += ' '.join([ip['ip'] for ip in dom.ips.all().values('ip')]) + ';'
+        csv_line += clean_csv(dom.source) + ';'
+        csv_line += clean_csv(dom.plugin) + ';'
+        csv_line += clean_csv(str(dom.found_date)) + ';'
+        csv += csv_line + '\n'
+    csv += '\nid;ip;country;cidr;asn;desc;score;domain;svcs\n'
+    for ip in ips:
+        svcs = ip.svcs.get_queryset().values('port', 'proto')
+        svc_list = ','.join([str(p['port']) + '/' + p['proto'].upper() for p in svcs])
+        csv_line = ''
+        csv_line += clean_csv(ip.id) + ';'
+        csv_line += clean_csv(ip.ip) + ';'
+        csv_line += clean_csv(ip.country) + ';'
+        csv_line += clean_csv(ip.cidr) + ';'
+        csv_line += str(ip.asn) + ';'
+        csv_line += clean_csv(ip.desc) + ';'
+        csv_line += str(round(ip.score, 2)) + ';'
+        csv_line += clean_csv(ip.domain.fqdn) + ';'
+        csv_line += clean_csv(svc_list) + ';'
+        csv += csv_line + '\n'
+    csv += '\nid;name;plugin;cvss;description;details;reference;info;score;confidence;found_date;ip;domain\n'
+    for vuln in vulns:
+        csv_line = ''
+        csv_line += clean_csv(vuln.id) + ';'
+        csv_line += clean_csv(vuln.name) + ';'
+        csv_line += clean_csv(vuln.plugin) + ';'
+        csv_line += clean_csv(vuln.cvss)+ ';'
+        csv_line += clean_csv(vuln.description) + ';'
+        csv_line += clean_csv(vuln.details) + ';'
+        csv_line += clean_csv(vuln.reference) + ';'
+        csv_line += clean_csv(vuln.info) + ';'
+        csv_line += str(round(vuln.score, 2)) + ';'
+        csv_line += str(round(vuln.confidence, 2)) + ';'
+        csv_line += clean_csv(str(vuln.found_date)) + ';'
+        csv_line += clean_csv(vuln.ip.ip) + ';'
+        csv_line += clean_csv(vuln.domain.fqdn) + ';'
+        csv += csv_line + '\n'
+    b64csv = base64.b64encode(csv.encode('utf-8'))
+    return b64csv
 
 def get_markdown(asset):
     """Markdown report generation helper method."""
     last_scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
+    weak_doms = DomainInstance.objects.filter(asset=asset, last_task=last_scan.last_task, total_score__gte=0.1)
+    weak_links = {}
+    for dom in weak_doms:
+        siblings = dom.get_siblings()
+        if len(siblings) > 0:
+            weak_links[dom.fqdn] = siblings
     if last_scan:
         policy = last_scan.policy
         last_task = last_scan.last_task
@@ -125,10 +187,10 @@ def get_markdown(asset):
             f'|  |  |\n'
             f'|--|--|\n'
             f'| Scan ID | {str(last_scan.id)} |\n'
-            f'| Execution Date | {str(last_scan.scanned_date)} |\n'
-            f'| Creation Date | {str(last_scan.created_date)} |\n'
-            f'| Score | **{str(round(last_scan.total_score, 2))}** |\n'
             f'| Task ID | {str(last_task.id)} |\n'
+            f'| Execution Date | {last_scan.scanned_date.strftime("%d/%m/%Y %H:%M:%S")} |\n'
+            f'| Creation Date | {last_scan.created_date.strftime("%d/%m/%Y %H:%M:%S")} |\n'
+            f'| Score | **{str(round(last_scan.total_score, 2))}** |\n'
             f'| Active Scan | {str(policy.active)} |\n'
             f'| Strict Scope | {str(policy.inscope)} |\n'
             f'| Recursive | {str(policy.inscope)} |\n'
@@ -138,11 +200,28 @@ def get_markdown(asset):
             f'|--|--|\n'
             f'| Name | **{str(asset.name.upper())}** |\n'
             f'| Domain| {str(asset.domain)} |\n'
-            f'| Current Score | **{str(round(asset.current_score, 2))}** |\n\n'
+            f'| Current Score | **{str(round(asset.current_score, 2))}** |\n\n' )
+        if len(weak_links.keys()) > 0:
+            markdown += (
+                f'## Weak links\n\n'
+                f'Vulnerable domains resolving to the same IPv4 address.\n'
+                f'| WEAK DOMAIN | AFFECTED |\n'
+                f'|--|--|\n' )
+            for link in weak_links:
+                markdown += f'| {link} | {", ".join(weak_links[link])} |\n'
+        markdown += (
             f'## Discovered domains\n\n'
             f'---\n\n'
         )
         doms = DomainInstance.objects.filter(last_task=last_task, false_positive=False)
+        for dom in doms:
+            markdown += (
+                f'- {str(dom.fqdn)}\n'
+            )
+        markdown += (
+            f'\n## Domain details\n\n'
+            f'---\n\n'
+        )
         for dom in doms:
             ips = ', '.join([ip['ip'] for ip in IPv4AddrInstance.objects.filter(domain=dom).values('ip')])
             markdown += (
@@ -154,7 +233,7 @@ def get_markdown(asset):
                 f'| Country | {str(dom.country)} |\n'
                 f'| IPv4 | {str(ips)} |\n'
                 f'| Discovery Plugin | {str(dom.plugin)} |\n'
-                f'| Discovery Date | {str(dom.found_date)} |\n'
+                f'| Discovery Date | {dom.found_date.strftime("%d/%m/%Y %H:%M:%S")} |\n'
                 f'| Total Score | **{str(round(dom.total_score, 2))}** |\n'
                 f'| Confidence | {str(round(dom.confidence, 2))} |\n\n'
                 f'### Domain Vulnerabilities\n\n'
@@ -170,7 +249,7 @@ def get_markdown(asset):
                         f'| Score| **{str(round(vuln.score, 2))}** |\n'
                         f'| Confidence | {str(round(vuln.confidence, 2))} |\n'
                         f'| Discovery Plugin | {str(vuln.plugin)} |\n'
-                        f'| Discovery Date | {str(vuln.found_date)} |\n'
+                        f'| Discovery Date | {vuln.found_date.strftime("%d/%m/%Y %H:%M:%S")} |\n'
                         f'| Service | {str(vuln.service)} |\n'
                         f'| Description | {str(vuln.description)} |\n'
                         f'| Reference | [External Link]({str(vuln.reference)}) |\n\n'
@@ -185,6 +264,13 @@ def get_pdf(md):
     """PDF generation helper method."""
     fname = str(uuid.uuid4())
     resultFile = open(fname, "w+b")
+    style_header = """<html><head><style type=\"text/css\">
+    body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+    font-size: 14px;
+    }
+    </style></head><body>\n"""
+    md = style_header + md + "\n</body></html>"
     pisaStatus = pisa.CreatePDF(
         markdown(md, extensions=['tables', 'fenced_code']),
         dest=resultFile)
@@ -274,6 +360,9 @@ class Asset(mixins.CreateModelMixin,
     pdf:
     Retrieve an asset report in PDF format. (custom action)
 
+    csv:
+    Retrieve an asset report in CSV format. (custom action)
+
     """
     filter_backends = (filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter)
     search_fields = ['domain', 'name']
@@ -289,7 +378,7 @@ class Asset(mixins.CreateModelMixin,
         serializer = AssetDetailSerializer(asset, many=False, context={'request': request})
         return RestResponse(serializer.data)
 
-    def destroy(self, request, _pk=None):
+    def destroy(self, request, pk=None):
         """
         delete:
         Remove asset instance and all related database objects.
@@ -351,6 +440,20 @@ class Asset(mixins.CreateModelMixin,
         else:
             return RestResponse(status=status.HTTP_204_NO_CONTENT)
 
+    @action(methods=['get'], detail=True, url_name='pdf')
+    def csv(self, request, pk=None):
+        """
+        get:
+        Retrieve an asset report in CSV format.
+        """
+        asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all())) \
+            .get(id=pk)
+        csv = get_csv(asset)
+        if csv:
+            return RestResponse({"csv": csv})
+        else:
+            return RestResponse(status=status.HTTP_204_NO_CONTENT)
+
     @action(methods=['get'], detail=True, url_name='create_scan')
     def create_scan(self, request, pk=None):
         """
@@ -406,7 +509,6 @@ class Asset(mixins.CreateModelMixin,
         """
         asset = AssetInstance.objects.filter(Q(owner=request.user) | Q(collaborations__in=request.user.groups.all()))\
             .get(id=pk)
-        print("[i] calc: FOR %s" % asset.name)
         scan = ScanInstance.objects.filter(asset=asset).order_by('-scanned_date').first()
         total_score = calc_asset_by_task(str(scan.last_task.id))
         return RestResponse({"success": True, "asset_score": total_score})
@@ -438,7 +540,7 @@ class Task(LRDViewSet):
     queryset = ScanTask.objects.all()
     serializer_class = ScanTaskSerializer
 
-    def destroy(self, request, _pk=None):
+    def destroy(self, request, pk=None):
         """
         delete:
         Remove scan task instance and all related database objects.
@@ -624,7 +726,7 @@ class Scan(LRUDViewSet):
     queryset = ScanInstance.objects.all().order_by('created_date')
     serializer_class = ScanInstanceSerializer
 
-    def destroy(self, request, _pk=None):
+    def destroy(self, request, pk=None):
         """
         delete:
         Remove scan instance and all related database objects.

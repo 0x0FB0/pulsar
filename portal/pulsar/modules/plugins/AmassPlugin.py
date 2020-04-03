@@ -21,7 +21,7 @@ def isWildcardDom(dom):
         return False
 
 
-def aMassSubFind(s_input, unique_id, active, history):
+def aMassSubFind(s_input, unique_id, active, inscope, history, tlds):
     doms = []
     wildcard = isWildcardDom(s_input)
     uploaded_known = ''
@@ -30,27 +30,23 @@ def aMassSubFind(s_input, unique_id, active, history):
     s_cmd = "amass enum -config /opt/scan_config/amass-config.ini " \
             "-blf /opt/scan_config/blacklist.txt " \
             f"-d {s_input} -src -timeout {scan_settings['amass_timeout']} " \
-            f"{scan_settings['amass_flags']} -json " + outfile
+            f" -ipv4 {scan_settings['amass_flags']} -json " + outfile
     if active and not wildcard:
         s_cmd += " -active -brute "
     if len(history) > 0:
         uploaded_known = sandbox.upload_sandboxed_content(known, '\n'.join(history))
         s_cmd += " -nf " + known
+    if not inscope:
+        additional_doms = ''
+        logger.info("GOT TLDs: %s" % ', '.join(tlds))
+        for tld in tlds:
+            if tld != s_input:
+                additional_doms += f' -d {tld} '
+        s_cmd += additional_doms
     logger.info("AMASS START")
     sandbox.exec_sandboxed(s_cmd)
     results = sandbox.retrieve_sandboxed(outfile)
     logger.info("AMASS END")
-    # make sure dns resolution cooldown
-    counter = 0
-    while True:
-        try:
-            socket.gethostbyname('www.google.com')
-            break
-        except socket.gaierror:
-            counter += 1
-            time.sleep(1)
-            if counter == 360:
-                return []
     data_list = []
     try:
         for line in results.split("\n"):
@@ -63,7 +59,8 @@ def aMassSubFind(s_input, unique_id, active, history):
         logger.info("AMASS PARSE ERROR: %s" % repr(e))
     alldoms_list = []
     for data in data_list:
-        alldoms_list.append(data['name'])
+        if data['name'] not in tlds:
+            alldoms_list.append(data['name'])
     logger.info("FRESH DOMAINS: %s" % repr(alldoms_list))
     counter = collections.Counter([re.sub("\d+", "\\\\d+", x) for x in alldoms_list])
     repeats = [key for key in counter.keys() if counter[key] > 10]
@@ -91,7 +88,8 @@ class AmassPlugin(BaseDiscoveryPlugin):
 
     def run(self):
         logger.info("GOT POLICY: %s" % repr(self.policy))
-        doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active, self.history)
+        doms = aMassSubFind(str(self.fqdn), str(self.task_id), self.policy.active,
+                            self.policy.inscope, self.history, self.tlds)
         logger.info("FOUND DOMAINS: %s" % repr(doms))
         if len(doms) > 0:
             self.discovered.extend(doms)

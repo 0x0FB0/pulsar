@@ -66,8 +66,13 @@ class ScanTaskAdmin(admin.ModelAdmin):
 
 @admin.register(DomainInstance)
 class DomainInstanceAdmin(admin.ModelAdmin):
-    list_display = ('fqdn', 'confidence', 'plugin', 'found_date', 'asset')
-    list_filter = ('fqdn', 'confidence', 'plugin', 'found_date', 'asset')
+    list_display = ('fqdn', 'total_score', 'confidence', 'plugin', 'found_date', 'asset')
+    list_filter = ('fqdn', 'total_score', 'confidence', 'plugin', 'found_date', 'asset')
+
+@admin.register(IPv4AddrInstance)
+class IPv4AddrInstanceAdmin(admin.ModelAdmin):
+    list_display = ('ip', 'country', 'cidr', 'asn', 'score', 'domain', 'asset', 'desc')
+    list_filter = ('ip', 'country', 'cidr', 'asn', 'score', 'domain', 'asset')
 
 
 @admin.register(VulnInstance)

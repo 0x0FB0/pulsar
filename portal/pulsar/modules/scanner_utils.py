@@ -25,11 +25,16 @@ scan_settings = {
     'cmd_timeout': '2h',  # linux timeout syntax i.e. 10s 10m 10h 10d
     'nmap_host_timeout': '10m',
     'amass_timeout': '20',
-    'amass_flags': '-ipv4 -noalts ',
-    'nmap_tcp_flags': '-Pn -n -T4 -sS -vv',
-    'nmap_udp_flags': '-Pn -n -T4 -sU -vv',
+    'amass_flags': '-noalts ',
+    'nmap_tcp_flags': '-Pn -n -sS -vv',
+    'nmap_udp_flags': '-Pn -n -sU -vv',
+    'resolvers': '1.1.1.1:53,8.8.8.8:53,64.6.64.6:53,74.82.42.42:53,1.0.0.1:53,8.8.4.4:53,64.6.65.6:53'
 }
 
+proxies = {
+    'http':'socks5://127.0.0.1:8881',
+    'https':'socks5://127.0.0.1:8881'
+}
 
 class CVE(CVEEntry):
     pass
@@ -69,6 +74,7 @@ class Sandbox():
 
     def exec(self, cmd):
         c = self.connect()
+        result = ''
         logger.info('EXECUTING: %s' % repr(cmd))
         try:
             heavy = False
@@ -134,6 +140,15 @@ class Sandbox():
         self.exec(f'rm -f {delfile}')
         return True
 
+    def check_dns(self):
+        while True:
+            result = self.exec_sandboxed(f'echo stat.ripe.net | zdns A | grep NOERROR ')
+            if 'NOERROR' in result:
+                break
+            else:
+                logger.info('Fatal error! DNS not operational')
+                time.sleep(2)
+
 
 def updateCPE(port, fqdn, task_id, cpe):
     doms = DomainInstance.objects.filter(fqdn=fqdn, last_task=task_id)
@@ -163,6 +178,8 @@ def downloadHelper(download_path, url):
 
 
 def updateNVDFeed():
+    s = Sandbox()
+    s.check_dns()
     if not os.path.exists('/portal/nvd/feeds/mutex'):
         dpath = '/portal/nvd/download/'
         fpath = '/portal/nvd/feeds/'
@@ -286,7 +303,7 @@ def updateNVDFeed():
                     if os.path.isfile(dpath + meta_file):
                         with open(dpath + meta_file, 'r') as lf:
                             lhash = lf.read().replace('\r', '').split('\n')[4].split(':')[1]
-                        rf = requests.get(feeds[feed]['meta'])
+                        rf = requests.get(feeds[feed]['meta'], proxies=proxies)
                         try:
                             rhash = rf.text.replace('\r', '').split('\n')[4].split(':')[1]
                             if lhash != rhash:
@@ -334,7 +351,6 @@ def NVDSearchForCPE(cpe):
     logger.info("RECEIVED CPE %s: %s" % (type(cpe), cpe))
     cache = '/portal/nvd/cache/'
     start = time.time()
-    search_pool = pool.Pool(2)
     cve_list = []
     clean = cpe.replace('cpe:', '').replace('/', '') + ':'
     if len(clean.split(':')) > 2 and re.match(r'.*:([\d+\.+]+)', clean):
@@ -366,8 +382,10 @@ def NVDSearchForCPE(cpe):
                 logger.info('SEARCHING %s...' % clean)
                 for feed in dfeeds:
                     worker_data.append((fdir + feed, clean))
+                search_pool = pool.Pool(2)
                 cves = search_pool.map(search_in_file, [work for work in worker_data])
                 search_pool.close()
+                search_pool.join()
                 cve_list.extend([item for sublist in cves for item in sublist])
                 logger.info('FOUND CVES: %s' % len(cve_list))
                 logger.info('SEARCH TOOK: %s' % (time.time() - start))
@@ -385,7 +403,8 @@ def getCountryData(ip):
         country = 'NA'
         while True:
             try:
-                data = requests.get("https://stat.ripe.net/data/rir-geo/data.json?sourceapp=OpenOSINT&resource="+ip)
+                data = requests.get("https://stat.ripe.net/data/rir-geo/data.json?sourceapp=OpenOSINT&resource="+ip,
+                                    proxies=proxies)
                 break
             except Exception as e:
                 logger.info("CONNECTION ERROR: %s" % repr(e))
@@ -398,7 +417,8 @@ def getCountryData(ip):
                 logger.info('COUNTRY RETURN: %s' % answer['located_resources'][0]['location'])
                 country = answer['located_resources'][0]['location']
             else:
-                data = requests.get("https://stat.ripe.net/data/rir/data.json?sourceapp=OpenOSINT&lod=2&resource="+ip)
+                data = requests.get("https://stat.ripe.net/data/rir/data.json?sourceapp=OpenOSINT&lod=2&resource="+ip,
+                                    proxies=proxies)
                 logger.info('GETTING COUNTRY DATA: %s ' % repr(data))
                 jdata = json.loads(data.content)
                 if 'data' in jdata:
@@ -424,7 +444,16 @@ def getIPData(ip):
                    'cidr': 'NA',
                    'desc': 'NA',
                    }
-        data = requests.get(f"https://stat.ripe.net/data/whois/data.json?sourceapp=OpenOSINT&resource={ip}")
+
+        while True:
+            try:
+                data = requests.get(f"https://stat.ripe.net/data/whois/data.json?sourceapp=OpenOSINT&resource={ip}",
+                                    proxies=proxies)
+                break
+            except Exception as e:
+                logger.info("Error connecting to RIPE: %s" % repr(e))
+                pass
+
         jdata = json.loads(data.content)
         if 'data' in jdata:
             if 'irr_records' in jdata['data']:
@@ -455,15 +484,18 @@ def getIPData(ip):
         return [ip_data, ]
 
 
-def aBulkRecordLookup(list_input):
+def aBulkRecordLookup(list_input, prefix='none', health_check=True):
     sandbox = Sandbox()
-    logger.info("BULK DNS LOOKUP: %s" % repr(list_input))
+    if health_check:
+        sandbox.check_dns()
     dom_list = '\\n'.join(list_input)
     doms = []
-    with open('/portal/pulsar/modules/root_servers.list') as f:
-        server_list = f.read().strip("\n")
-    s_cmd = f'echo -e {dom_list} | zdns A -iterative -retries 3 --name-servers {server_list}'
+    s_cmd = f'echo -e "{dom_list}" | zdns A -retries 3 --name-servers {scan_settings["resolvers"]} '
+    if prefix != 'none':
+        s_cmd += f'-prefix {prefix} '
     result = sandbox.exec_sandboxed(s_cmd)
+    if health_check:
+        sandbox.check_dns()
     memory = {}
     for res in result.split('\n'):
         try:
@@ -476,7 +508,7 @@ def aBulkRecordLookup(list_input):
                         for ans in data['answers']:
                             if 'answer' in ans:
                                 if ans['type'] == 'A':
-                                    logger.info(f"GOT IP: {ans['answer']}")
+                                    logger.info(f"GOT DOM: {name} IP: {ans['answer']}")
                                     if ans['answer'] in memory:
                                         ip = memory[ans['answer']]
                                     else:
@@ -484,7 +516,6 @@ def aBulkRecordLookup(list_input):
                                         memory[ans['answer']] = ip
                                         logger.info(f'GOT NEW IP DATA: {ip}')
                                     doms.append({'fqdn': name, 'ip': ip})
-                logger.info("GOT DOMAINS: %s" % repr(doms))
         except json.JSONDecodeError:
             pass
     return doms
@@ -625,13 +656,13 @@ def calc_asset_by_task(task_id):
 
 class BaseDiscoveryPlugin():
     fast = False
-    recursive = False
     name = 'basic discovery'
     short = ''
     ptype = ''
     confidence = 0.9
     discovered = []
     history = []
+    tlds = []
     nets = []
     ip = ''
     asset_name = ''
@@ -646,6 +677,7 @@ class BaseDiscoveryPlugin():
         self.asset_id = asset_id
         self.task_id = task_id
         self.history = [d['fqdn'] for d in DomainInstance.objects.filter(asset=self.asset_id).values('fqdn')]
+        self.tlds = [d['fqdn'] for d in TLDInstance.objects.filter(asset=self.asset_id).values('fqdn')]
         self.ptype = self.__class__.__name__
         self.fqdn = AssetInstance.objects.filter(id=self.asset_id).values('domain').first()["domain"]
         scan = ScanInstance.objects.filter(last_task=task_id).first()
@@ -665,6 +697,9 @@ class BaseDiscoveryPlugin():
         asset = AssetInstance.objects.get(id=uuid.UUID(str(self.asset_id)))
         task = ScanTask.objects.get(id=uuid.UUID(self.task_id))
         memory = {}
+        for tld in self.tlds:
+            logger.info('TLD SAVE: %s' % tld)
+            TLDInstance.objects.create(asset=asset, fqdn=tld)
         for dom in self.discovered:
             countries = []
             country = 'NA'

@@ -20,6 +20,28 @@ Documentation can be found at `/admin/docs/`
 
 Documented REST API can be found at `/pulsar/api/v1/`
 
+## Build issues
+
+Make sure your git is configured fo **LF** (\n) line ending by default.
+If you are experiencing errors like:
+
+```
+/home/prepare-server.sh: line 2: $'\r': command not found
+: invalid optionrver.sh: line 3: set: -
+set: usage: set [-abefhkmnptuvxBCHP] [-o option-name] [--] [arg ...]
+/home/prepare-server.sh: line 4: $'\r': command not found
+/home/prepare-server.sh: line 8: cd: $'/home/testca\r': No such file or directory
+```
+try
+```
+git config --global core.autocrlf input
+```
+or
+```
+git config --global core.autocrlf false
+```
+and try a fresh clone.
+
 ## Known docker daemon issues
 
 > ERROR: Service 'sandbox' failed to build
@@ -33,10 +55,22 @@ Issue arrises due to lack of proper time synchronization of docker daemon.
 
 Restart your docker engine to fix this issue.
 
-## General performance and stability issues
-Please make sure your docker engine resources meet minimal requirements:
+## Performance and stability issues
+
+Please make sure your docker engine resources meet minimal hardware requirements:
 - 8GB of memory
 - 4 CPU cores
+
+Recommended requirements:
+- 16GB of memory
+- 4 CPU
+
+#### Experiencing unexpected crashes or scans issues during the scan?
+
+Scanning wide domain ranges requires large amounts of memory.
+
+- Try increasing Docker engine resources or running Pulsar on a more efficient system.
+- Try upgrading your Docker engine version.
 
 ## Scan issues
 

@@ -83,7 +83,7 @@
                       :aria-valuenow="app.active_tasks[entry.id]" aria-valuemin="0" aria-valuemax="100"
                       v-if="app.active_progress.includes(entry.id)" >
                       </div>
-                        <span>{{app.active_plugins[entry.id]}}</span>
+                        <span class="mb-2">{{app.active_plugins[entry.id]}}</span>
                     </div>
                   </div>
                   <div v-else class="text-truncate">
@@ -93,19 +93,20 @@
                     <div class="btn-toolbar-justified flex-wrap" role="toolbar">
                      <div class="btn-group mr-2 mt-1 ml-1" role="group" aria-label="Asset Actions">
 
-                      <b-button v-if="app.active_progress.includes(entry.id)"
+                      <b-button v-show="app.active_progress.includes(entry.id)"
                       @click="app.cancelCurrentScan(entry.id)"
                       id="btn-info" class="btn btn-warning btn-sm"><i class="fas fa-stop"></i></b-button>
 
-                      <b-button v-if="!app.active_progress.includes(entry.id)"
+                      <b-button v-show="!app.active_progress.includes(entry.id)"
                        v-b-modal.scan-asset @mouseover="app.toBeScanned(entry.id, entry.name)" id="btn-info"
                       class="btn btn-warning btn-sm"><i class="fas fa-bolt mx-1"></i></b-button>
 
-                      <div class="btn-group">
+                      <div :key="app.download_icon" class="btn-group">
                       <b-button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-download"></i>
+                      <i :class="[app.download_icon ? 'fa-download' : 'fa-clock', 'fas']"></i>
                       </b-button>
                       <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'csv')">CSV</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'json')">JSON</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'markdown')">MARKDOWN</a>
                         <a class="dropdown-item" href="#" @click="app.exportAsset(entry.id, 'pdf')">PDF</a>
@@ -190,7 +191,7 @@
       id="scan-asset"
       ref="modal"
       content-class="shadow"
-      :title="'New scan for '+app.truncate(app.scanAssetName,16)"
+      :title="'New scan for '+app.scanAssetName"
       @show="resetScanAssetModal"
       @hidden="resetScanAssetModal"
       @ok="handleScanAssetOk"
@@ -468,6 +469,7 @@ module.exports = {
                 }
                 })
               .catch(err => {
+                console.log(err);
               }).then(() =>{
                 app.renderHistoryChart();
               })
@@ -543,6 +545,7 @@ module.exports = {
             app.history_loading = false
             app.renderHistory();
             })
+
 /*
     axios.get('/pulsar/api/v1/doms/active/?format=json')
           .then(response => {

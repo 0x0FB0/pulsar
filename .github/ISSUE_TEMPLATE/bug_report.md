@@ -7,6 +7,8 @@ assignees: FooBallZ
 
 ---
 
+> :warning: Make sure you have seen TROUBLESHOOTING.md
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -30,5 +32,5 @@ If applicable, add screenshots to help explain your problem.
  - Docker version (docker -v)
  - Docker compose version (docker-compose -v)
 
-**Additional context**
-Add any other context about the problem here.
+**Additional details**
+install.sh / Docker compose output, log files or any other detail about the problem here.

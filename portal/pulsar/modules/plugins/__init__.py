@@ -1,5 +1,6 @@
 __all__ = [
     # [ Domain discovery plugins ]
+    "TLDExpansionPlugin",
     "AmassPlugin",
     # "TheHarvesterPlugin",
     # [ Recursive discovery plugins ]
@@ -8,7 +9,7 @@ __all__ = [
     "TcpServiceScanPlugin",
     "UdpServiceScanPlugin",
     # [ Vulnerability scan plugins ]
-    "CloudEnumPlugin",
+    # "CloudEnumPlugin",
     "WeakSSHAlgoPlugin",
     "TLSCertVerifyPlugin",
     "ServiceVulnScanPlugin",
