@@ -14,7 +14,7 @@ This software was created with availability and openness in mind, so it is 100% 
 
 Release includes major stability improvements and some new features.
 
-Many thanks to all contributions so far!
+Many thanks for all contributions so far!
 
 New features:
 - TLD Expansion discovery
