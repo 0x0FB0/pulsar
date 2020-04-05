@@ -151,6 +151,12 @@ Feel free to pick something.
 
 Currently most help is needed with Vue.js frontend and Docker optimization.
 
+### In case you like the idea
+- Star me and tell your friends!
+- Make a donation!
+
+[![donate](https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png)](https://donorbox.org/pulsar-scanner?default_interval=o&amount=10)
+
 ### In case of issues
 - Feel free to issue a bug report.
 - See troubleshooting section [here](https://fooballz.github.io/pulsar/TROUBLESHOOTING.html).
@@ -162,9 +168,6 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 
 ### In case you would like to see it hosted
 - I'm considering launching a funding campaign.
-
-### In case you like the idea
-- Star me and tell your friends!
 
 ### In case of general criticism about code quality and architecture
 - You don't need to use it.
