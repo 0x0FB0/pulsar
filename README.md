@@ -141,6 +141,13 @@ git clone https://github.com/FooBallZ/pulsar
 
 5. Login to pulsar console at `https://localhost:8443/` with generated default credentials
 
+### Video guide
+
+In case you have hard times installing Pulsar or wondering how to install dependencies:
+
+*Game Flexer* created a linux installation tutorial available [here](https://www.youtube.com/watch?v=AwCwmf7qfEk).
+
+> :warning: I do not take responsibility for any of this content including links in the description.
 
 ## Contribution
 
