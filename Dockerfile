@@ -1,4 +1,4 @@
-FROM python:3.8.2-slim-buster
+FROM python:3.8.2-buster
 ENV PYTHONUNBUFFERED 1
 
 COPY secrets_storage/sandbox_key /etc/ssh/sandbox_key
@@ -9,7 +9,7 @@ RUN chmod 0600 /etc/ssh/sandbox_key
 
 RUN apt-mark hold libgnutls30=3.6.7-4+deb10u2 # compability fix for #29
 
-RUN apt-get update && apt-get install -y libcurl4=7.64.0-4+deb10u1 libpython3.7-minimal=3.7.3-2+deb10u1 \
+RUN apt-get update && apt-get install -y --allow-downgrades libssl1.1=1.1.1d-0+deb10u2 libgnutls30=3.6.7-4+deb10u2 libcurl4=7.64.0-4+deb10u1 libpython3.7-minimal=3.7.3-2+deb10u1 \
  libcurl4-openssl-dev=7.64.0-4+deb10u1 python3.7-minimal=3.7.3-2+deb10u1 python3-minimal=3.7.3-1 mime-support=3.62 \
  libmpdec2=2.4.2-2 libpython3.7-stdlib=3.7.3-2+deb10u1 python3.7=3.7.3-2+deb10u1 libpython3-stdlib=3.7.3-1 \
  python3=3.7.3-1 less=487-0.1+b1 sensible-utils=0.0.12 bzip2=1.0.6-9.2~deb10u1 libmagic-mgc=1:5.35-4+deb10u1 \
