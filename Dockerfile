@@ -7,8 +7,6 @@ RUN chmod 0600 /etc/ssh/sandbox_key
 #RUN apt-get update && apt-get install -y nginx python3-dev apache2-utils libexpat1 netcat less screen \
 # openssl libmariadb-dev libcurl4-openssl-dev libssl-dev gcc
 
-RUN apt-mark hold libgnutls30=3.6.7-4+deb10u2 # compability fix for #29
-
 RUN apt-get update && apt-get install -y --allow-downgrades libssl1.1=1.1.1d-0+deb10u2 libgnutls30=3.6.7-4+deb10u2 libcurl4=7.64.0-4+deb10u1 libpython3.7-minimal=3.7.3-2+deb10u1 \
  libcurl4-openssl-dev=7.64.0-4+deb10u1 python3.7-minimal=3.7.3-2+deb10u1 python3-minimal=3.7.3-1 mime-support=3.62 \
  libmpdec2=2.4.2-2 libpython3.7-stdlib=3.7.3-2+deb10u1 python3.7=3.7.3-2+deb10u1 libpython3-stdlib=3.7.3-1 \
