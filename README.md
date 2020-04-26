@@ -160,9 +160,7 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 
 ### In case you like the idea
 - Star me and tell your friends!
-- Make a donation!
-
-[![donate](https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png)](https://donorbox.org/pulsar-scanner?default_interval=o&amount=10)
+- Hit the sponsor button!
 
 ### In case of issues
 - Feel free to issue a bug report.
