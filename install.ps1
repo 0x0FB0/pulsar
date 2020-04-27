@@ -71,7 +71,7 @@ Function Build-Containers {
         Try {
             Write-Host "Downloading images and dependencies."
             Write-Host "This will take a while..."
-            docker-compose build
+            docker-compose build --no-cache
             Write-Host "Build finished!"
         }
         Catch {
@@ -94,11 +94,11 @@ Function Start-Pulsar
          {
             Write-Host "Starting Pulsar containers."
             Write-Host "Web service will be available on port 8443."
-            docker-compose up
+            docker-compose up --force-recreate
          }
          else
          {
-         Write-Host 'Run "docker-compose up" to start it manually.'
+         Write-Host 'Run "docker-compose up --force-recreate" to start it manually.'
          exit
          }
     }

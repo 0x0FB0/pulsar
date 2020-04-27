@@ -60,7 +60,7 @@ function Build-Containers {
     then
         echo -e "\nDownloading images and dependencies.\n"
         echo -e "This will take a while...\n"
-        docker-compose build # 2>&1 >/dev/null
+        docker-compose build --no-cache # 2>&1 >/dev/null
         if [ $? -ne 0 ]
         then
             echo -e "\nFailed to build docker containers."
@@ -81,14 +81,14 @@ function Start-Pulsar
      then
         echo "Starting Pulsar containers."
         echo "Web service will be available on port 8443."
-        docker-compose up 
+        docker-compose up --force-recreate 
         if [[ $? -ne 0 ]]
         then
             echo -e "\nFailed to start docker containers."
             exit
         fi
      else
-         echo -e '\nRun "docker-compose up" to start it manually.'
+         echo -e '\nRun "docker-compose up --force-recreate" to start it manually.'
          exit
      fi
 }
