@@ -12,8 +12,8 @@ To restart containers:
 To rebuild containers after configuration changes:
 ```
 # docker-compose down
-# docker-compose build
-# docker-compose up
+# docker-compose build --no-cache
+# docker-compose up --force-recreate
 ```
 
 Documentation can be found at `/admin/docs/`
@@ -117,11 +117,10 @@ In case of REST API or Gunicorn issues you may want to review django.log:
 
 In case you would like to configure external access, you can add additional `ALLOWED_HOSTS` in `portal/portal/settings.py` and rebuild web container.
 
-
 ```
 # docker-compose down
-# docker-compose build web
-# docker-compose up
+# docker-compose build web --no-cache
+# docker-compose up --force-recreate
 ```
 
 ## Custom plugin issues
