@@ -34,7 +34,7 @@ RUN ln -s /opt/zdns/zdns/zdns /bin/zdns
 
 WORKDIR /opt/
 ENV GO111MODULE=on
-RUN go get -v -u github.com/OWASP/Amass/v3/...
+RUN go get -v github.com/OWASP/Amass/v3/...
 
 RUN wget https://github.com/initstring/cloud_enum/archive/v0.2.tar.gz
 RUN tar -xzf /opt/v0.2.tar.gz
