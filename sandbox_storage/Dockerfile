@@ -18,7 +18,7 @@ COPY blacklist.txt /opt/scan_config/blacklist.txt
 RUN pip3 install -r /opt/scan_config/requirements.txt
 
 WORKDIR /opt/
-RUN wget "https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz" -O "/opt/golang.tar.gz"
+RUN wget "https://dl.google.com/go/go1.14.linux-amd64.tar.gz" -O "/opt/golang.tar.gz"
 RUN tar -C /usr/local -xzf /opt/golang.tar.gz
 RUN rm "/opt/golang.tar.gz"
 ENV PATH="${PATH}:/usr/local/go/bin"
