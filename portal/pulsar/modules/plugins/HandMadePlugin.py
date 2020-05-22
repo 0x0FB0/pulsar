@@ -1,4 +1,5 @@
 import json
+import base64
 
 from celery.utils.log import get_task_logger
 
@@ -15,6 +16,8 @@ class HandMadePlugin(HandMadeScannerPlugin):
     def run(self):
         dom_svcs = []
         dom = self.fqdn
+        all_data = base64.b64encode(str(self.services).encode('utf-8')).decode('utf-8')
+
         for svc in self.services:
             try:
                 svc_data = json.loads(svc['banner'])
@@ -25,7 +28,7 @@ class HandMadePlugin(HandMadeScannerPlugin):
         script_file = '/opt/scan_data/' + self.task_id + '-' + self.hmp_id + '.sh'
         sandbox.upload_sandboxed_content(script_file, self.script.replace('\r', ''))
         cmd = f'chmod +x {script_file} && '
-        cmd += f'echo -e "export DOM_SVCS={port_string}\\nexport DOM_FQDN={dom} " > ~/.bashrc && '
+        cmd += f'echo -e "export ALL_DATA={all_data}\\nexport DOM_SVCS={port_string}\\nexport DOM_FQDN={dom} " > ~/.bashrc && '
         cmd += f'{script_file} 2>&1'
         details = sandbox.exec_sandboxed(cmd)
         sandbox.remove_sandboxed(script_file)
