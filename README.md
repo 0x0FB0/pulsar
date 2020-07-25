@@ -10,20 +10,16 @@
 Its focused on discovery of organization public facing assets with minimal knowledge about its infrastructure. Along with network data visualization, it attempts to give a basic vulnerability score to find infrastructure weak points and their relation to other resources. It can be also used as a custom vulnerability scanner for wide and uncharted scopes.
 This software was created with availability and openness in mind, so it is 100% free, and does not require any API keys to use its features.
 
-## v1 is here!
-
-Release includes major stability improvements and some new features.
-
-Many thanks for all contributions so far!
-
-New features:
-- TLD Expansion discovery
-- Improved reporting (including new CSV file format)
-
 ## What it is not?
 - Vulnerability Management Platformn
 - Full OSINT framework scanner
 - Speed oriented tool with immediate results
+
+## Project discontinued
+
+Due to low interest and lack of community support I will no longer continue this project.
+Only security patches and fixes.
+Feel free to fork your own. 
 
 ## Key features
 
