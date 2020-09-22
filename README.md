@@ -11,7 +11,7 @@ Its focused on discovery of organization public facing assets with minimal knowl
 This software was created with availability and openness in mind, so it is 100% free, and does not require any API keys to use its features.
 
 ## What it is not?
-- Vulnerability Management Platformn
+- Vulnerability Management Platform
 - Full OSINT framework scanner
 - Speed oriented tool with immediate results
 
