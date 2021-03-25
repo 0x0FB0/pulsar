@@ -1,14 +1,21 @@
 Function Gen-SSHKey
 {
-Try {
-    Write-Host "Generating sandbox RSA ssh keys."
-    ssh-keygen -t rsa -b 4096 -f secrets_storage/sandbox_key -C "sandbox@web" -q -N '""'
-    copy secrets_storage\sandbox_key.pub sandbox_storage\sandbox_key.pub
-}
-Catch {
-    Write-Error "Could not generate SSH key.`n`nAre you sure Git tools are installed correctly?`n"
-    exit
-}
+    Try {
+        Write-Host "Generating sandbox RSA ssh keys."
+        ssh-keygen -t rsa -b 4096 -f secrets_storage/sandbox_key -C "sandbox@web" -q -N '""'
+        copy secrets_storage\sandbox_key.pub sandbox_storage\sandbox_key.pub
+    }
+    Catch {
+        Try {
+            Write-Host "Generating sandbox RSA ssh keys. (git-bash)"
+            C:\"Program Files"\Git\bin\sh.exe  -c 'ssh-keygen -t rsa -b 4096 -f secrets_storage/sandbox_key -C "sandbox@web" -q -N \\'""\\''
+            copy secrets_storage\sandbox_key.pub sandbox_storage\sandbox_key.pub
+        }
+        Catch {
+            Write-Error "Could not generate SSH key.`n`nAre you sure Git tools are installed correctly?`n"
+            exit
+        }
+    }
 }
 
 Function Check-DockerCompose

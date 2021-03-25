@@ -3,6 +3,7 @@ FROM debian:10.3-slim
 COPY sandbox_key.pub /root/.ssh/authorized_keys
 RUN chmod 0600 /root/.ssh/authorized_keys
 
+RUN curl https://sh.rustup.rs -sSf | sh
 RUN apt-get update && apt-get install -y netcat less screen openssl nmap net-tools whatweb python3 python3-pip \
     host wget openssh-server git curl
 COPY sshd_config /etc/ssh/sshd_config
@@ -15,10 +16,11 @@ COPY requirements.txt /opt/scan_config/requirements.txt
 COPY amass-config.ini /opt/scan_config/amass-config.ini
 COPY blacklist.txt /opt/scan_config/blacklist.txt
 
+RUN pip3 install --upgrade pip
 RUN pip3 install -r /opt/scan_config/requirements.txt
 
 WORKDIR /opt/
-RUN wget "https://dl.google.com/go/go1.14.linux-amd64.tar.gz" -O "/opt/golang.tar.gz"
+RUN wget "https://dl.google.com/go/go1.16.linux-amd64.tar.gz" -O "/opt/golang.tar.gz"
 RUN tar -C /usr/local -xzf /opt/golang.tar.gz
 RUN rm "/opt/golang.tar.gz"
 ENV PATH="${PATH}:/usr/local/go/bin"

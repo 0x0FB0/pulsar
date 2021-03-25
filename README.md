@@ -1,5 +1,5 @@
 # Pulsar [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Pulsar%20project%20at%20github!&url=https://fooballz.github.io/pulsar)
-![1.0.0](https://img.shields.io/badge/version-1.0.0-RED) ![Django](https://img.shields.io/badge/django-3.0.3-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
+![1.0.0](https://img.shields.io/badge/version-1.0.0-RED) ![Django](https://img.shields.io/badge/django-3.1.6-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
 
 
 ![Pulsar](/images/pulsar-banner.PNG)

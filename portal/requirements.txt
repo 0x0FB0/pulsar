@@ -21,7 +21,7 @@ django-celery-results==1.1.2
 django-celery-beat==1.5.0
 django-enumfield==1.5
 django-extensions==2.2.5
-django-filter==2.2.0
+django-filter==2.4.0
 django-guardian==2.1.0
 django-mysql==3.2.0
 django-session-timeout==0.0.4

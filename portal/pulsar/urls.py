@@ -10,8 +10,8 @@ apirouter.register(r'tasks', views.Task)
 apirouter.register(r'doms', views.Domain)
 apirouter.register(r'ipv4addr', views.IPv4Addr)
 apirouter.register(r'vulns', views.Vulnerability)
-apirouter.register(r'user', views.User, base_name='user')
-apirouter.register(r'stats', views.Statistics, base_name='statistics')
+apirouter.register(r'user', views.User, basename='user')
+apirouter.register(r'stats', views.Statistics, basename='statistics')
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
