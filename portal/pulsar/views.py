@@ -44,7 +44,7 @@ class BaseViewSet(viewsets.GenericViewSet):
         try:
             cls._meta.get_field(field)
             return True
-        except models.FieldDoesNotExist:
+        except Exception:
             return False
 
     def get_object(self):
