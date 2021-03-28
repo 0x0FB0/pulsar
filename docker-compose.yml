@@ -1,0 +1,65 @@
+version: '2.1'
+services:
+  db:
+    container_name: db
+    image: pulsar_db
+    mem_reservation: 2G
+    mem_limit: 4G
+    memswap_limit: 8G
+    env_file:
+      - db.env
+    expose:
+      - '3306'
+    command: --default-authentication-plugin=mysql_native_password
+    # database persistence between container reboots
+    volumes:
+     - ./db_storage/data:/var/lib/mysql
+     - ./db_storage/logs:/var/log/mysql
+    restart: always
+  sandbox:
+    container_name: sandbox
+    image: pulsar_sandbox
+    volumes: 
+      - ./secrets_storage/sandbox_key.pub:/root/.ssh/authorized_keys
+    stdin_open: true
+    restart: always
+  queue:
+    container_name: queue
+    image: pulsar_queue
+    mem_limit: 512M
+    env_file:
+      - queue.env
+    entrypoint: ['bash', '/certs/entrypoint.sh']
+    expose:
+      - 5671
+      - 5672
+    volumes:
+      - ./queue_storage:/certs
+    logging:
+      driver: "none"
+    restart: always
+  web:
+    container_name: web
+    image: pulsar_web
+    mem_reservation: 2G
+    oom_score_adj: -500
+    mem_limit: 4G
+    memswap_limit: 8G
+    env_file:
+      - web.env
+      - queue.env
+      - db.env
+    entrypoint: ['bash', './entrypoint.sh']
+    # stdin_open: true
+    # tty: true
+    ports:
+      - '8443:8443'
+    depends_on:
+      - db
+      - queue
+    volumes:
+      - ./queue_storage/client_cert:/etc/ssl/celery_client
+      - ./secrets_storage/sandbox_key:/etc/ssh/sandbox_key
+      # usefull for deveopment and hot patching
+      # - ./portal:/portal
+    restart: always

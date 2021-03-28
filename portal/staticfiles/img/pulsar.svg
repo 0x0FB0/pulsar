@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:cc="http://creativecommons.org/ns#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        width="300"
+        height="90"
+        viewBox="0 0 79.374999 23.8125"
+        version="1.1"
+        id="svg8"
+        inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+        sodipodi:docname="pulsar.svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient885">
+      <stop
+         style="stop-color:#2a2aff;stop-opacity:1;"
+         offset="0"
+         id="stop881" />
+      <stop
+         style="stop-color:#2a2aff;stop-opacity:0;"
+         offset="1"
+         id="stop883" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient885"
+       id="linearGradient887"
+       x1="0.72966385"
+       y1="230.09278"
+       x2="78.645336"
+       y2="230.09278"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="115.97415"
+     inkscape:cy="4.9595647"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g4751"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     units="px" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-273.1875)">
+    <g
+       id="g4751"
+       transform="matrix(1.0068567,0,0,1.0068567,-0.27212529,53.386402)">
+      <rect
+         y="228.09102"
+         x="0.72966385"
+         height="4.0035129"
+         width="77.915672"
+         id="rect861-7-3-0"
+         style="opacity:1;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.34637684;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.16822432;fill:url(#linearGradient887)" />
+      <g
+         aria-label="pulsar"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:23.40064049px;line-height:1.25;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.4875133"
+         id="text835">
+        <path
+           d="M 10.419696,234.38834 H 3.0016931 v 6.24797 H 0.70843033 v -8.54124 H 10.021885 q 1.193433,0 1.193433,-0.60841 v -2.62087 q 0,-0.70202 -1.193433,-0.70202 H 0.70843033 V 225.8705 H 10.302693 q 3.205888,0 3.205888,2.48047 v 3.6037 q 0,2.41027 -3.088885,2.43367 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path832" />
+        <path
+           d="m 18.175546,231.41645 v -5.59275 h -2.293263 v 6.10757 q 0,2.45707 3.205888,2.45707 h 6.388375 q 3.205888,0 3.205888,-2.45707 v -6.10757 h -2.293263 v 5.59275 q 0,0.67862 -1.193433,0.67862 h -5.85016 q -1.170032,0 -1.170032,-0.67862 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path834" />
+        <path
+           d="m 34.519431,234.38834 h -0.257407 q -3.205888,0 -3.205888,-2.45707 v -12.30874 h 2.293263 v 11.79392 q 0,0.67862 1.170032,0.67862 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path836" />
+        <path
+           d="m 45.798538,234.38834 h -8.892243 v -2.29327 h 7.418003 l -7.394603,-4.49292 q 0.0702,-0.84242 0.889225,-1.31044 0.819022,-0.46801 2.316663,-0.46801 h 8.892244 v 2.29326 h -7.230798 l 7.230798,4.60993 q -0.0702,0.98283 -0.912625,1.33384 -0.842423,0.32761 -2.316664,0.32761 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path838" />
+        <path
+           d="m 64.171333,234.38834 h -2.293262 v -6.27138 h -7.020192 q -1.193433,0 -1.193433,0.70202 v 2.59747 q 0,0.67862 1.193433,0.67862 H 59.304 v 2.29327 h -4.726929 q -3.205888,0 -3.205888,-2.45707 v -3.6271 q 0,-2.48047 3.205888,-2.48047 h 9.594262 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path840" />
+        <path
+           d="m 68.861701,234.38834 v -5.56936 q 0,-0.70202 1.193433,-0.70202 h 8.611436 v -2.29326 h -8.892244 q -3.205887,0 -3.205887,2.48047 v 6.08417 z"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Radio Space';-inkscape-font-specification:'Radio Space';fill:#ffffff;stroke-width:0.4875133"
+           id="path842" />
+      </g>
+    </g>
+    <text
+       id="text857"
+       y="118.40623"
+       x="77.184525"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.69999981px;line-height:1.25;font-family:Quantum;-inkscape-font-specification:'Quantum Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Quantum;-inkscape-font-specification:'Quantum Bold';fill:#ffffff;stroke-width:0.26458332"
+         y="130.09393"
+         x="77.184525"
+         id="tspan855"
+         sodipodi:role="line" /></text>
+  </g>
+</svg>

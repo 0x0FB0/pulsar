@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Pulsar Dashboard</title>
+
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/popper.min.js" ></script>
+<script src="/static/js/axios.min.js"></script>
+<script src="/static/js/vue.min.js"></script>
+<script src="/static/js/bootstrap-vue.min.js"></script>
+<script src="/static/js/vue-router.js"></script>
+<script src="/static/js/httpVueLoader.js"></script>
+<script src="/static/js/main.js" defer></script>
+<script src="/static/js/fontawesome.js"></script>
+<script src="/static/js/d3.js"></script>
+<script src="/static/js/topojson.min.js"></script>
+<script src="/static/js/datamaps.world.min.js"></script>
+<script src="/static/js/Chart.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+<link rel="stylesheet" type="text/css" href="/static/css/stars.css">
+
+<link rel="stylesheet" href="/static/css/bootstrap.min.css" >
+<script src="/static/js/bootstrap.min.js" ></script>
+
+</head>
+<body>
+<div id="app">
+
+    <svg id="svgCanvas" class="img-fluid" width="100%">
+      <g id="starGroup"></g>
+    <!--
+      <g transform="translate(150, 150)">
+        <circle class='shooting-star' fill='white' cx="0" cy="0" r="2" radius="125" ></circle>
+      </g>
+      -->
+    </svg>
+
+
+
+  <nav class="site-header sticky-top py-1">
+  <div class="container-fluid justify-content-between">
+    <div class="container">
+    <b-navbar type="dark" toggleable="sm" >
+    <b-navbar-nav class="navbar-nav navbar-expand-md mr-auto">
+
+      <div class="row">
+    <b-navbar-brand>
+        <img src="/static/img/pulsar.svg" height="32" class="d-inline-block align-top ml-4" alt="">
+      </b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" right is-nav>
+      <b-nav-item to="/dashboard">DASHBOARD</b-nav-item>
+      <b-nav-item to="/assets">ASSETS</b-nav-item>
+      <b-nav-item to="/network">NETWORK</b-nav-item>
+      </b-collapse>
+      </div>
+      </b-navbar-nav>
+        <b-nav-item-dropdown text="{{request.user}}" right>
+            <b-dropdown-item href="/pulsar/#/user" class="text-center">
+                <i class="fas fa-info mr-2"></i>
+                Details
+            </b-dropdown-item>
+            <b-dropdown-item href="/accounts/logout/" class="text-center">
+                <i class="fas fa-door-open mr-2"></i>
+                Logout
+            </b-dropdown-item>
+        </b-nav-item-dropdown>
+  </b-navbar>
+      </div>
+  </div>
+  </nav>
+      <router-view></router-view>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+version = 1
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "docker"
+enabled = true
+
+  [analyzers.meta]
+  dockerfile_paths = [
+    "Dockerfile",
+    "sandbox_storage/Dockerfile",
+    "queue_storage/Dockerfile",
+    "db_storage/Dockerfile"
+  ]

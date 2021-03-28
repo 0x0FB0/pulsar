@@ -1,0 +1,12 @@
+# This is a basic workflow that is manually triggered
+
+name: build
+on:
+  [push, workflow_dispatch]
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build containers
+      run: echo -e "y\ny\nn\n" | ./install.sh

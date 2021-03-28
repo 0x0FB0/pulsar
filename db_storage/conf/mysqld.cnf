@@ -1,0 +1,18 @@
+[mysqld]
+disable_log_bin
+# pid-file	            = /var/run/mysqld/mysqld.pid
+# socket		            = /var/run/mysqld/mysqld.sock
+datadir		            = /var/lib/mysql
+secure-file-priv        = NULL
+# log_error               = /var/log/mysql/error.log
+# general_log_file        = /var/log/mysql/mysql.log
+# general_log             = 1
+# max_allowed_packet      = 256M
+# myisam_sort_buffer_size = 512M
+# max_heap_table_size     = 128M
+# tmp_table_size          = 128M
+# max_heap_table_size     = 256M
+# wait_timeout            = 100
+# skip_name_resolve       = 1
+
+# !includedir /etc/mysql/conf.d/
