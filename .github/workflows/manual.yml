@@ -1,14 +1,12 @@
 # This is a basic workflow that is manually triggered
 
-name: Manual workflow
+name: Check Build
 on:
-  workflow_dispatch
+  [push, workflow_dispatch]
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Check for docker-compose
-      run: docker-compose -v
-    - name: Check for docker-compose
-      run: echo -e "y\ny\ny\n" | ./install.sh
+    - name: Build containers
+      run: echo -e "y\ny\nn\n" | ./install.sh
