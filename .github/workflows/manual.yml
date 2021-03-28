@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Check Build
+name: build
 on:
   [push, workflow_dispatch]
 jobs:
