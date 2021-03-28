@@ -17,5 +17,5 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-    - name: Check for docker
-      run: docker -v
+    - name: Check for docker-compose
+      run: docker-compose -v
