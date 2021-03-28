@@ -19,3 +19,5 @@ jobs:
     # Runs a single command using the runners shell
     - name: Check for docker-compose
       run: docker-compose -v
+    - name: Check for docker-compose
+      run: echo -e "y\ny\ny\n | ./install.sh"
