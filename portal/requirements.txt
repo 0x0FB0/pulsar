@@ -1,7 +1,7 @@
 amqp==2.5.2
 astroid==2.3.3
 autopep8==1.4.4
-Babel==2.7.0
+Babel==2.9.1
 billiard==3.6.1.0
 bleach==3.3.0
 celery==4.3.0
