@@ -38,7 +38,7 @@ isort==4.3.21
 keyring==19.3.0
 kombu==4.6.6
 lazy-object-proxy==1.4.3
-lxml==4.6.3
+lxml==4.6.5
 maxminddb==1.5.1
 mccabe==0.6.1
 more-itertools==7.2.0
