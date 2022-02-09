@@ -13,7 +13,7 @@ Function Gen-SSHKey
         }
         Catch {
             Write-Error "Could not generate SSH key.`n`nAre you sure Git tools are installed correctly?`n"
-            exit
+            exit 1
         }
     }
 }
@@ -25,14 +25,14 @@ Try {
 }
 Catch {
     Write-Error "Could not execute docker-compose!`n`nAre you sure it is installed correctly?`n"
-    exit
+    exit 1
 }
 }
 
 Function Gen-Password
 {
     $private:ofs=""
-    $Characters = '\-+_.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
+    $Characters = '-+_.~1234567890ZXCVBNMASDFGHJKLQWERTYUIOPqwertyuiopasdfghjklzxcvbnm'
     return [String]$Characters[(1..18 | ForEach-Object { Get-Random -Maximum 68 })]
 }
 
@@ -62,9 +62,9 @@ Function Gen-Credentials
     $django_config = "DJANGO_ADMIN_USER="+$django_user+"`n"
     $django_config = $django_config+"DJANGO_ADMIN_PASS="+$django_pass
 
-    $mysql_config | Out-File -encoding utf8 db.env
-    $rabbit_config | Out-File -encoding utf8 queue.env
-    $django_config | Out-File -encoding utf8 web.env
+    $mysql_config | Out-File -encoding ASCII db.env
+    $rabbit_config | Out-File -encoding ASCII queue.env
+    $django_config | Out-File -encoding ASCII web.env
 
     Write-Host "Credentials written to web.env, db.env and queue.env files."
 
@@ -83,7 +83,7 @@ Function Build-Containers {
         }
         Catch {
             Write-Error "Failed to build docker containers."
-            exit
+            exit 1
         }
     }
     else

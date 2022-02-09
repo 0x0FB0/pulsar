@@ -13,7 +13,7 @@ from django.utils.html import strip_tags
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
-from .celery import app
+from .celeryapp import app
 from .models import *
 from .modules import scanner_utils
 

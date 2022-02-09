@@ -197,16 +197,17 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True
 
 
-CELERY_BROKER_USE_SSL = True
+CELERY_broker_use_ssl = True
 CELERY_BIN = '/usr/local/bin/celery'
 CELERY_APP = 'pulsar'
 CELERYD_CHDIR = '/opt/webdev/portal/'
-CELERY_BROKER_URL = f'pyamqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//'
-CELERY_RESULT_BACKEND = 'amqp'
-CELERY_ACCEPT_CONTENT = ['auth']
-CELERY_RESULT_SERIALIZER = 'auth'
-CELERY_TIMEZONE = 'Europe/London'
-CELERY_TASK_SERIALIZER = 'auth'
-CELERY_CACHE_BACKEND = 'django-cache'
-CELERY_IGNORE_RESULT = False
-CELERY_TRACK_STARTED = True
+CELERY_broker_url = f'pyamqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//'
+result_backend = 'django-db'
+accept_content = ['json']
+result_serializer = 'json'
+event_serializer='json'
+timezone = 'Europe/London'
+task_serializer = 'json'
+cache_backend = 'django-cache'
+task_ignore_result = False
+task_track_started = True

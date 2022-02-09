@@ -64,7 +64,7 @@ function Build-Containers {
         if [ $? -ne 0 ]
         then
             echo -e "\nFailed to build docker containers."
-            exit
+            exit 1
         else
             echo -e "\nBuild finished!"
         fi

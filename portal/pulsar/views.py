@@ -14,7 +14,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response as RestResponse
 from xhtml2pdf import pisa
-from .celery import app
+from .celeryapp import app
 from .modules.scanner_utils import checkForNewDomains, checkForNewVuln, calc_asset_by_task, Sandbox, scan_settings
 from .serializers import *
 from .tasks import run_scan, dispatch_scan

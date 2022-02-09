@@ -13,6 +13,7 @@ chown nginx:nogroup /etc/ssh/sandbox_key
 # Generate secret keys
 
 export D_SECRET_KEY=$(openssl rand -base64 128)
+export DJANGO_SETTINGS_MODULE=portal.settings
 
 # Wait for database
 
@@ -71,11 +72,9 @@ echo "from django.contrib.auth import get_user_model;\
 # Set up celery workers
 
 echo -e "\n[+] Starting Celery workers...\n"
-screen -dmS worker celery -A pulsar worker -l info \
- --broker="amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@queue:5671//" --statedb=/portal/celery.state \
+screen -dmS worker celery -A pulsar worker -l info --statedb=/portal/celery.state \
  -f /portal/logs/celery.log --autoscale=8,2 --uid nginx --gid nogroup
 screen -dmS beat celery -A pulsar worker --beat -l info -f /portal/logs/celery.log \
- --broker="amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@queue:5671//" \
  --scheduler='django_celery_beat.schedulers:DatabaseScheduler' --autoscale=8,2 --uid nginx --gid nogroup
 
 

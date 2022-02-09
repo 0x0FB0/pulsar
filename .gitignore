@@ -1,6 +1,7 @@
 # Default ignored files
 /workspace.xml
 *.idea
+__pycache__/
 /sandbox_storage/sandbox_key.pub
 /secrets_storage/sandbox_key*
 /queue_storage/client_cert/cacert.pem

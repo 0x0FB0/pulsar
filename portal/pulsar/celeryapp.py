@@ -5,7 +5,7 @@ from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portal.settings')
 
-app = Celery('pulsar')
+app = Celery('pulsar', task_serializer='json', backend='django-db', broker=f'pyamqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.update(
     worker_redirect_stdouts_level='DEBUG',
@@ -13,12 +13,11 @@ app.conf.update(
     security_certificate='/etc/ssl/server.crt',
     security_cert_store='/etc/ssl/*.crt',
     security_digest='sha256',
-    task_serializer='auth',
+    task_serializer='json',
     allowed_serializers=['json'],
-    event_serializer='auth',
-    accept_content=['auth'],
+    event_serializer='json',
+    accept_content=['json'],
     broker_login_method='AMQPLAIN',
-    broker_url=f'amqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:{os.environ["RABBITMQ_DEFAULT_PASS"]}@queue:5671//',
     broker_use_ssl={
       'keyfile': '/etc/ssl/celery_client/key.pem',
       'certfile': '/etc/ssl/celery_client/cert.pem',
@@ -26,5 +25,4 @@ app.conf.update(
       'cert_reqs': ssl.CERT_REQUIRED
         }
     )
-app.setup_security()
 app.autodiscover_tasks()

@@ -14,6 +14,8 @@ until netcat -z 127.0.0.1 5672 ; do
   sleep 1
 done
 
+sleep 3
+
 # Add rabbitmq user
 
 rabbitmqctl add_user ${RABBITMQ_DEFAULT_USER} ${RABBITMQ_DEFAULT_PASS}
