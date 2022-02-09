@@ -1,5 +1,5 @@
 # Pulsar [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20Pulsar%20project%20at%20github!&url=https://fooballz.github.io/pulsar)
-[![build](https://github.com/FooBallZ/pulsar/actions/workflows/manual.yml/badge.svg)](https://github.com/FooBallZ/pulsar/actions/workflows/manual.yml) ![1.0.2](https://img.shields.io/badge/version-1.0.2-RED) ![Django](https://img.shields.io/badge/django-3.1.6-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
+[![build](https://github.com/0x0FB0/pulsar/actions/workflows/manual.yml/badge.svg)](https://github.com/0x0FB0/pulsar/actions/workflows/manual.yml) ![1.0.3](https://img.shields.io/badge/version-1.0.3-RED) ![Django](https://img.shields.io/badge/django-3.2.12-GREEN) ![Vue](https://img.shields.io/badge/Vue-2.6.11-BLUE)     [![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/FooBallZ/pulsar/?ref=repository-badge)
 
 
 ![Pulsar](/images/pulsar-banner.PNG)
@@ -15,7 +15,7 @@ This software was created with availability and openness in mind, so it is 100% 
 - Full OSINT framework scanner
 - Speed oriented tool with immediate results
 
-## Project discontinued
+## Project discontinued / archived
 
 Due to low interest and lack of community support I will no longer continue this project.
 Only security patches and fixes.
@@ -63,7 +63,7 @@ Feel free to fork your own.
 
 ## Installation instructions
 
-> If you would like to use External APIs see [USAGE.md](https://fooballz.github.io/pulsar/USAGE.html)
+> If you would like to use External APIs see [USAGE.md](https://0x0fb0.github.io/pulsar/USAGE.html)
 
 > In order to use email notifications, edit `EMAIL_BACKEND SETTINGS` in `portal/portal/settings.py` **before the 
 >installation** or web container will need to be rebuild.
@@ -151,7 +151,7 @@ In case you have hard times installing Pulsar or wondering how to install depend
 
 Have an idea, or a tool you would like to integrate? Feel free to issue a pull request.
 
-Current issues and features can be found at [projects](https://github.com/FooBallZ/pulsar/projects) section.
+Current issues and features can be found at [projects](https://github.com/0x0FB0/pulsar/projects) section.
 Feel free to pick something.
 
 Currently most help is needed with Vue.js frontend and Docker optimization.
@@ -162,7 +162,7 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 
 ### In case of issues
 - Feel free to issue a bug report.
-- See troubleshooting section [here](https://fooballz.github.io/pulsar/TROUBLESHOOTING.html).
+- See troubleshooting section [here](https://0x0fb0.github.io/pulsar/TROUBLESHOOTING.html).
 
 ### In case of ideas
 - Feel free to issue a change request.
@@ -179,7 +179,7 @@ Currently most help is needed with Vue.js frontend and Docker optimization.
 ## Documentation
 
 ### User guide
-Basic usage guide can be found [here](https://fooballz.github.io/pulsar/USAGE.html).
+Basic usage guide can be found [here](https://0x0fb0.github.io/pulsar/USAGE.html).
 
 ### REST API
 
