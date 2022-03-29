@@ -85,7 +85,7 @@ netaddr==0.8.0
 oauthlib==3.2.0
 outcome==1.1.0
 packaging==21.3
-paramiko==2.9.2
+paramiko==2.10.1
 pathlib2==2.3.6
 Pebble==4.6.3
 Pillow==9.0.1
