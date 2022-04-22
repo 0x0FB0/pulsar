@@ -31,7 +31,7 @@ decorator==5.1.1
 defusedxml==0.7.1
 Deprecated==1.2.13
 dicttoxml==1.7.4
-Django==3.2.12
+Django==3.2.13
 django-celery-beat==2.2.1
 django-celery-results==2.2.0
 django-enumfield==2.0.2
